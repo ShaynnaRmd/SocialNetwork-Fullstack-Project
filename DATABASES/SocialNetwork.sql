@@ -90,14 +90,8 @@ CREATE TABLE `group_members` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `group_id` INT(11) NOT NULL,
     `profile_id` INT(11) NOT NULL,
+    `admin` BOOLEAN,
     FOREIGN KEY (`group_id`) REFERENCES `groups`(id),
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `group_admins` (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `group_id` INT(11) NOT NULL,
-    `profile_id` INT(11) NOT NULL,
-    FOREIGN KEY (`group_id`) REFERENCES `groups`(id),
-    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
-) ENGINE=InnoDB;
