@@ -1,4 +1,3 @@
--- Active: 1682529343738@@127.0.0.1@3306@classlink
 CREATE TABLE `profiles` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `last_name` VARCHAR(64), 
@@ -40,21 +39,8 @@ CREATE TABLE `subscribers_page` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `page_id` INT(11) NOT NULL,
     `profile_id` INT(11) NOT NULL,
-    `admin` BOOLEAN,
     FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE `publications` (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `profile_id` INT(11) NOT NULL,
-    `page_id` INT(11) NOT NULL,
-    `group_id` INT(11) NOT NULL,
-    `image` VARCHAR(255),
-    `text` TEXT,
-    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
-    FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
-    FOREIGN KEY (`group_id`) REFERENCES `groups`(id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `comments` (
@@ -83,7 +69,6 @@ CREATE TABLE `groups` (
     `description` TEXT,
     `creator_profile_id` INT(11) NOT NULL,
     `status` VARCHAR (10),
-    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
     FOREIGN KEY (`creator_profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
@@ -94,4 +79,16 @@ CREATE TABLE `group_members` (
     `admin` BOOLEAN,
     FOREIGN KEY (`group_id`) REFERENCES `groups`(id),
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE `publications` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `profile_id` INT(11) NOT NULL,
+    `page_id` INT(11) NOT NULL,
+    `group_id` INT(11) NOT NULL,
+    `image` VARCHAR(255),
+    `text` TEXT,
+    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
+    FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
+    FOREIGN KEY (`group_id`) REFERENCES `groups`(id)
 ) ENGINE=InnoDB;
