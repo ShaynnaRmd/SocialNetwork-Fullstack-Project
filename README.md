@@ -1,5 +1,5 @@
 # SocialNetwork-Fullstack-Project
-A school full-stack project that have the purpose to create an entire complete social network for students run by us: the developers, and inspired by Facebook.
+A school full-stack project that has the purpose to create an entire complete social network for students run by us: the developers, and inspired by Facebook.
 # About
 This social media will include features such as :
   - messaging with private chat and groupchat
