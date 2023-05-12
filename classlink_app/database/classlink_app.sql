@@ -1,3 +1,4 @@
+-- Active: 1682529343738@@127.0.0.1@3306@classlink
 CREATE TABLE `profiles` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `last_name` VARCHAR(64), 
@@ -43,24 +44,6 @@ CREATE TABLE `subscribers_page` (
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `comments` (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `publication_id` INT(11) NOT NULL,
-    `text` TEXT,
-    `response` TEXT,
-    `creator_id` INT(11) NOT NULL,
-    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
-    FOREIGN KEY (`creator_id`) REFERENCES `profiles`(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE `reactions` (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `type` VARCHAR(64) NOT NULL,
-    `publication_id` INT(11) NOT NULL,
-    `comment_id` INT(11) NOT NULL,
-    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
-    FOREIGN KEY (`comment_id`) REFERENCES `comments`(id)
-) ENGINE=InnoDB;
 
 CREATE TABLE `groups` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -92,3 +75,24 @@ CREATE TABLE `publications` (
     FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
     FOREIGN KEY (`group_id`) REFERENCES `groups`(id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE `comments` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `publication_id` INT(11) NOT NULL,
+    `text` TEXT,
+    `response` TEXT,
+    `creator_id` INT(11) NOT NULL,
+    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
+    FOREIGN KEY (`creator_id`) REFERENCES `profiles`(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE `reactions` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `type` VARCHAR(64) NOT NULL,
+    `publication_id` INT(11) NOT NULL,
+    `comment_id` INT(11) NOT NULL,
+    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
+    FOREIGN KEY (`comment_id`) REFERENCES `comments`(id)
+) ENGINE=InnoDB;
+
+
