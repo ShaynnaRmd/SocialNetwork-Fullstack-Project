@@ -1,6 +1,6 @@
 <?php
-    session_start();
     require '../../vendor/autoload.php';
+    require '../../classlink_app/inc/pdo_authentification.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
     $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
@@ -52,7 +52,13 @@
 
                     <label for="password">Mot de passe: </label>
                     <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                    <?php
+                    if(isset($_SESSION['error'])){ ?>
+                    
+                    <p>Username déjà existant</p>
 
+                    <?php }
+                    ?>
                     <input type="submit" value="Suivant" name="submit">
                 </form>
 
@@ -106,7 +112,7 @@
                     $security_question = trim(filter_input(INPUT_POST, 'security-question'));
                     $security_answer = trim(filter_input(INPUT_POST, 'security-answer', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
                     $data = array(
-                        'login' => $_SESSION['username'],
+                        'username' => $_SESSION['username'],
                         'password' => $_SESSION['password'],
                         'first_name' => $_SESSION['firstname'],
                         'last_name' => $_SESSION['lastname'],
@@ -117,11 +123,18 @@
                         'answer' => $security_answer
                     );
                     $json = json_encode($data);
-                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);
+                    if($data['statut'] == 'Succès'){
+                        header('Location: ../../classlink_app/connections/login.php');
+                    }
+                    elseif($data["statut"] == 'Erreur'){
+                        $_SESSION['error'] = true ;
+                        header('Location: ../../classlink_app/connections/register.php');
+                    }
                 }?>
-                <h1>Inscription Réussi</h1>
                 <?php endif;
 ?>
