@@ -17,3 +17,6 @@ CREATE TABLE `token` (
     `token` VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES `users`(id)
 ) ENGINE=InnoDB;
+
+INSERT INTO users (username,password,first_name,last_name,mail,birth_date,gender,question,response)
+VALUES ('williams','123','willy','denzel',:'willy@gmail.com','18','homme',"t'as les crampté",'apeignan');
