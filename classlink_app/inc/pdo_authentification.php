@@ -1,5 +1,4 @@
 <?php
-    session_start();
     $auth_engine = "mysql";
     $host = "containers-us-west-82.railway.app";
 

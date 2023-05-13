@@ -32,7 +32,7 @@
 
             <input type="submit" value="Connexion">
         </form>
-        <p>Pas encore inscrit ? <a href="">Cliquez ici</a></p>
+        <p>Pas encore inscrit ? <a href="./register.php">Cliquez ici</a></p>
         <a href="">Mot de passe oublié ?</a>
     </div>
 </body>

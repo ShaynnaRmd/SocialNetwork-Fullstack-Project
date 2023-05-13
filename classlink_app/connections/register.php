@@ -1,8 +1,10 @@
 <?php
+    session_start();
     require '../../vendor/autoload.php';
     require '../../classlink_app/inc/pdo_authentification.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
+    $error = "";
     $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
     $submit = filter_input(INPUT_POST, "submit");
     $firstname = filter_input(INPUT_POST, "first-name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -12,9 +14,13 @@
     $gender = filter_input(INPUT_POST, "gender");
     $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $password = filter_input(INPUT_POST, "password");
+    $confirm_password = filter_input(INPUT_POST, "confirm-password");
     $security_question = filter_input(INPUT_POST, "security-question");
     $security_answer = filter_input(INPUT_POST, "security-answer");
-    if ($method == 'GET'): ?>
+    if ($method == 'GET' || ($method == 'POST' && ($password != $confirm_password))):
+        if ($password != $confirm_password) {
+            $error = 'Les mots de passe ne correspondent pas';
+        } ?>
         <!DOCTYPE html>
         <html lang="fr">
         <head>
@@ -27,6 +33,9 @@
             <h1>ClassLink</h1>
             <div>
                 <h2>S'inscrire</h2>
+                <?php if ($error): ?>
+                    <p><?= $error ?></p>
+                <?php endif; ?>
                 <form method="POST">
                     <label for="first-name">Prénom: </label>
                     <input type="text" id="first-name" name="first-name">
@@ -52,20 +61,22 @@
 
                     <label for="password">Mot de passe: </label>
                     <input type="password" id="password" name="password" placeholder="Mot de passe" required>
-                    <?php
-                    if(isset($_SESSION['error'])){ ?>
+
+                    <label for="confirm-password">Confirmez mot de passe: </label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Mot de passe" required>
+                    
+                    <?php if(isset($_SESSION['error'])): ?>
                     
                     <p>Username déjà existant</p>
 
-                    <?php }
-                    ?>
+                    <?php endif; ?>
                     <input type="submit" value="Suivant" name="submit">
                 </form>
 
-                <p>Déjà inscrit ? <a href="">Connectez-Vous.</a></p>
+                <p>Déjà inscrit ? <a href="./login.php">Connectez-Vous.</a></p>
             </div>
         </body>
-        </html><?php elseif($method =="POST" && $submit == 'Suivant'):
+        </html><?php elseif($method =="POST" && $submit == 'Suivant' && ($username && $password && $confirm_password && ($password == $confirm_password))):
             if ($username && $password) {
                 $username = trim($username);
                 $password = password_hash(trim($password), PASSWORD_DEFAULT);
@@ -123,7 +134,7 @@
                         'answer' => $security_answer
                     );
                     $json = json_encode($data);
-                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                     // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
