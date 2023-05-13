@@ -1,13 +1,15 @@
 <?php
+session_start();
 require './inc/pdo_authentification.php';
 require './inc/functions/token_functions.php';
-
-    $check = token_check($_SESSION["token"], $auth_pdo);
-    echo $check;
-
-    // if(isset($check)){
-    //     header('Location: ./connections/login.php');
-    // }
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
+            header('Location: ./connections/login.php');
+        }
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ./connections/login.php');
+    }
 
 
 ?>
@@ -24,5 +26,6 @@ require './inc/functions/token_functions.php';
 </head>
 <body>
     <h1>Test</h1>
+    <a href="./connections/logout.php">Déconnexion</a>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-    // session_start();
+    session_start();
     require '../../vendor/autoload.php';
     require '../inc/pdo_authentification.php';
     use GuzzleHttp\Client;
@@ -22,18 +22,19 @@
                 'body' => $json
             ]);
             $data = json_decode($response->getBody(), true);
-            var_dump($data);
-    //         if(isset($data)){
-    //             if($data['statut'] == 'Succès'){
-    //                 $_SESSION['token'] = $data['message'];
-    //                 header("Location: ../dashboard.php");
-    //                 exit();
-    //             }elseif($data['statut'] == 'Erreur'){
-    //                 $erreur = true;
-    //             }
-    //         }
+            if(isset($data)){
+                if($data['statut'] == 'Succès'){
+                    $_SESSION['token'] = $data['message'];
+                    header("Location: ../dashboard.php");
+                    exit();
+                }elseif($data['message'] == 'Identifiants incorrects'){
+                    $erreur = true;
+                }elseif($data['message'] == 'Utilisateur inexistant'){
+                    $invalid_user = true;
+                }
+            }
         }
-    }
+    }   
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,12 +50,14 @@
         <form action="" method="POST">
             <label for="username">Identifiant: </label>
             <input type="text" id="username" name="username" placeholder="Identifiant" required>
-
             <label for="password">Mot de passe: </label>
-            <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             <?php if(isset($erreur)){ ?>
                 <p>Identifiants incorrects</p>
             <?php } ?>
+            <?php if(isset($invalid_user)){ ?>
+                <p>Le nom d'utilisateur n'existe pas</p>
+            <?php } ?>
+            <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             <input type="submit" value="Connexion">
         </form>
         <p>Pas encore inscrit ? <a href="./register.php">Cliquez ici</a></p>

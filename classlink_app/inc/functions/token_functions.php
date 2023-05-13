@@ -1,5 +1,4 @@
 <?php
-include '../pdo_authentification.php';
 
 function token()
 {
@@ -16,7 +15,7 @@ function token()
 
 function token_check($token, $pdo)
 {
-    $requete = $auth_pdo->prepare("
+    $requete = $pdo->prepare("
     SELECT token FROM token WHERE token = :token;
     ");
     $requete->execute([
@@ -24,10 +23,9 @@ function token_check($token, $pdo)
     ]);
     $check_token = $requete->fetch(PDO::FETCH_ASSOC);
     if (isset($check_token)){
-        return true;
-    }
-    else{
-        return false;
+        return 'true';
+    }else{
+        return 'false';
     }
 }
 ?>
