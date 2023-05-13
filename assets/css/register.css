@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body { 
+    background-color: #4F4789;
+    color: #FFF;
+    overflow: hidden;
+}
+
+.website-title {
+    color: black;
+}
+
+.white-block {
+    width: 400px;
+    height: 950px;
+    background-color: #FFF;
+    transform: rotate(15deg);
+    position: fixed;
+    left: -119px;
+    top: -90px;
+    z-index: -1;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-block{
+    position: fixed;
+    top: 130px;
+    right: 90px;
+}
+
+.full-name {
+    display: flex;
+    column-gap: 28px;
+}
+.input {
+    width: 260px;
+    height: 50px;
+    margin-bottom: 16px;
+    border-style: none;
+    border-bottom-style: solid;
+    background-color: #4F4789;
+    color: #FFF;
+}
+
+::placeholder {
+    color: #FFF;
+}
+
+.button {
+    width: 120px;
+    height: 50px;
+    background-color: #FF784F;
+    color: #FFF;
+    border-radius: 6px;
+    border-style: none;
+    margin: 16px 0 16px 0;
+}
+
+#moon {
+    position: fixed;
+    top: 160px;
+    left: 140px;
+    width: 586px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.age-gender {
+    display: flex;
+    column-gap: 30px;
+}
+
+.password {
+    display: flex;
+    column-gap: 28px;
+}
+
+#mail {
+    width: 551px;
+}

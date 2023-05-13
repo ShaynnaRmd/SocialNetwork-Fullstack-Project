@@ -27,54 +27,92 @@
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="../../assets/css/register.css" rel="stylesheet">
             <title>ClassLink - Inscription</title>
         </head>
         <body>
-            <h1>ClassLink</h1>
-            <div>
-                <h2>S'inscrire</h2>
-                <?php if ($error): ?>
-                    <p><?= $error ?></p>
-                <?php endif; ?>
-                <form method="POST">
-                    <label for="first-name">Prénom: </label>
-                    <input type="text" id="first-name" name="first-name">
+            <div class="container">
+                <h1 class="website-title">ClassLink</h1>
 
-                    <label for="last-name">Nom: </label>
-                    <input type="text" id="last-name" name="last-name">
+                <div class="white-block">
 
-                    <label for="mail">Adresse Email: </label>
-                    <input type="email" id="mail" name="mail">
+                </div>
 
-                    <label for="age">Age: </label>
-                    <input type="number" name="age" id="age">
+                <img src="../../assets/img/Moon.svg" alt="Image représentant une lune entouré d'étoile" id="moon">
 
-                    <label for="gender">Genre: </label>
-                    <select name="gender" id="gender">
-                        <option value="male">Homme</option>
-                        <option value="female">Femme</option>
-                        <option value="others">Autres</option>
-                    </select>
-
-                    <label for="username">Identifiant: </label>
-                    <input type="text" id="username" name="username" placeholder="Identifiant" required>
-
-                    <label for="password">Mot de passe: </label>
-                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
-
-                    <label for="confirm-password">Confirmez mot de passe: </label>
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Mot de passe" required>
-                    
-                    <?php if(isset($_SESSION['error'])): ?>
-                    
-                    <p>Username déjà existant</p>
-
+                <div class="form-block">
+                    <h2 class="page-title">S'inscrire</h2>
+                    <?php if ($error): ?>
+                        <p><?= $error ?></p>
                     <?php endif; ?>
-                    <input type="submit" value="Suivant" name="submit">
-                </form>
 
-                <p>Déjà inscrit ? <a href="./login.php">Connectez-Vous.</a></p>
+                    <form method="POST">
+                        <div class="full-name">
+                            <div class="input-block">
+                                <label for="first-name" class="hidden">Prénom: </label>
+                                <input type="text" id="first-name" name="first-name" class="input" placeholder="Prénom">
+                            </div>
+
+                            <div class="input-block">
+                                <label for="last-name" class="hidden">Nom: </label>
+                                <input type="text" id="last-name" name="last-name" class="input" placeholder="Nom">
+                            </div>
+                        </div>
+                        
+
+                        <div class="input-block">
+                            <label for="mail" class="hidden">Adresse Email: </label>
+                            <input type="email" id="mail" name="mail" class="input" placeholder="Adresse Email">
+                        </div>
+                        
+
+                        <div class="age-gender">
+                            <div class="input-block">
+                                <label for="age" class="hidden">Age: </label>
+                                <input type="number" name="age" id="age" class="input" placeholder="Age">
+                            </div>
+
+                            <div class="input-block">
+                                <label for="gender" class="hidden">Genre: </label>
+                                <select name="gender" id="gender" class="input" placeholder="Genre">
+                                    <option value="" selected disabled>Genre</option>
+                                    <option value="male">Homme</option>
+                                    <option value="female">Femme</option>
+                                    <option value="others">Autres</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="input-block">
+                            <label for="username" class="hidden">Identifiant: </label>
+                            <input type="text" id="username" name="username" placeholder="Identifiant" required class="input">
+                        </div>
+
+                        
+
+                        <div class="password">
+                            <div class="input-block">
+                                <label for="password" class="hidden">Mot de passe: </label>
+                                <input type="password" id="password" name="password" placeholder="Mot de passe" required class="input">
+                            </div>
+
+                            <div class="input-block">
+                                <label for="confirm-password" class="hidden">Confirmez mot de passe: </label>
+                                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirmer le mot de passe" required class="input">
+                            </div>
+                        </div>
+                        
+                        <?php if(isset($_SESSION['error'])): ?>
+                            <p>Username déjà existant</p>
+                        <?php endif; ?>
+
+                        <input type="submit" value="Suivant" name="submit" class="button">
+                    </form>
+
+                    <p>Déjà inscrit ? <a href="./login.php">Connectez-Vous.</a></p>
+                </div>
             </div>
+            
         </body>
         </html><?php elseif($method =="POST" && $submit == 'Suivant' && ($username && $password && $confirm_password && ($password == $confirm_password))):
             if ($username && $password) {
@@ -134,7 +172,7 @@
                         'answer' => $security_answer
                     );
                     $json = json_encode($data);
-                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                     // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);

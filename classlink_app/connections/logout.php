@@ -1,6 +1,8 @@
 <?php
     session_start();
+    sleep(5);
     session_destroy();
+    header('Location: ./login.php')
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,6 +14,6 @@
 <body>
     <h1>ClassLink</h1>
     <p>Merci de votre visite. <span>À bientôt sur ClassLink !</span></p>
-
+    <p>Vous allez être redirigé dans 5 secondes...</p>
 </body>
 </html>
