@@ -3,24 +3,39 @@
     padding: 0;
 }
 
+@import url("https://use.typekit.net/zfb0hmm.css");
+
 body { 
     background-color: #4F4789;
     color: #FFF;
     overflow: hidden;
 }
 
-.website-title {
-    color: black;
+a {
+    color: #FFF;
+}
+
+.logo {
+    position: fixed;
+    top: 30px;
+    left: 180px;
+}
+
+.page-title {
+    color: #FFF;
+    font-family: "new-hero", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 .white-block {
-    width: 400px;
+    width: 600px;
     height: 950px;
     background-color: #FFF;
     transform: rotate(15deg);
     position: fixed;
-    left: -119px;
-    top: -90px;
+    left: -203px;
+    top: -120px;
     z-index: -1;
 }
 
@@ -51,6 +66,7 @@ body {
 
 ::placeholder {
     color: #FFF;
+    opacity: 0.6;
 }
 
 .button {

@@ -32,7 +32,7 @@
         </head>
         <body>
             <div class="container">
-                <h1 class="website-title">ClassLink</h1>
+                <a href="./landing_page.html"><img src="../../assets/img/logo.svg" alt="Logo de ClassLink" class="logo"></a>
 
                 <div class="white-block">
 
@@ -75,7 +75,7 @@
                             <div class="input-block">
                                 <label for="gender" class="hidden">Genre: </label>
                                 <select name="gender" id="gender" class="input" placeholder="Genre">
-                                    <option value="" selected disabled>Genre</option>
+                                    <option value="" selected disabled id="default">Genre</option>
                                     <option value="male">Homme</option>
                                     <option value="female">Femme</option>
                                     <option value="others">Autres</option>
@@ -109,7 +109,7 @@
                         <input type="submit" value="Suivant" name="submit" class="button">
                     </form>
 
-                    <p>Déjà inscrit ? <a href="./login.php">Connectez-Vous.</a></p>
+                    <p>Déjà inscrit ? <a href="./login.php">Connectez-vous.</a></p>
                 </div>
             </div>
             
