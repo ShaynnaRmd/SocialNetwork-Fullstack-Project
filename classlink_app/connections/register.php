@@ -37,13 +37,13 @@
                 <div class="white-block">
 
                 </div>
-
-                <img src="../../assets/img/Moon.svg" alt="Image représentant une lune entouré d'étoile" id="moon">
+                
+                <img src="../../assets/img/moon.svg" alt="Image représentant une lune entouré d'étoile" id="moon">
 
                 <div class="form-block">
                     <h2 class="page-title">S'inscrire</h2>
                     <?php if ($error): ?>
-                        <p><?= $error ?></p>
+                        <p class="error"><?= $error ?></p>
                     <?php endif; ?>
 
                     <form method="POST">
@@ -75,7 +75,7 @@
                             <div class="input-block">
                                 <label for="gender" class="hidden">Genre: </label>
                                 <select name="gender" id="gender" class="input" placeholder="Genre">
-                                    <option value="" selected disabled id="default">Genre</option>
+                                    <option value="" selected disabled id="default" hidden>Genre</option>
                                     <option value="male">Homme</option>
                                     <option value="female">Femme</option>
                                     <option value="others">Autres</option>
@@ -109,7 +109,7 @@
                         <input type="submit" value="Suivant" name="submit" class="button">
                     </form>
 
-                    <p>Déjà inscrit ? <a href="./login.php">Connectez-vous.</a></p>
+                    <p class="paragraph">Déjà inscrit ? <a href="./login.php">Connectez-vous.</a></p>
                 </div>
             </div>
             
@@ -132,28 +132,44 @@
                 <meta charset="UTF-8">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="../../assets/css/register.css" rel="stylesheet">
                 <title>ClassLink - Inscription</title>
             </head>
             <body>
-                <h1>ClassLink</h1>
-                <div>
-                    <h2>Sécurité</h2>
-                    <form method="POST">
-                        <label for="security-question">Question de sécurité: </label>
-                        <select name="security-question" id="security-question">
-                            <option value="first-pet-name">Quel est le nom de votre 1ère animal de compagnie ?</option>
-                            <option value="mother-birth-place">Quel est le lieux de naissance de votre mère.</option>
-                            <option value="first-school-name">Quel est le  nom de votre première école.</option>
-                            <option value="dream-work">Quel est le métier de vos rève ?</option>
-                            <option value="first-love-name">Quel est le nom de votre première amour ?</option>
-                        </select>
+                <div class="container">
+                    <a href="./landing_page.html"><img src="../../assets/img/logo.svg" alt="Logo de ClassLink" class="logo"></a>
 
-                        <label for="security-answer">Réponse</label>
-                        <input type="text" id="security-answer" name="security-answer">
+                    <div class="white-block">
 
-                        <input type="submit" name="submit" value="Inscription">
-                    </form>
+                    </div>
+
+                    <img src="../../assets/img/Moon.svg" alt="Image représentant une lune entouré d'étoile" id="moon">
+
+                    <div class="security-form-block">
+                        <form method="POST">
+                            <h2 class="page-title">Sécurité</h2>
+                            <div class="input-block">
+                                <label for="security-question" class="hidden">Question de sécurité: </label>
+                                <select name="security-question" id="security-question" class="security-input">
+                                    <option value="" selected disabled hidden id="default">Selectionner une question de sécurité.</option>
+                                    <option value="first-pet-name">Quel était le nom de votre 1ère animal de compagnie ?</option>
+                                    <option value="mother-birth-place">Quel est le lieux de naissance de votre mère.</option>
+                                    <option value="first-school-name">Quel est le  nom de votre première école.</option>
+                                    <option value="dream-work">Quel est le métier de vos rève ?</option>
+                                    <option value="first-love-name">Quel est le nom de votre première amour ?</option>
+                                </select>
+                            </div>
+
+                            <div class="input-block">
+                                <label for="security-answer" class="hidden">Réponse</label>
+                                <input type="text" id="security-answer" name="security-answer" placeholder="Réponse" class="security-input">
+                            </div>
+
+                            <input type="submit" name="submit" value="Inscription" class="button">
+                        </form>
+                    </div>
                 </div>
+                
             </body>
             </html><?php elseif($method =="POST" && $submit == 'Inscription'):
                 if ($security_answer) {
@@ -172,8 +188,8 @@
                         'answer' => $security_answer
                     );
                     $json = json_encode($data);
-                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
-                    // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    // $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);

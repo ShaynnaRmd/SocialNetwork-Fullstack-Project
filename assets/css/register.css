@@ -26,27 +26,37 @@ a {
     font-family: "new-hero", sans-serif;
     font-weight: 700;
     font-style: normal;
+    font-size: 44px;
 }
 
 .white-block {
     width: 600px;
-    height: 950px;
+    height: 1440px;
     background-color: #FFF;
     transform: rotate(15deg);
     position: fixed;
-    left: -203px;
+    left: -267px;
     top: -120px;
     z-index: -1;
+
 }
 
 .container {
     display: flex;
     flex-direction: row;
+    width: 100vw;
+    height: 100vh;
 }
 
 .form-block{
     position: fixed;
-    top: 130px;
+    align-self: center;
+    right: 90px;
+}
+
+.security-form-block {
+    position: fixed;
+    align-self: center;
     right: 90px;
 }
 
@@ -54,6 +64,14 @@ a {
     display: flex;
     column-gap: 28px;
 }
+
+.paragraph {
+    font-family: "new-hero", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
+}
+
 .input {
     width: 260px;
     height: 50px;
@@ -62,6 +80,24 @@ a {
     border-bottom-style: solid;
     background-color: #4F4789;
     color: #FFF;
+    font-family: "new-hero", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.security-input {
+    width: 520px;
+    height: 50px;
+    margin-bottom: 16px;
+    border-style: none;
+    border-bottom-style: solid;
+    background-color: #4F4789;
+    color: #FFF;
+    font-family: "new-hero", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
 }
 
 ::placeholder {
@@ -77,6 +113,10 @@ a {
     border-radius: 6px;
     border-style: none;
     margin: 16px 0 16px 0;
+    font-family: "new-hero", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
 }
 
 #moon {
