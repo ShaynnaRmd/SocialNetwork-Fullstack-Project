@@ -15,7 +15,7 @@
 
     <div class="thanks">
         <p class="thanks-msg"><span class="1stpt">Merci de votre visite.</span> <span class="2ndpt">À bientôt sur <span class="site-name">ClassLink</span> !</span></p>
-        <p class="redirection">Vous allez être redirigé dans 5 secondes...</p>
+        <p class="redirection">Vous allez être redirigé dans <span id="countdown">5</span> secondes...</p>
     </div>
 
     <div class="purple-block">
@@ -24,5 +24,6 @@
 
     <img src="../../assets/img/planet_stars.svg" alt="Image d'une planête entourée d'étoite" class="planet-stars">
 </body>
+<script src="../../assets/js/logout.js"></script>
 </html><?php
     session_destroy();
