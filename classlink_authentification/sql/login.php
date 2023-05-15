@@ -16,6 +16,7 @@
 ]);
 
 $result = $requete->fetch(PDO::FETCH_ASSOC);
+$id = $result['id'];
 if ($result){
     if(password_verify($password, $result["password"])){
         $token = token();
@@ -28,7 +29,8 @@ if ($result){
                     ]);
         $data = array(
                 'statut' => 'Succès',
-                'message' => $token
+                'message' => $token, 
+                'id' => $id
             );
         $json = json_encode($data);
         echo $json;

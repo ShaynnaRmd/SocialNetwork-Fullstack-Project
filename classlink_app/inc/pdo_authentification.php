@@ -1,11 +1,11 @@
 <?php
-    $auth_engine = "mysql";
-    $host = "containers-us-west-82.railway.app";
+    $app_engine = "mysql";
+    $host_app = "containers-us-west-10.railway.app";
 
-    $auth_port = 6741; // port MAMP
-    $auth_bdd = "railway";
-    $user = "root";
-    $password_bdd = "uG7gyx2rT5a8Inw5FrNd";
+    $app_port = 7080; // port MAMP
+    $app_bdd = "railway";
+    $app_user = "root";
+    $app_password = "QgBO6NR5hQb9QywJvWqw";
 
-    $auth_dsn = "$auth_engine:host=$host:$auth_port;dbname=$auth_bdd";
-    $auth_pdo = new PDO($auth_dsn, $user, $password_bdd);
+    $app_dsn = "$app_engine:host=$host_app:$app_port;dbname=$app_bdd";
+    $app_pdo = new PDO($app_dsn, $app_user, $app_password);

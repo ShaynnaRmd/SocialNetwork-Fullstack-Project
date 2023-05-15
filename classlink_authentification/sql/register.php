@@ -1,6 +1,8 @@
 <?php
 
     require '../../classlink_app/inc/pdo_authentification.php';
+    require '../../classlink_app/inc/pdo_app.php';
+
 
     $json = file_get_contents('php://input');
     $data = json_decode($json,true);
@@ -43,6 +45,12 @@
                 ':question'=>$question,
                 ':response'=>$response
             ]);
+
+            $request_register = $app_pdo->prepare("
+            INSERT INTO profiles ('id', 'pp_image') VALUES (3, NULL);
+            ");
+            $request_register->execute();
+            
             $data = [
                 'statut' => "Succès",
                 'message' => 'Inscription réussite'

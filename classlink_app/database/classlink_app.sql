@@ -1,6 +1,6 @@
 -- Active: 1682529343738@@127.0.0.1@3306@classlink
 CREATE TABLE `profiles` (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `id` INT(11) PRIMARY KEY NOT NULL,
     `last_name` VARCHAR(64), 
     `first_name` VARCHAR(64),
     `birth_date` VARCHAR(10),
