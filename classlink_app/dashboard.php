@@ -1,6 +1,6 @@
 <?php
 session_start();
-require './inc/pdo_authentification.php';
+require './inc/pdo.php';
 require './inc/functions/token_functions.php';
     if(isset($_SESSION['token'])){
         $check = token_check($_SESSION["token"], $auth_pdo);
