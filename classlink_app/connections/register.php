@@ -200,6 +200,9 @@
                         $_SESSION['error'] = true ;
                         header('Location: ../../classlink_app/connections/register.php');
                     }
+                    $response2 = $client2->post('http://localhost8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/profile.php', [
+                        'body'=>$json
+                    ]);
                 }?>
                 <?php endif;
 ?>
