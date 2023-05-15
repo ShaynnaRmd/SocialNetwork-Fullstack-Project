@@ -3,8 +3,9 @@
     require '../../classlink_app/inc/pdo.php';
 
     $json = file_get_contents('php://input');
-    $data = json_decode($json,true);
 
+
+    $data = json_decode($json, true);
     $username = $data["username"];
     $age = $data ['age'];
     $password = $data["password"];
@@ -14,6 +15,11 @@
     $gender = $data["gender"];
     $question = $data["question"];
     $response = $data["answer"];
+    $data = array(
+        'username' => $username
+    );
+    $json = json_encode($data);
+
 
     $requete0 = $auth_pdo->prepare('
     SELECT * FROM users 
@@ -25,7 +31,6 @@
      ]);
 
     $result = $requete0->fetch(PDO::FETCH_ASSOC);
-
     if(!$result){
             $request_register = $auth_pdo->prepare("
             INSERT INTO users (username,password,first_name,last_name,mail,birth_date,gender,question,response)
@@ -46,14 +51,9 @@
             
             $data = [
                 'statut' => "Succès",
-                'message' => 'Inscription réussite'
+                'message' => 'Inscription réussite',
+                'id' => $auth_pdo->lastInsertId()
             ];
-            
-            $request_register = $app_pdo->prepare("
-            INSERT INTO profiles (id, pp_image) VALUES (LAST_INSERT_ID(), NULL);
-            ");
-
-            $request_register->execute();
 
             $json = json_encode($data);
             echo $json ;
@@ -70,9 +70,9 @@
         }
         
         
-        $json = json_encode($data);
-        echo $json;
-        exit();
+    //     $json = json_encode($data);
+    //     echo $json;
+    //     exit();
     
 
-    print_r($data);
+    // print_r($data);
