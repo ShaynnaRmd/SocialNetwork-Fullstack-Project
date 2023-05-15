@@ -1,7 +1,7 @@
 <?php
     session_start();
     require '../../vendor/autoload.php';
-    require '../../classlink_app/inc/pdo_authentification.php';
+    require '../../classlink_app/inc/pdo.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
     $error = "";
