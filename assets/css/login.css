@@ -91,6 +91,11 @@ form {
     margin-left: 15%;
     font-size: 14px;
     font-weight: 100;
+    color: black;
+}
+
+.redirect-link, .forgot-password {
+    color: black;
 }
 
 /* RESPONSIVE */

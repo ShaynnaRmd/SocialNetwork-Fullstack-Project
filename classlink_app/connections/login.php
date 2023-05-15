@@ -45,7 +45,7 @@
     <title>ClassLink - Connection</title>
 </head>
 <body>
-    <a href="../../classlink_app/landing_page.html"><img class="logo" src="../../assets/img/logo.svg" alt="logo"></a>
+    <a href="../../classlink_app/connections/landing_page.html"><img class="logo" src="../../assets/img/logo.svg" alt="logo"></a>
     <div>
         <div class='background-right'></div>
         <img class="planet" src="../../assets/img/planet.svg" alt="planet_stars">
@@ -64,8 +64,8 @@
             <input class="connexion" type="submit" value="Connexion">
         </form>
         <div class="redirect">
-            <p>Pas encore inscrit ? <a href="./register.php">Cliquez ici</a></p>
-            <a href="">Mot de passe oublié ?</a>
+            <p>Pas encore inscrit ? <a class="redirect-link" href="./register.php">Cliquez ici</a></p>
+            <a class="forgot-password" href="">Mot de passe oublié ?</a>
         </div>
     </div>
 </body>
