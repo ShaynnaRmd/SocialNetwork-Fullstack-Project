@@ -10,7 +10,7 @@
     $firstname = filter_input(INPUT_POST, "first-name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $lastname = filter_input(INPUT_POST, "last-name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $mail = filter_input(INPUT_POST, "mail", FILTER_SANITIZE_EMAIL, FILTER_VALIDATE_EMAIL);
-    $age = filter_input(INPUT_POST, "age");
+    $birth_date = filter_input(INPUT_POST, "birth-date");
     $gender = filter_input(INPUT_POST, "gender");
     $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $password = filter_input(INPUT_POST, "password");
@@ -120,10 +120,10 @@
                 $password = password_hash(trim($password), PASSWORD_DEFAULT);
                 $_SESSION['username'] = $username;
                 $_SESSION['password'] = $password;
-                $_SESSION['firstname'] = $firstname;
-                $_SESSION['lastname'] = $lastname;
+                $_SESSION['first_name'] = $firstname;
+                $_SESSION['last_name'] = $lastname;
                 $_SESSION['mail'] = $mail;
-                $_SESSION['age'] = $age;
+                $_SESSION['birth_date'] = $birth_date;
                 $_SESSION['gender'] = $gender;
             } ?>
             <!DOCTYPE html>
@@ -179,30 +179,53 @@
                     $data = array(
                         'username' => $_SESSION['username'],
                         'password' => $_SESSION['password'],
-                        'first_name' => $_SESSION['firstname'],
-                        'last_name' => $_SESSION['lastname'],
+                        'firstname' => $_SESSION['first_name'],
+                        'lastname' => $_SESSION['last_name'],
                         'mail' => $_SESSION['mail'],
-                        'age' => $_SESSION['age'],
+                        'birth_date' => $_SESSION['birth_date'],
                         'gender' => $_SESSION['gender'],
                         'question' => $security_question,
-                        'answer' => $security_answer
+                        'answer' => $security_answer,
                     );
                     $json = json_encode($data);
-                    $response = $client->post('http://localhost8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                     // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);
                     if($data['statut'] == 'Succès'){
+                        $id = $data['id'];
+                        $requete_recuperation_profile = $app_pdo->prepare("
+                        INSERT INTO profiles (id,birth_date,first_name,last_name,mail,gender)
+                        VALUES (:id,:birth_date,:first_name,:last_name,:mail,:gender)
+                        ");
+
+                        $requete_recuperation_profile->execute([
+                        ":id"=>$id,
+                        ":birth_date"=> $_SESSION['birth_date'],
+                        ":first_name"=> $_SESSION['first_name'],
+                        ":last_name"=> $_SESSION['last_name'],
+                        ":mail"=> $_SESSION['mail'],
+                        ":gender"=> $_SESSION['gender']
+                        ]);
                         header('Location: ../../classlink_app/connections/login.php');
                     }
                     elseif($data["statut"] == 'Erreur'){
                         $_SESSION['error'] = true ;
                         header('Location: ../../classlink_app/connections/register.php');
                     }
-                    $response2 = $client2->post('http://localhost8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/profile.php', [
-                        'body'=>$json
-                    ]);
+                    // $requete_recuperation_profile = $auth_pdo->prepare("
+                    // INSERT INTO profiles (birth_date,first_name,last_name,mail,gender)
+                    // VALUES (:birth_date, :first_name, :last_name, :mail, :gender)
+                    // ");
+                
+                    // $requete_recuperation_profile->execute([
+                    //   "birth_date"=> $birth_date,
+                    //   ":first_name"=> $first_name,
+                    //   ":last_name"=> $last_name,
+                    //   ":mail"=> $mail,
+                    //   ":gender"=> $gender
+                    // ]);
                 }?>
                 <?php endif;
 ?>

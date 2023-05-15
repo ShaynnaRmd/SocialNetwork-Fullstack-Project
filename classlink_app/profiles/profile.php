@@ -1,14 +1,14 @@
 <?php
-   require '../../classlink_app/inc/pdo_authentification.php';
+   require '../../classlink_app/inc/pdo.php';
 
-    $json = file_get_contents('php://input');
-    $data = json_decode($json,true);
+    $json2 = file_get_contents('php://input');
+    $data2 = json_decode($json2,true);
     
-    $birth_date = $data ['birth_date'];
-    $first_name = $data["first_name"];
-    $last_name = $data['last_name'];
-    $mail = $data["mail"];
-    $gender = $data["gender"];
+    $birth_date = $data2 ['birth_date'];
+    $first_name = $data2["first_name"];
+    $last_name = $data2['last_name'];
+    $mail = $data2["mail"];
+    $gender = $data2["gender"];
 
     $requete_recuperation_profile = $auth_pdo->prepare("
     INSERT INTO profiles (birth_date,first_name,last_name,mail,gender)
@@ -24,23 +24,7 @@
     ]);
 
     ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Profil</title>
-    </head>
-    <body>
-         <p><?php $birth_date?></p>
-         <p><?php $first_name?></p>
-         <p><?php $last_name?></p>
-         <p><?php $mail?></p>
-         <p><?php $gender?></p>
-    </body>
-    </html>
-
+   
 
 
 
