@@ -1,7 +1,7 @@
 <?php
     session_start();
     require '../../vendor/autoload.php';
-    require '../inc/pdo_authentification.php';
+    require '../inc/pdo.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
     $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
@@ -41,12 +41,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='../../assets/css/login.css' rel="stylesheet"></link>
     <title>ClassLink - Connection</title>
 </head>
 <body>
-    <h1>ClassLink</h1>
-    <div>
-        <h2>Se connecter</h2>
+    <main>
+        <div class='logo'><img src="../../assets/img/logo.svg" alt="logo classlink"></div>
+    <div class="content">
+        <div class='title'><h2>Se connecter</h2></div>
         <form action="" method="POST">
             <label for="username">Identifiant: </label>
             <input type="text" id="username" name="username" placeholder="Identifiant" required>
@@ -64,5 +66,6 @@
         <a href="">Mot de passe oublié ?</a>
         <a href="./logout.php">Déconnexion</a>
     </div>
+    </main>
 </body>
 </html>
