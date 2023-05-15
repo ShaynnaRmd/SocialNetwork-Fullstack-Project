@@ -43,16 +43,18 @@
                 ':question'=>$question,
                 ':response'=>$response
             ]);
-
-            $request_register = $app_pdo->prepare("
-            INSERT INTO profiles ('id', 'pp_image') VALUES (3, NULL);
-            ");
-            $request_register->execute();
             
             $data = [
                 'statut' => "Succès",
                 'message' => 'Inscription réussite'
             ];
+            
+            $request_register = $app_pdo->prepare("
+            INSERT INTO profiles (id, pp_image) VALUES (LAST_INSERT_ID(), NULL);
+            ");
+
+            $request_register->execute();
+
             $json = json_encode($data);
             echo $json ;
             exit();
