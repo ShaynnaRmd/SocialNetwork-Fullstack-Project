@@ -1,28 +1,32 @@
 <?php
-require '../inc/tpl/pdo.php';
+require '../inc/pdo.php';
 
 $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
 
 $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
-$img = 'IMG-645df3ad6824d9.17405105.jpg';
-$username = 'yassine';
+
+
 if($method == 'POST') {
-    $requete = $app_pdo->prepare("
-    SELECT * FROM profiles WHERE id = :id
-    ");
-    $requete->execute([
-        ":id" => $_SESSION['id']
-    ]);
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-    if(isset($result)){
-        $requete = $app_pdo->prepare("
-        UPDATE profiles SET pp_image = :pp_image WHERE id = :id
-    ");
-    $requete->execute([
-        ":pp_image" => $pp_image,
-        ':id' => $id
-    ]);
-    }
+   $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php', [
+      'body' => $json
+  ]);
+  $data = json_decode($response->getBody(), true);
+   //  $requete = $app_pdo->prepare("
+   //  SELECT * FROM profiles WHERE id = :id
+   //  ");
+   //  $requete->execute([
+   //      ":id" => $_SESSION['id']
+   //  ]);
+   //  $result = $requete->fetch(PDO::FETCH_ASSOC);
+   //  if(isset($result)){
+   //      $requete = $app_pdo->prepare("
+   //      UPDATE profiles SET pp_image = :pp_image WHERE id = :id
+   //  ");
+   //  $requete->execute([
+   //      ":pp_image" => $pp_image,
+   //      ':id' => $id
+   //  ]);
+   //  }
 } 
 
 
@@ -61,18 +65,11 @@ if($method == 'POST') {
         </aside>
 
         <div>
-                <img  width='400px' height='400px' src="http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/IMG-645df3ad6824d9.17405105.jpg" alt="">
-                <p><?= $result['mail'] ?></p>
-                <?php echo "$path_img$img"; ?>
-                
-                <img width='400px' height='400px' src='<?php echo $path_img.$img?>' alt="">
-        </div>
-        
-
-        <form method="POST" enctype="multipart/form-data" action="upload.php">
+         <form method="POST" enctype="multipart/form-data" action="upload.php">
         <input type="file" name="file">
         <input type="submit" value="Upload" name="submit">
-        </form>
+        </form>              
+        </div>
 
     </body>
     </html>
