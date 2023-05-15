@@ -1,19 +1,12 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-size: 10px;
 }
 
-body
-{
+body {
+    width: 100%;
     height: 100vh;
-    width: 100vw;
-    background-color: #FFFFFF;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+    font-family: "new-hero", sans-serif;
 }
 
 main 
@@ -25,10 +18,11 @@ main
 .logo
 {
     position: absolute;
-    top: 40px;
+    top: 10px;
     left: 90px;
     width: 212px;
     height: 54px;
+    z-index: 100;
 }
 .logo img
 {
@@ -39,8 +33,8 @@ main
 .button-container
 {
     position: absolute;
-    top: 40px;
-    left: 1004px;
+    top: 20px;
+    right: 40px;
     display: flex;
     gap: 30px;
     height: 54px;
@@ -52,10 +46,12 @@ main
 {
     height: 100%;
     width: 157px;
+
 }
 
 .button-container .connexion button
 {
+    cursor: pointer;
     height: 100%;
     width: 100%;
     background-color: #4F4789;
@@ -82,6 +78,7 @@ main
 }
 .button-container .inscription button
 {
+    cursor: pointer;
     height: 100%;
     width: 100%;
     background-color: #FFFFFF;
@@ -131,6 +128,7 @@ main
     font-weight: 700;
     font-style: normal;
     font-size: 36px;
+    margin-top: -120px;
 }
 
 .text p span
@@ -145,7 +143,6 @@ main
 .joinus
 {
     position: absolute;
-    top: 125px;
     width: 207px;
     height: 54px;
     z-index: 10;
@@ -163,6 +160,7 @@ main
     border-radius: 6px;
     border: 2px solid #FF784F;
     z-index: 10;
+    cursor: pointer;
 }
 
 .joinus button:hover{
@@ -182,8 +180,8 @@ main
 .planet
 {
     position: absolute;
-    left: 801px;
-    top: 245px;
+    left: 60%;
+    top: 180px;
     width: 489px;
     height: 472px;
     z-index: 10;
@@ -191,46 +189,94 @@ main
 
 .planet img
 {
-    width: 100%;
-    height: 100%;
+    height: 80%;
 }
 
 .stars
 {
-    width: 1300px;
-    height: 886px;
-    position: absolute;
-    top: 38px;
-    left: 66px;
+    margin-top: 20px;
+    height: 30%;
+    position: fixed;
 }
 
 
 .blue
 {
     position: fixed;
-    left: 0px;
-    top: 180px;
-    width: 491px;
+    left: -200px;
+    top: 80px;
+    width: 691px;
     height: 1499px;
     background-color: #4F4789;
     rotate: 128deg;
-    overflow: hidden;
 }
 
 .orange
 {
     position: fixed;
     top: -350px;
-    left: 1070px;
+    left: 85%;
     width: 384px;
     height: 874px;
     background-color: #FF784F;
     rotate: 128deg;
-    overflow: hidden;
 }
 
-@media screen and (min-width: 800px) and (max-width: 1600px) {
-    html, body {
+/* RESPONSIVE */
+
+@media only screen and (max-width: 1100px) {
+    body {
         overflow: hidden;
     }
-  }
+
+    .planet {
+        display: none;
+    }
+
+    .stars {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+
+    body {
+        margin: 100px;
+        overflow: hidden;
+    }
+
+    .joinus {
+        display: none;
+    }
+
+    .logo {
+        margin-left: -80px;
+        width: 200px;
+    }
+
+    .stars {
+        display: none;
+    }
+
+    p {
+        position: fixed;
+        margin-right: 100px;
+        text-align: center;
+    }
+
+    .text p {
+        margin-top: -200px;
+        text-align: start;
+    }
+
+    .blue {
+        left: -300px;
+    }
+
+    @media only screen and (max-width: 692px) {
+        .button-container {
+            margin: auto;
+            margin-top: 100px;
+        }
+    }
+}
