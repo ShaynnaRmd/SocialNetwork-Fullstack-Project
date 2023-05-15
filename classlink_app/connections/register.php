@@ -66,10 +66,10 @@
                         </div>
                         
 
-                        <div class="age-gender">
+                        <div class="birth-date-gender">
                             <div class="input-block">
-                                <label for="age" class="hidden">Age: </label>
-                                <input type="number" name="age" id="age" class="input" placeholder="Age">
+                                <label for="birth-date" class="hidden">Date de naissance: </label>
+                                <input type="date" name="birth-date" id="birth-date" class="input" placeholder="Date de naissance">
                             </div>
 
                             <div class="input-block">

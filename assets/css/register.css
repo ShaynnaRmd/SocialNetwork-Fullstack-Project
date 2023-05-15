@@ -135,7 +135,7 @@ a {
     flex-direction: column;
 }
 
-.age-gender {
+.birth-date-gender {
     display: flex;
     column-gap: 30px;
 }
