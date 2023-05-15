@@ -25,6 +25,7 @@
             if(isset($data)){
                 if($data['statut'] == 'Succès'){
                     $_SESSION['token'] = $data['message'];
+                    $_SESSION['id'] = $data['id'];
                     header("Location: ../dashboard.php");
                     exit();
                 }elseif($data['message'] == 'Identifiants incorrects'){
