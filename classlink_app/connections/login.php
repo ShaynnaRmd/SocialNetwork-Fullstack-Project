@@ -1,7 +1,7 @@
 <?php
     session_start();
     require '../../vendor/autoload.php';
-    require '../inc/pdo_authentification.php';
+    require '../inc/pdo.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
     $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
@@ -42,28 +42,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/css/login.css">
     <title>ClassLink - Connection</title>
 </head>
 <body>
-    <h1>ClassLink</h1>
+    <a href="../../classlink_app/connections/landing_page.html"><img class="logo" src="../../assets/img/logo.svg" alt="logo"></a>
     <div>
+        <div class='background-right'></div>
+        <img class="planet" src="../../assets/img/planet.svg" alt="planet_stars">
         <h2>Se connecter</h2>
         <form action="" method="POST">
-            <label for="username">Identifiant: </label>
-            <input type="text" id="username" name="username" placeholder="Identifiant" required>
-            <label for="password">Mot de passe: </label>
+            <label class="username-label" for="username">Identifiant: </label>
+            <input class="username-input" type="text" id="username" name="username" placeholder="Identifiant" required>
+            <label class="password-label" for="password">Mot de passe: </label>
             <?php if(isset($erreur)){ ?>
                 <p>Identifiants incorrects</p>
             <?php } ?>
             <?php if(isset($invalid_user)){ ?>
                 <p>Le nom d'utilisateur n'existe pas</p>
             <?php } ?>
-            <input type="password" id="password" name="password" placeholder="Mot de passe" required>
-            <input type="submit" value="Connexion">
+            <input class="password-input" type="password" id="password" name="password" placeholder="Mot de passe" required>
+            <input class="connexion" type="submit" value="Connexion">
         </form>
-        <p>Pas encore inscrit ? <a href="./register.php">Cliquez ici</a></p>
-        <a href="">Mot de passe oublié ?</a>
-        <a href="./logout.php">Déconnexion</a>
+        <div class="redirect">
+            <p>Pas encore inscrit ? <a class="redirect-link" href="./register.php">Cliquez ici</a></p>
+            <a class="forgot-password" href="">Mot de passe oublié ?</a>
+        </div>
     </div>
+    </main>
 </body>
 </html>

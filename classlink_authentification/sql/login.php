@@ -1,6 +1,6 @@
 <?php
     // session_start();
-    require '../../classlink_app/inc/pdo_authentification.php'; //Besoin du pdo pour se connecter à la bdd
+    require '../../classlink_app/inc/pdo.php'; //Besoin du pdo pour se connecter à la bdd
     require '../../classlink_app/inc/functions/token_functions.php'; // Récupère la fonction pour créer un token
 
     $json = file_get_contents('php://input');

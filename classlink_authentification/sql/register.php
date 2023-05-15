@@ -1,8 +1,6 @@
 <?php
 
-    require '../../classlink_app/inc/pdo_authentification.php';
-    require '../../classlink_app/inc/pdo_app.php';
-
+    require '../../classlink_app/inc/pdo.php';
 
     $json = file_get_contents('php://input');
     $data = json_decode($json,true);
