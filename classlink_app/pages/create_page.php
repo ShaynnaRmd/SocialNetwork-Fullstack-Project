@@ -32,7 +32,7 @@ if($methode == 'POST'){
         SELECT profiles.id FROM profiles
         JOIN pages ON profiles.id = pages.creator_profile_id
         ");
-        $create_page_request1->execute()
+        // $create_page_request1->execute()
 
         $create_page_request = $app_pdo -> prepare('
         INSERT INTO pages (name_page,description, pp_image, banner_image)
