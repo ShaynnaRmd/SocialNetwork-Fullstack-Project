@@ -176,7 +176,7 @@
                     $client = new \GuzzleHttp\Client();
                     $security_question = trim(filter_input(INPUT_POST, 'security-question'));
                     $security_answer = trim(filter_input(INPUT_POST, 'security-answer', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-                    $data = array(
+                    $data2 = array(
                         'username' => $_SESSION['username'],
                         'password' => $_SESSION['password'],
                         'firstname' => $_SESSION['first_name'],
@@ -187,21 +187,22 @@
                         'question' => $security_question,
                         'answer' => $security_answer,
                     );
-                    $json = json_encode($data);
+                    $json = json_encode($data2);
                     $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                     // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);
-                    if($data['statut'] == 'Succès'){
-                        $id = $data['id'];
+                    if($data !== null && isset($data['statut']) && $data['statut'] === 'Succès' ){
+                        $id = $data['id']; 
+                        
                         $requete_recuperation_profile = $app_pdo->prepare("
-                        INSERT INTO profiles (id,birth_date,first_name,last_name,mail,gender)
+                        INSERT INTO profiles (id, birth_date,first_name,last_name,mail,gender)
                         VALUES (:id,:birth_date,:first_name,:last_name,:mail,:gender)
                         ");
 
                         $requete_recuperation_profile->execute([
-                        ":id"=>$id,
+                        ":id" => $id ,
                         ":birth_date"=> $_SESSION['birth_date'],
                         ":first_name"=> $_SESSION['first_name'],
                         ":last_name"=> $_SESSION['last_name'],
@@ -210,6 +211,7 @@
                         ]);
                         header('Location: ../../classlink_app/connections/login.php');
                     }
+
                     elseif($data["statut"] == 'Erreur'){
                         $_SESSION['error'] = true ;
                         header('Location: ../../classlink_app/connections/register.php');

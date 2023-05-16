@@ -48,14 +48,8 @@
                 'statut' => "Succès",
                 'message' => 'Inscription réussite',
                 'id' => $auth_pdo->lastInsertId(),
-                
+  
             ];
-            
-            $request_register = $app_pdo->prepare("
-            INSERT INTO profiles (id, pp_image) VALUES (LAST_INSERT_ID(), NULL);
-            ");
-
-            $request_register->execute();
 
             $json = json_encode($data);
             echo $json ;
@@ -65,6 +59,7 @@
             $data = array(
                 'statut' => "Erreur",
                 'message' => 'utilisateur déjà existant'
+                
             );
             $json = json_encode($data);
             echo $json;
@@ -72,9 +67,9 @@
         }
         
         
-        $json = json_encode($data);
-        echo $json;
-        exit();
+    //     $json = json_encode($data);
+    //     echo $json;
+       
     
 
-    print_r($data);
+    // print_r($data);
