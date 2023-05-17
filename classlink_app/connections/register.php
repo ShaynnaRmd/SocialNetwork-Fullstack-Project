@@ -141,6 +141,7 @@
                 $_SESSION['mail'] = $mail;
                 $_SESSION['birth_date'] = $birth_date;
                 $_SESSION['gender'] = $gender;
+
             } ?>
             <!DOCTYPE html>
             <html lang="fr">

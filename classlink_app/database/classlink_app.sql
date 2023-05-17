@@ -69,7 +69,17 @@ CREATE TABLE `publications_profile` (
     `profile_id` INT(11) NOT NULL,
     `image` VARCHAR(255),
     `text` TEXT,
+    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
+) ENGINE=InnoDB;  
+
+CREATE TABLE `publications_page` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `profile_id` INT(11) NOT NULL,
+    `page_id` INT(11) NOT NULL,
+    `image` VARCHAR(255),
+    `text` TEXT,
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
+    FOREIGN KEY (`page_id`) REFERENCES `pages`(id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `publications_group` (

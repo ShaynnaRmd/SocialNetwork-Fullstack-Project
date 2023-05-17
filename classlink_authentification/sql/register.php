@@ -3,8 +3,9 @@
     require '../../classlink_app/inc/pdo.php';
 
     $json = file_get_contents('php://input');
-    $data = json_decode($json,true);
 
+
+    $data = json_decode($json, true);
     $username = $data["username"];
     $birth_date = $data ['birth_date'];
     $password = $data["password"];
@@ -14,6 +15,11 @@
     $gender = $data["gender"];
     $question = $data["question"];
     $response = $data["answer"];
+    $data = array(
+        'username' => $username
+    );
+    $json = json_encode($data);
+
 
     $requete0 = $auth_pdo->prepare('
     SELECT * FROM users 
@@ -25,7 +31,6 @@
      ]);
 
     $result = $requete0->fetch(PDO::FETCH_ASSOC);
-
     if(!$result){
             $request_register = $auth_pdo->prepare("
             INSERT INTO users (username,password,first_name,last_name,mail,birth_date,gender,question,response)
@@ -46,9 +51,7 @@
             
             $data = [
                 'statut' => "Succès",
-                'message' => 'Inscription réussite',
-                'id' => $auth_pdo->lastInsertId(),
-  
+                'message' => 'Inscription réussite'
             ];
 
             $json = json_encode($data);
@@ -67,9 +70,9 @@
         }
         
         
-    //     $json = json_encode($data);
-    //     echo $json;
-       
+        $json = json_encode($data);
+        echo $json;
+        exit();
     
 
     // print_r($data);
