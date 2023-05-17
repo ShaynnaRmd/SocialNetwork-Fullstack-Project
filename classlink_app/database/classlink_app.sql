@@ -64,16 +64,32 @@ CREATE TABLE `group_members` (
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `publications` (
+CREATE TABLE `publications_profile` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `profile_id` INT(11) NOT NULL,
-    `page_id` INT(11) NOT NULL,
+    `image` VARCHAR(255),
+    `text` TEXT,
+    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
+) ENGINE=InnoDB;
+
+CREATE TABLE `publications_group` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `profile_id` INT(11) NOT NULL,
     `group_id` INT(11) NOT NULL,
     `image` VARCHAR(255),
     `text` TEXT,
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
-    FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
     FOREIGN KEY (`group_id`) REFERENCES `groups`(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE `publications_page` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `profile_id` INT(11) NOT NULL,
+    `page_id` INT(11) NOT NULL,
+    `image` VARCHAR(255),
+    `text` TEXT,
+    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
+    FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
 ) ENGINE=InnoDB;
 
 CREATE TABLE `comments` (
