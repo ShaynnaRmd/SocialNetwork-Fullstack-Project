@@ -9,15 +9,18 @@ if(!isset($_SESSION["token"]) &&  !isset($_SESSION['id'])){
     exit();
 }
 
+$id = $_SESSION['id'] ;
 
 $recuperation_data_profiles = $app_pdo -> prepare('
-    SELECT * FROM profiles 
+    SELECT last_name, first_name, birth_date, gender, mail, pp_image, banner_image FROM profiles
     WHERE id = :id;
 ');
 $recuperation_data_profiles->execute([
-    ":id" => $_SESSION['id'],
+    ":id" => $id
 ]);
+
 $profile_data = $recuperation_data_profiles ->fetch(PDO::FETCH_ASSOC);
+
 if($profile_data){
     $last_name = $profile_data['last_name'];
     $first_name = $profile_data['first_name'];
