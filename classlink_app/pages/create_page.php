@@ -4,13 +4,31 @@ session_start();
 
 $title = "Créer une page";
 
-
-
 if(!isset($_SESSION["token"]) &&  !isset($_SESSION['id'])){
     header('Location: ../connections/login.php');
     exit();
 }
-echo $_SESSION['id'];
+
+
+$recuperation_data_profiles = $app_pdo -> prepare('
+    SELECT * FROM profiles 
+    WHERE id = :id;
+');
+$recuperation_data_profiles->execute([
+    ":id" => $_SESSION['id'],
+]);
+$profile_data = $recuperation_data_profiles ->fetch(PDO::FETCH_ASSOC);
+if($profile_data){
+    $last_name = $profile_data['last_name'];
+    $first_name = $profile_data['first_name'];
+    $birth_date = $profile_data['birth_date'];
+    $gender = $profile_data['gender'];
+    $mail = $profile_data['mail'];
+    $pp_image = $profile_data['pp_image'];
+    $banner_image = $profile_data['banner_image'];
+    } else {
+        echo'erreur';
+    }
 
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 
@@ -81,5 +99,12 @@ if($method == 'POST'){
         <input type="file" name = "banner_image" value = "Changer un fichier">
         <input type="submit" value = "Créer la page">
     </form>
+    <p><?php echo $last_name ?></p>
+    <p><?php echo $first_name ?></p>
+    <p><?php echo $birth_date ?></p>
+    <p><?php echo $gender ?></p>
+    <p><?php echo $mail ?></p>
+    <p><?php echo $pp_image ?></p>
+    <p><?php echo $banner_image ?></p>
 </body>
 </html>
