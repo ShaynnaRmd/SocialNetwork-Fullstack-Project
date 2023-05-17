@@ -136,8 +136,8 @@
                 $password = password_hash(trim($password), PASSWORD_DEFAULT);
                 $_SESSION['username'] = $username;
                 $_SESSION['password'] = $password;
-                $_SESSION['first_name'] = $firstname;
-                $_SESSION['last_name'] = $lastname;
+                $_SESSION['firstname'] = $firstname;
+                $_SESSION['lastname'] = $lastname;
                 $_SESSION['mail'] = $mail;
                 $_SESSION['birth_date'] = $birth_date;
                 $_SESSION['gender'] = $gender;
@@ -192,7 +192,7 @@
                     $client = new \GuzzleHttp\Client();
                     $security_question = trim(filter_input(INPUT_POST, 'security-question'));
                     $security_answer = trim(filter_input(INPUT_POST, 'security-answer', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-                    $data2 = array(
+                    $data = array(
                         'username' => $_SESSION['username'],
                         'password' => $_SESSION['password'],
                         'firstname' => $_SESSION['firstname'],
@@ -204,8 +204,8 @@
                         'answer' => $security_answer,
                     );
                     $json = json_encode($data);
-                    // $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
-                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);
@@ -220,8 +220,8 @@
                         $requete_recuperation_profile->execute([
                         ":id" => $id ,
                         ":birth_date"=> $_SESSION['birth_date'],
-                        ":first_name"=> $_SESSION['first_name'],
-                        ":last_name"=> $_SESSION['last_name'],
+                        ":first_name"=> $_SESSION['firstname'],
+                        ":last_name"=> $_SESSION['lastname'],
                         ":mail"=> $_SESSION['mail'],
                         ":gender"=> $_SESSION['gender']
                         ]);
