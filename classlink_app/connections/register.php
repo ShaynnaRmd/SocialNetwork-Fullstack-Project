@@ -192,16 +192,21 @@
                     // $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                     $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
-                    ]); 
+                    ]);
                     $data = json_decode($response->getBody(), true);
                     if($data['statut'] == 'Succès'){
                         $id = $data['id'];
+                        $pp_default = 'default_pp.jpg';
+                        $banniere_default = 'default_banniere.png';
                         $request_register = $app_pdo->prepare("
-                        INSERT INTO profiles (id, pp_image) VALUES (:id, NULL);
+                        INSERT INTO profiles (id, pp_image, banner_image) VALUES (:id, :pp, :banniere);
                         ");
             
                         $request_register->execute([
-                            ':id' => $id
+                            ':id' => $id,
+                            ':pp' => $pp_default,
+                            ':banniere' => $banniere_default
+                
                         ]);
                         header('Location: ../../classlink_app/connections/login.php');
                     }
