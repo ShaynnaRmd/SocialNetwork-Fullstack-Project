@@ -1,19 +1,9 @@
 <?php
-    // if (isset($_POST['submit']) && isset($_FILES['file'])) {
-    //     echo "Hello";
-    //     $img_name = $_FILES['file']['name'];
-    //     $img_size = $_FILES['file']['size'];
-    //     $tmp_name = $_FILES['file']['tmp_name'];
-    //     $error = $_FILES['file']['error'];
-    //     $img_ex =  pathinfo($img_name, PATHINFO_EXTENSION);
-    //     $img_ex_lc = strtolower($img_ex);
+require '../inc/pdo.php';
+    session_start();
+    $id = $_SESSION['id'];
 
-    //     $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
-    //     $img_upload_path = 'uploads/'. $new_img_name;
-    //     move_uploaded_file($tmp_name,$img_upload_path);
-    //     print_r($_FILES['file']);
     if (isset($_POST['submit']) && isset($_FILES['file'])) {
-        echo "Hello";
         $img_name = $_FILES['file']['name'];
         $img_size = $_FILES['file']['size'];
         $tmp_name = $_FILES['file']['tmp_name'];
@@ -23,12 +13,25 @@
 
         $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
         $img_upload_path = 'uploads/'. $new_img_name;
+        // echo $img_upload_path;
         move_uploaded_file($tmp_name,$img_upload_path);
-        print_r($_FILES['file']);
-        echo $new_img_name;
+        // print_r($_FILES['file']);
+        // echo $new_img_name;
 
-
-
+        $add_image = $app_pdo->prepare("
+                    UPDATE profiles SET pp_image = :img WHERE id = :id;
+                    ");
+                    $add_image->execute([
+                        ":id" => $id,
+                        ":img" => $new_img_name
+                    ]);
+        $data = array(
+                'statut' => 'Succès', 
+                'id' => $id
+            );
+        $json = json_encode($data);
+        echo $json;
+        header('location: profile.php?json=<?php echo $json ?>')
 
         ?>
         
