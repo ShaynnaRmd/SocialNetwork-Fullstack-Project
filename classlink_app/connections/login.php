@@ -18,7 +18,9 @@
             ];
 
             $json = json_encode($data);
-            $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [
+            //$response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [
+            $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [ 
+            
                 'body' => $json
             ]);
             $data = json_decode($response->getBody(), true);

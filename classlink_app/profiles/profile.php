@@ -5,6 +5,12 @@ require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
+session_start();
+require '../inc/pdo.php';
+require '../../vendor/autoload.php';
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+
 
 $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
 
@@ -38,7 +44,6 @@ if(isset($_SESSION['id'])) {
     }
 }
 if(isset($_SESSION['id'])) {
-    
     $requete = $app_pdo->prepare(
     // SELECT image FROM profiles LEFT JOIN publications_profile ON profiles.id = profile_id WHERE id = :id;
     "SELECT profile_id, image, text FROM profiles LEFT JOIN publications_profile ON profiles.id = publications_profile.profile_id WHERE profiles.id = :id;
@@ -52,7 +57,7 @@ if(isset($_SESSION['id'])) {
     $text = $result['text'];
     $image = $result['image'];
     $text =  $result['text'];
-        
+
     } else {
         echo'erreur publications';
     }
