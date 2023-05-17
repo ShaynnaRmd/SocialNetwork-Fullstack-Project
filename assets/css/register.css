@@ -43,21 +43,18 @@ a {
 
 .container {
     display: flex;
-    flex-direction: row;
     width: 100vw;
     height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
 .form-block{
-    position: fixed;
     align-self: center;
-    right: 90px;
 }
 
 .security-form-block {
-    position: fixed;
     align-self: center;
-    right: 90px;
 }
 
 .full-name {
@@ -110,8 +107,8 @@ a {
     height: 50px;
     background-color: #FF784F;
     color: #FFF;
-    border-radius: 6px;
-    border-style: none;
+    border-radius: 5px;
+    border: none;
     margin: 16px 0 16px 0;
     font-family: "new-hero", sans-serif;
     font-weight: 700;
@@ -119,15 +116,25 @@ a {
     font-size: 16px;
 }
 
+.button:hover {
+    background-color: #FFF;
+    color: #FF784F;
+    border: solid 2px #FF784F;
+}
+
+.moon-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 95px;
+}
+
 #moon {
-    position: fixed;
-    top: 160px;
-    left: 140px;
     width: 586px;
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
 }
 
 .input-block {

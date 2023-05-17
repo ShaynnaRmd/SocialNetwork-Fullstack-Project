@@ -7,10 +7,10 @@
 
     $data = json_decode($json, true);
     $username = $data["username"];
-    $age = $data ['age'];
+    $birth_date = $data ['birth_date'];
     $password = $data["password"];
-    $first_name = $data["first_name"];
-    $last_name = $data['last_name'];
+    $first_name = $data["firstname"];
+    $last_name = $data['lastname'];
     $mail = $data["mail"];
     $gender = $data["gender"];
     $question = $data["question"];
@@ -34,7 +34,7 @@
     if(!$result){
             $request_register = $auth_pdo->prepare("
             INSERT INTO users (username,password,first_name,last_name,mail,birth_date,gender,question,response)
-            VALUES (:username,:password,:first_name,:last_name,:mail,:age,:gender,:question,:response);
+            VALUES (:username,:password,:first_name,:last_name,:mail,:birth_date,:gender,:question,:response);
             ");
 
             $request_register->execute([
@@ -43,7 +43,7 @@
                 ':first_name'=>$first_name,
                 ':last_name'=>$last_name,
                 ':mail'=>$mail,
-                ':age'=>$age,
+                ':birth_date'=>$birth_date,
                 ':gender'=>$gender,
                 ':question'=>$question,
                 ':response'=>$response
@@ -63,6 +63,7 @@
             $data = array(
                 'statut' => "Erreur",
                 'message' => 'utilisateur déjà existant'
+                
             );
             $json = json_encode($data);
             echo $json;

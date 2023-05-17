@@ -27,6 +27,6 @@ require './inc/functions/token_functions.php';
 <body>
     <h1>Test</h1>
     <a href="./connections/logout.php">Déconnexion</a>
-    <a href="./profiles/profile.php">Profile</a>
+    <a href="./pages/create_page.php">Créer une page</a>
 </body>
 </html>
