@@ -24,9 +24,12 @@ require './inc/functions/token_functions.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <h1>Test</h1>
-    <a href="./connections/logout.php">Déconnexion</a>
-    <a href="./profiles/profile.php">Profile</a>
-</body>
+    <body>
+        <header>
+            <div></div>
+        </header>
+        <h1>Test</h1>
+        <a href="./connections/logout.php">Déconnexion</a>
+        <a href="./profiles/profile.php">Profile</a>
+    </body>
 </html>

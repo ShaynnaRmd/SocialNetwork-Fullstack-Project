@@ -56,7 +56,7 @@
             ];
 
             $json = json_encode($data);
-            echo $json ;
+            echo $json;
             exit();
         }
         else{
