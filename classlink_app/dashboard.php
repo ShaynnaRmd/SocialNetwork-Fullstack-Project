@@ -1,7 +1,7 @@
 <?php
 session_start();
-require './inc/pdo.php';
 require './inc/functions/token_functions.php';
+require './inc/pdo.php';
     if(isset($_SESSION['token'])){
         $check = token_check($_SESSION["token"], $auth_pdo);
         if($check == 'false'){
@@ -10,8 +10,7 @@ require './inc/functions/token_functions.php';
     }elseif(!isset($_SESSION['token'])){
         header('Location: ./connections/login.php');
     }
-
-
+$dirimg = '../assets/img/';
 ?>
 
 
@@ -22,14 +21,13 @@ require './inc/functions/token_functions.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/header.css">
     <title>Document</title>
 </head>
-    <body>
-        <header>
-            <div></div>
-        </header>
-        <h1>Test</h1>
-        <a href="./connections/logout.php">Déconnexion</a>
-        <a href="./profiles/profile.php">Profile</a>
-    </body>
+<body>
+    <?php include './inc/tpl/header.php' ?>
+    <h1>Test</h1>
+    <a href="./connections/logout.php">Déconnexion</a>
+    <a href="./profiles/profile.php">Profile</a>
+</body>
 </html>

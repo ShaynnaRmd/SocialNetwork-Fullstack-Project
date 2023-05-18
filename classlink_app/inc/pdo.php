@@ -33,4 +33,3 @@
 
     $auth_dsn = "$auth_engine:host=$host:$auth_port;dbname=$auth_bdd";
     $auth_pdo = new PDO($auth_dsn, $user, $password_bdd);
-    

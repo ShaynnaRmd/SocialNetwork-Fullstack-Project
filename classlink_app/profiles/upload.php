@@ -4,7 +4,6 @@ require '../inc/pdo.php';
     $id = $_SESSION['id'];
 
     if (isset($_POST['submit']) && isset($_FILES['file'])) {
-        echo "Hello";
         $img_name = $_FILES['file']['name'];
         $img_size = $_FILES['file']['size'];
         $tmp_name = $_FILES['file']['tmp_name'];
@@ -14,28 +13,25 @@ require '../inc/pdo.php';
 
         $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
         $img_upload_path = 'uploads/'. $new_img_name;
-        echo $img_upload_path;
+        // echo $img_upload_path;
         move_uploaded_file($tmp_name,$img_upload_path);
-        print_r($_FILES['file']);
-        echo $new_img_name;
+        // print_r($_FILES['file']);
+        // echo $new_img_name;
 
         $add_image = $app_pdo->prepare("
-                    INSERT INTO profiles (id, pp_image) VALUES (:id, :img);
+                    UPDATE profiles SET pp_image = :img WHERE id = :id;
                     ");
-                    $requete_token->execute([
+                    $add_image->execute([
                         ":id" => $id,
                         ":img" => $new_img_name
                     ]);
         $data = array(
-                'statut' => 'Succès',
-                'message' => $token, 
+                'statut' => 'Succès', 
                 'id' => $id
             );
         $json = json_encode($data);
         echo $json;
-
-
-
+        header('location: profile.php?json=<?php echo $json ?>')
 
         ?>
         
