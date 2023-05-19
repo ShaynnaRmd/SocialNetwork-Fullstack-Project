@@ -9,10 +9,10 @@ if(!isset($_SESSION["token"]) &&  !isset($_SESSION['id'])){
     exit();
 }
 
-$id = $_SESSION['id'] ;
+$id = $_SESSION['id'];
 
 $recuperation_data_profiles = $app_pdo -> prepare('
-    SELECT last_name, first_name, birth_date, gender, mail, pp_image, banner_image FROM profiles
+    SELECT last_name, first_name, birth_date, gender, mail, pp_image FROM profiles
     WHERE id = :id;
 ');
 $recuperation_data_profiles->execute([
@@ -28,7 +28,6 @@ if($profile_data){
     $gender = $profile_data['gender'];
     $mail = $profile_data['mail'];
     $pp_image = $profile_data['pp_image'];
-    $banner_image = $profile_data['banner_image'];
     } else {
         echo'erreur';
     }
@@ -102,12 +101,12 @@ if($method == 'POST'){
         <input type="file" name = "banner_image" value = "Changer un fichier">
         <input type="submit" value = "Créer la page">
     </form>
-    <p><?php echo $last_name ?></p>
-    <p><?php echo $first_name ?></p>
+    <img src="<?php echo $pp_image ?>" alt="">
+    <p><?php echo  $first_name." ".$last_name ?></p>
     <p><?php echo $birth_date ?></p>
     <p><?php echo $gender ?></p>
     <p><?php echo $mail ?></p>
-    <p><?php echo $pp_image ?></p>
-    <p><?php echo $banner_image ?></p>
+    <a href="">Modifier</a>
+    <a href="../connections/logout.php">Se déconnecter</a>
 </body>
 </html>

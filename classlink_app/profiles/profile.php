@@ -5,22 +5,15 @@ require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
-session_start();
-require '../inc/pdo.php';
-require '../../vendor/autoload.php';
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
-
-
 $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
 
-$path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+$path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
-$_SESSION['id'] = 78;
+// $_SESSION['id'] = 78;
 $client = new \GuzzleHttp\Client();
 if(isset($_SESSION['id'])) {
     
-  $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+  $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
 
 //   $data = json_decode($response->getBody(), true);
 
