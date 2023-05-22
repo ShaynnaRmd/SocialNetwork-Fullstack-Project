@@ -130,10 +130,8 @@ require './inc/pdo.php';
     <!-- <div class="link">
     <h1>Test</h1>
     <a href="./connections/logout.php">Déconnexion</a>
-    <a href="./profiles/profile.php">Profile</a>
     <a href="./pages/create_page.php">Créer une page</a>
-    <a href="./groups/create_group.php">Créer un groupe</a>
-    </div> -->
+    <a href="./profiles/profile.php">PROFIL</a>
 </body>
 <script src="../assets/js/notifications.js"></script>
 </html>

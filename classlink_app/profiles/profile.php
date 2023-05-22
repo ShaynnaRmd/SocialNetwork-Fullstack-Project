@@ -8,12 +8,11 @@ use GuzzleHttp\RequestOptions;
 
 $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
-
-$_SESSION['id'] = 78;
+// $_SESSION['id'] = 78;
 $client = new \GuzzleHttp\Client();
 if(isset($_SESSION['id'])) {
     
-  $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+  $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
 
 
     $requete = $app_pdo->prepare("
