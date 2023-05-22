@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../inc/pdo.php';
+require '../inc/functions/token_functions.php';
 require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -64,11 +65,11 @@ if(isset($_SESSION['id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../assets/css/profile.css" rel="stylesheet"></link>
+    <link href="../../assets/css/header.css" rel="stylesheet"></link>
     <title>Document</title>
 </head>
 <body>
-    <header>
-    </header>
+    <?php include '../inc/tpl/header.php'; ?>
     <div class='header-profile'>
         <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">>
             <!-- <img src="" alt="banner"> -->
@@ -151,6 +152,7 @@ if(isset($_SESSION['id'])) {
         </div>
     </div> -->
     <script src="../../assets/js/profile.js"></script>
+    <script src="../../assets/js/notifications.js"></script>
 </body>
 </html>
 

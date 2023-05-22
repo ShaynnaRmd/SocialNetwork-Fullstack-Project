@@ -4,9 +4,11 @@
     require '../../classlink_app/inc/functions/token_functions.php'; // Récupère la fonction pour créer un token
 
     $json = file_get_contents('php://input');
+
     $data = json_decode($json, true);
 
     $username = $data["username"];
+    echo $username;
     $password = $data['password'];
     $requete = $auth_pdo->prepare("
     SELECT * FROM users WHERE username = :username
