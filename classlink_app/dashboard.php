@@ -10,11 +10,77 @@ require './inc/pdo.php';
     }elseif(!isset($_SESSION['token'])){
         header('Location: ./connections/login.php');
     }
-?>
 
+    $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
+    // Préparation de la requète permettant de récupérer toute les infos lié à ce profile via l'id
+    $account_info_request =  $app_pdo->prepare("
+        SELECT * FROM profiles
+        WHERE id = :id;
+    ");
 
-<!DOCTYPE html>
+    // Execution de la requète avec l'id passez en session
+    $account_info_request->execute([
+        ":id" => $_SESSION['id']
+    ]);
+
+    // Récupération du résultat de la requète
+    $result = $account_info_request->fetch(PDO::FETCH_ASSOC);
+
+    // Variables contenant les informations du compte, suivi d'une condition qui permettra d'afficher non renseigné si la variable contient null
+    $lastname = $result['last_name'];
+    if ($lastname == null) {
+        $lastname = 'Non renseigné';
+    }
+    $firstname = $result['first_name'];
+    if ($firstname == null) {
+        $firstname = 'Non renseigné';
+    }
+    $username = $result['username'];
+    $birth_date = $result['birth_date'];
+    if ($birth_date == null) {
+        $birth_date = 'Non renseignée';
+    }
+    $gender = $result['gender'];
+    switch ($gender) {
+        case 'male':
+            $gender = 'Homme';
+            break;
+        case 'female':
+            $gender = 'Femme';
+            break;
+        case 'other':
+            $gender =  'Autre';
+            break;
+        default:
+            $gender = 'Non renseigné';
+            break;
+    }
+    
+    $mail = $result['mail'];
+    if ($mail == null) {
+        $mail = 'Non renseigné';
+    }
+
+    $banner_image = $result['banner_image'];
+
+    $profile_activity_request = $app_pdo->prepare("
+        SELECT 
+        (SELECT COUNT(creator_profile_id) FROM pages WHERE creator_profile_id = :id) AS `numbers_of_pages`,
+        (SELECT COUNT(profile_id) FROM publications_profile WHERE profile_id = :id) AS `numbers_of_publications`,
+        (SELECT COUNT(id) FROM relations WHERE user_profile_id = :id) AS `numbers_of_relations` 
+    ");
+
+    $profile_activity_request->execute([
+        ":id" => $_SESSION['id']
+    ]);
+
+    $profile_activity_result = $profile_activity_request->fetch(PDO::FETCH_ASSOC);
+    $numbers_of_pages = $profile_activity_result["numbers_of_pages"];
+    $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
+    $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,26 +98,26 @@ require './inc/pdo.php';
                 <div class="top">
                         <div class="img"><img src="../../assets/img/default_pp.jpg" alt=""></div>
                         <div class="name">
-                            <p>Prénom Nom</p>
+                            <p><?= "$firstname $lastname" ?></p>
                         </div>
                     <div class="separator"></div>
                 </div>
                 <div class="mid">
                     <div class="personnal-info">
-                            <div><p>Anniversaire <span>: 2003-10-08</span></p></div>
-                            <div><p>Genre <span>: Homme</span></p></div>
-                            <div><p>E-mail <span>: test@gmail.com</span></p></div>
+                            <div><p>Anniversaire <span>: <?= $birth_date ?></span></p></div>
+                            <div><p>Genre <span>: <?= $gender ?></span></p></div>
+                            <div><p>E-mail <span>: <?= $mail ?></span></p></div>
                     </div>
                 </div>
                 <div class="bottom">
-                    <div class="btn2"><a href=""><button>Modifier</button></a></div> <!-- Rajouter le lien vers modifier profil--> 
+                    <div class="btn2"><button id="modify-profile-btn">Modifier</button></div> <!-- Rajouter le lien vers modifier profil--> 
                 </div>
             </div>
             <div class='relations-groups-pages'>
                 <div>
                     <div class='text-number'>
                         <div class='txt'><p>Relations</p></div>
-                        <div><p>57</p></div>
+                        <div><p><?= $numbers_of_relations ?></p></div>
                     </div>
                     <div class='separator2'></div>
                 </div>
@@ -65,12 +131,12 @@ require './inc/pdo.php';
                 <div>
                     <div class='text-number'>
                         <div class='txt'><p>Pages</p></div>
-                        <div><p>7</p></div>
+                        <div><p><?= $numbers_of_pages ?></p></div>
                     </div>
                 </div>
             </div>
             <div class="btn">
-                <a href=""><button>Se déconnecter</button></a> <!-- Rajouter le lien vers logout--> 
+                <button id="logout">Se déconnecter</button> <!-- Rajouter le lien vers logout--> 
             </div>
         </div>
         <div class='dashboard-mid'>
@@ -127,11 +193,22 @@ require './inc/pdo.php';
         </div>
         </div>
     </main>
-    <!-- <div class="link">
+    <div class="link">
     <h1>Test</h1>
     <a href="./connections/logout.php">Déconnexion</a>
     <a href="./pages/create_page.php">Créer une page</a>
     <a href="./profiles/profile.php">PROFIL</a>
+    <script src="../assets/js/notifications.js"></script>
+    <script>
+        const logoutButton = document.getElementById('logout');
+        logoutButton.addEventListener('click', () => {
+            window.location.href = './connections/logout.php';
+        })
+
+        const modifyProfileBtn = document.getElementById('modify-profile-btn');
+        modifyProfileBtn.addEventListener('click', () => {
+            window.location.href = './profiles/settings_edition_mode.php';
+        })
+    </script>
 </body>
-<script src="../assets/js/notifications.js"></script>
 </html>
