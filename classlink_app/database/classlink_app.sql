@@ -1,4 +1,3 @@
--- Active: 1682529343738@@127.0.0.1@3306@classlink
 CREATE TABLE `profiles` (
     `id` INT(11) PRIMARY KEY NOT NULL,
     `last_name` VARCHAR(64), 
@@ -49,9 +48,9 @@ CREATE TABLE `groups` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name` VARCHAR(64) NOT NULL,
     `banner_image` VARCHAR(255),
-    `description` TEXT,
+    `description` VARCHAR(255),
     `creator_profile_id` INT(11) NOT NULL,
-    `status` VARCHAR (10),
+    `status` VARCHAR(10),
     FOREIGN KEY (`creator_profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
@@ -104,20 +103,20 @@ CREATE TABLE `publications_page` (
 
 CREATE TABLE `comments` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `publication_id` INT(11) NOT NULL,
+    `publication_profile_id` INT(11) NOT NULL,
     `text` TEXT,
     `response` TEXT,
     `creator_id` INT(11) NOT NULL,
-    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
+    FOREIGN KEY (`publication_profile_id`) REFERENCES `publications_profile`(id),
     FOREIGN KEY (`creator_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `reactions` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `type` VARCHAR(64) NOT NULL,
-    `publication_id` INT(11) NOT NULL,
+    `publication_profile_id` INT(11) NOT NULL,
     `comment_id` INT(11) NOT NULL,
-    FOREIGN KEY (`publication_id`) REFERENCES `publications`(id),
+    FOREIGN KEY (`publication_profile_id`) REFERENCES `publications_profile`(id),
     FOREIGN KEY (`comment_id`) REFERENCES `comments`(id)
 ) ENGINE=InnoDB;
 

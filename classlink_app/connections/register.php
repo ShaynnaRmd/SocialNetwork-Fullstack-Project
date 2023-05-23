@@ -205,19 +205,19 @@
                         'answer' => $security_answer,
                     );
                     $json = json_encode($data);
-                    //$response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
-                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);
                     if($data !== null && isset($data['statut']) && $data['statut'] === 'Succès' ){
                         $id = $data['id'];
                         $pp_default = 'default_pp.jpg';
-                        $banner_default = 'default_banniere.png';
+                        $banner_default = 'default_banner.png';
                         
                         $requete_recuperation_profile = $app_pdo->prepare("
-                        INSERT INTO profiles (id, birth_date,first_name,last_name,mail,gender,pp_image,banner_image)
-                        VALUES (:id,:birth_date,:first_name,:last_name,:mail,:gender,:pp_image,:banner_image)
+                        INSERT INTO profiles (id, birth_date,first_name,last_name,mail,gender,pp_image,banner_image,username)
+                        VALUES (:id,:birth_date,:first_name,:last_name,:mail,:gender,:pp_image,:banner_image,:username);
                         ");
 
                         $requete_recuperation_profile->execute([
@@ -228,7 +228,8 @@
                         ":mail"=> $_SESSION['mail'],
                         ":gender"=> $_SESSION['gender'],
                         ':pp_image' => $pp_default,
-                        ':banner_image' => $banner_default
+                        ':banner_image' => $banner_default,
+                        ':username' => $_SESSION['username']
                         ]);
                         header('Location: ../../classlink_app/connections/login.php');
                         var_dump($json);
