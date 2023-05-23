@@ -22,6 +22,7 @@ function token_check($token, $pdo)
         ":token" => $token
     ]);
     $check_token = $requete->fetch(PDO::FETCH_ASSOC);
+
     if (isset($check_token)){
         return 'true';
     }else{

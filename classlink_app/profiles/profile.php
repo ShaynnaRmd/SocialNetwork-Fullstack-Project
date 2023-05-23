@@ -6,13 +6,16 @@ require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
-$path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+$method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
 
+// $path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+$path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 // $_SESSION['id'] = 78;
 $client = new \GuzzleHttp\Client();
 if(isset($_SESSION['id'])) {
     
-  $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+//   $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+  $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
 
 
     $requete = $app_pdo->prepare("
@@ -72,7 +75,7 @@ if(isset($_SESSION['id'])) {
     <div class='header-profile'>
         <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">>
             <!-- <img src="" alt="banner"> -->
-            <div class="btn"><button>Modifier le profil</button></div>
+            <div id="modify-btn" class="btn"><button>Modifier le profil</button></div>
             <div class="name"><p><?php echo $first_name.' '.$last_name?></p></div>
         </div>
         <div class="pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
@@ -81,7 +84,7 @@ if(isset($_SESSION['id'])) {
             <div><a href=""><p>Relations</p></a></div>
             <div><a href=""><p>Groupes</p></a></div>
             <div><a href=""><p>Pages</p></a></div>
-            <div><a href=""><p>Paramètres</p></a></div>
+            <div><a href="./settings.php"><p>Paramètres</p></a></div>
         </div>
     </div>
     <div class="options-left">
@@ -101,7 +104,7 @@ if(isset($_SESSION['id'])) {
     <div class="post">
         <div class="top-post">
             <div class="post-pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
-            <div class="post-name"><p>Djedje Gboble</p></div>
+            <div class="post-name"><p><?= "$first_name $last_name" ?></p></div>
             <div class="post-text"><p><?php echo $text?></p></div>
             <div class="post-date"><p>Le 27/06/2023, à 22:47</p></div>
             <div class="plus"><p>Afficher plus...</p></div>
@@ -152,6 +155,17 @@ if(isset($_SESSION['id'])) {
     </div> -->
     <script src="../../assets/js/profile.js"></script>
     <script src="../../assets/js/notifications.js"></script>
+    <script>
+        const modifyInfoBtn = document.getElementById('modify-btn');
+        modifyInfoBtn.addEventListener('click', () => {
+            window.location.href = './change_settings.php';
+        })
+
+        const logoutbtn = document.getElementById('logout-btn');
+        logoutbtn.addEventListener('click', () => {
+            window.location.href = '../logout.php'
+        })
+    </script>
 </body>
 </html>
 

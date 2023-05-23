@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,4 +73,134 @@
         </div>
     </main>
 </body>
+=======
+<?php
+    session_start();
+    require '../inc/pdo.php';
+    require '../inc/functions/token_functions.php';
+    if(!isset($_SESSION['id'])){
+        // $check = token_check($_SESSION["token"], $auth_pdo);
+        // if($check == 'false'){
+            header('Location: ../connections/login.php');
+        }
+    // }elseif(!isset($_SESSION['token'])){
+    //     header('Location: ../connections/login.php');
+    // }
+
+    $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+
+    // Préparation de la requète permettant de récupérer toute les infos lié à ce profile via l'id
+    $account_info_request =  $app_pdo->prepare("
+        SELECT * FROM profiles
+        WHERE id = :id;
+    ");
+
+    // Execution de la requète avec l'id passez en session
+    $account_info_request->execute([
+        ":id" => $_SESSION['id']
+    ]);
+
+    // Récupération du résultat de la requète
+    $result = $account_info_request->fetch(PDO::FETCH_ASSOC);
+
+    // Variables contenant les informations du compte, suivi d'une condition qui permettra d'afficher non renseigné si la variable contient null
+    $lastname = $result['last_name'];
+    if ($lastname == null) {
+        $lastname = 'Non renseigné';
+    }
+    $firstname = $result['first_name'];
+    if ($firstname == null) {
+        $firstname = 'Non renseigné';
+    }
+    $username = $result['username'];
+    $birth_date = $result['birth_date'];
+    if ($birth_date == null) {
+        $birth_date = 'Non renseignée';
+    }
+    $gender = $result['gender'];
+    if ($gender == null) {
+        $gender = 'Non renseigné';
+    }
+    $mail = $result['mail'];
+    if ($mail == null) {
+        $mail = 'Non renseigné';
+    }
+
+    $banner_image = $result['banner_image'];
+
+    $profile_activity_request = $app_pdo->prepare("
+        SELECT 
+        (SELECT COUNT(creator_profile_id) FROM pages WHERE creator_profile_id = :id) AS `numbers_of_pages`,
+        (SELECT COUNT(profile_id) FROM publications_profile WHERE profile_id = :id) AS `numbers_of_publications`,
+        (SELECT COUNT(id) FROM relations WHERE user_profile_id = :id) AS `numbers_of_relations` 
+    ");
+
+    $profile_activity_request->execute([
+        ":id" => $_SESSION['id']
+    ]);
+
+    $profile_activity_result = $profile_activity_request->fetch(PDO::FETCH_ASSOC);
+    $numbers_of_pages = $profile_activity_result["numbers_of_pages"];
+    $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
+    $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
+
+?><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - paramètre</title>
+</head>
+<body>
+    <div class="profile-informations-activity">
+        <div class="profile-informations">
+            <h3>Informations du profil</h3>
+            <p>Nom: <?= $lastname ?></p>
+            <p>Prénom: <?= $firstname ?></p>
+            <p>Age: <?= $birth_date ?></p>
+            <p>Genre: <?= $gender ?></p>
+            <p>Email: <?= $mail ?></p>
+            <p>Identifiant: <?= $username ?></p>
+            <p>Mot de passe: ********</p>
+            <button id="modify-informations">Modifiez les informations</button>
+        </div>
+        <div class="profile-activity-banner-block">
+            <div class="banner-block">
+                <div class="banner">
+                    <img src="<?= $path_img.$banner_image ?>" alt="Image de bannière">
+                </div>
+
+                <div class="img">
+                    <img src="" alt="">
+                </div>
+
+            </div>
+
+            <div class="profile-activity">
+                <h3>Activité du profil</h3>
+                <p>Relations: <?= $numbers_of_relations ?></p>
+                <p>Groupes: </p>
+                <p>Pages: <?= $numbers_of_pages ?></p>
+                <p>Nombre de posts: <?= $numbers_of_publications ?></p>
+                <button id="account-disable">Désactiver le compte</button>
+                <button id="account-delete">Supprimer le compte</button>
+                <button id="logout">Se déconnecter</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modifyInformations = document.getElementById('modify-informations');
+        modifyInformations.addEventListener('click', () => {
+            window.location.href = './change_settings.php';
+        })
+
+        const logoutButton = document.getElementById('logout');
+        logoutButton.addEventListener('click', () => {
+            window.location.href = '../connections/logout.php';
+        })
+    </script>
+</body>
+>>>>>>> Stashed changes
 </html>

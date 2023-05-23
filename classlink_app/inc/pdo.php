@@ -14,12 +14,12 @@
     $messaging_engine = "mysql";
     $messaging_host = "containers-us-west-205.railway.app";
 
-    $massaging_port = 7474; // port MAMP
+    $messaging_port = 7474; // port MAMP
     $messaging_bdd = "railway";
     $messaging_user = "root";
     $messaging_password = "4iVR3uhnNfgQFC3RwXmV";
 
-    $messaging_dsn = "$messaging_engine:host=$messaging_host:$massaging_port;dbname=$messaging_bdd";
+    $messaging_dsn = "$messaging_engine:host=$messaging_host:$messaging_port;dbname=$messaging_bdd";
     $messaging_pdo = new PDO($messaging_dsn, $messaging_user, $messaging_password);
 
 
