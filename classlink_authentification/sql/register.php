@@ -48,6 +48,16 @@
                 ':question'=>$question,
                 ':response'=>$response
             ]);
+            $last_insert_id = $auth_pdo -> lastInsertId();
+
+            $request_register = $auth_pdo->prepare("
+            INSERT INTO token (user_id, token) VALUES (:user_id, :token)
+            ");
+
+            $request_register->execute([
+                ':user_id' => $last_insert_id,
+                ':token' => 'null'
+            ]);
             
             $data = [
                 'statut' => "Succès",
@@ -71,9 +81,3 @@
         }
         
         
-        $json = json_encode($data);
-        echo $json;
-        exit();
-    
-
-    // print_r($data);
