@@ -1,79 +1,3 @@
-<<<<<<< Updated upstream
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="settings.css">
-    <title>Document</title>
-</head>
-<body>
-    <header></header>
-    <main>
-        <div class="settings-infos">
-            <div class="header">
-                <div><p>Informations du profil</p></div>
-            </div>
-            <div class="main">
-                <div class="user-infos">
-                    <div><p>Nom :</p></div>
-                    <div><p>Prénom :</p></div>
-                    <div><p>Age :</p></div>
-                    <div><p>Genre :</p></div>
-                    <div><p>Email :</p></div>
-                    <div><p>Identifiant :</p></div>
-                    <div><p>Mot de passe :</p></div>
-                </div>
-                <div class='user-response'>
-                    <div><p>Nom</p></div>
-                    <div><p>Prénom</p></div>
-                    <div><p>21 ans</p></div>
-                    <div><p>Homme</p></div>
-                    <div><p>test@gmail.com</p></div>
-                    <div><p>@test</p></div>
-                    <div><p>******</p></div>
-                </div>
-            </div>
-            <div class='footer'>
-                <div><button>Modifier les informations</button></div>
-            </div>
-        </div>
-        <div class="settings-profil">
-            <div class="banner_button">
-                <div class="banner">
-                    <img src="./assets/img/default-banner.png" alt="" />
-                </div>
-                <div class="buttons">
-                    <div class="div-buttons">
-                        <div class="btn1"><button>Modifier profil</button></div>
-                        <div class="btn2"><button>Modifier couverture</button></div>
-                    </div>
-                </div>
-                <div class="pp"><img src="./assets/img/default_pp.jpg" alt=""></div>
-            </div>
-            <div class="activity">
-                <div class="header"><div><p>Activité du profil</p></div></div>
-                <div class="main">
-                    <div class="list">
-                        <div class="element-list"><div class=><p>Relations :</p></div><div><span>57</span></div></div>
-                        <div class="element-list"><div><p>Groupes :</p></div><div><span>57</span></div></div>
-                        <div class="element-list"><div><p>Pages :</p></div><div><span>57</span></div></div>
-                        <div class="element-list"><div><p>Nombre de posts :</p></div><div><span>57</span></div></div>
-                    </div>
-                </div>
-                <div class="bottom">
-                    <div class="button-list">
-                        <div class="btn1"><button>Désactiver le compte</button></div>
-                        <div class="btn2"><button>Supprimer le compte</button></div>
-                    </div>
-                <div class="btn3"><button>Se déconnecter</button></div>
-                </div>
-            </div>
-        </div>
-    </main>
-</body>
-=======
 <?php
     session_start();
     require '../inc/pdo.php';
@@ -118,9 +42,21 @@
         $birth_date = 'Non renseignée';
     }
     $gender = $result['gender'];
-    if ($gender == null) {
-        $gender = 'Non renseigné';
+    switch ($gender) {
+        case 'male':
+            $gender = 'Homme';
+            break;
+        case 'female':
+            $gender = 'Femme';
+            break;
+        case 'other':
+            $gender =  'Autre';
+            break;
+        default:
+            $gender = 'Non renseigné';
+            break;
     }
+
     $mail = $result['mail'];
     if ($mail == null) {
         $mail = 'Non renseigné';
@@ -145,62 +81,88 @@
     $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
 
 ?><!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - paramètre</title>
+    <link rel="stylesheet" href="../../assets/css/settings.css">
+    <title>Profile - Paramètres</title>
 </head>
 <body>
-    <div class="profile-informations-activity">
-        <div class="profile-informations">
-            <h3>Informations du profil</h3>
-            <p>Nom: <?= $lastname ?></p>
-            <p>Prénom: <?= $firstname ?></p>
-            <p>Age: <?= $birth_date ?></p>
-            <p>Genre: <?= $gender ?></p>
-            <p>Email: <?= $mail ?></p>
-            <p>Identifiant: <?= $username ?></p>
-            <p>Mot de passe: ********</p>
-            <button id="modify-informations">Modifiez les informations</button>
+    <header></header>
+    <main>
+        <div class="settings-infos">
+            <div class="header">
+                <div><p>Informations du profil</p></div>
+            </div>
+            <div class="main">
+                <div class="user-infos">
+                    <div><p>Nom : </p></div>
+                    <div><p>Prénom : </p></div>
+                    <div><p>Age : </p></div>
+                    <div><p>Genre : </p></div>
+                    <div><p>Email : </p></div>
+                    <div><p>Identifiant : </p></div>
+                    <div><p>Mot de passe : </p></div>
+                </div>
+                <div class='user-response'>
+                    <div><p><?= $lastname ?></p></div>
+                    <div><p><?= $firstname ?></p></div>
+                    <div><p><?= $birth_date ?></p></div>
+                    <div><p><?= $gender ?></p></div>
+                    <div><p><?= $mail ?></p></div>
+                    <div><p><?= $username ?></p></div>
+                    <div><p>******</p></div>
+                </div>
+            </div>
+            <div class='footer'>
+                <div><button id="modify-profile-btn">Modifier les informations</button></div>
+            </div>
         </div>
-        <div class="profile-activity-banner-block">
-            <div class="banner-block">
+        <div class="settings-profil">
+            <div class="banner_button">
                 <div class="banner">
-                    <img src="<?= $path_img.$banner_image ?>" alt="Image de bannière">
+                    <img src="./assets/img/default-banner.png" alt="" />
                 </div>
-
-                <div class="img">
-                    <img src="" alt="">
+                <div class="buttons">
+                    <div class="div-buttons">
+                        <div class="btn1"><button>Modifier profil</button></div>
+                        <div class="btn2"><button>Modifier couverture</button></div>
+                    </div>
                 </div>
-
+                <div class="pp"><img src="./assets/img/default_pp.jpg" alt=""></div>
             </div>
-
-            <div class="profile-activity">
-                <h3>Activité du profil</h3>
-                <p>Relations: <?= $numbers_of_relations ?></p>
-                <p>Groupes: </p>
-                <p>Pages: <?= $numbers_of_pages ?></p>
-                <p>Nombre de posts: <?= $numbers_of_publications ?></p>
-                <button id="account-disable">Désactiver le compte</button>
-                <button id="account-delete">Supprimer le compte</button>
-                <button id="logout">Se déconnecter</button>
+            <div class="activity">
+                <div class="header"><div><p>Activité du profil</p></div></div>
+                <div class="main">
+                    <div class="list">
+                        <div class="element-list"><div class=><p>Relations :</p></div><div><span><?= $numbers_of_relations ?></span></div></div>
+                        <div class="element-list"><div><p>Groupes :</p></div><div><span>57</span></div></div>
+                        <div class="element-list"><div><p>Pages :</p></div><div><span><?= $numbers_of_pages ?></span></div></div>
+                        <div class="element-list"><div><p>Nombre de posts :</p></div><div><span><?= $numbers_of_publications ?></span></div></div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="button-list">
+                        <div class="btn1"><button>Désactiver le compte</button></div>
+                        <div class="btn2"><button>Supprimer le compte</button></div>
+                    </div>
+                <div class="btn3"><button id="logout">Se déconnecter</button></div>
+                </div>
             </div>
         </div>
-    </div>
-
+    </main>
     <script>
-        const modifyInformations = document.getElementById('modify-informations');
-        modifyInformations.addEventListener('click', () => {
-            window.location.href = './change_settings.php';
+        const modifyProfileBtn = document.getElementById('modify-profile-btn');
+        modifyProfileBtn.addEventListener('click', () => {
+            window.location.href = './settings_edition_mode.php';
         })
 
-        const logoutButton = document.getElementById('logout');
-        logoutButton.addEventListener('click', () => {
+        const logoutBtn = document.getElementById('logout');
+        logoutBtn.addEventListener('click', () => {
             window.location.href = '../connections/logout.php';
         })
     </script>
 </body>
->>>>>>> Stashed changes
 </html>

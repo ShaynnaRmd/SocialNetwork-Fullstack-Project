@@ -33,10 +33,9 @@
         ':username' => $username
     ]);
 
-    $verify_existing_user_request_result = $account_informations_request->fetch(PDO::FETCH_ASSOC);
+    $verify_existing_user_request_result = $verify_existing_user_request->fetch(PDO::FETCH_ASSOC);
 
-    
-    if ($account_informations_request_result && !$verify_existing_user_request_result) {
+    if ($account_informations_request_result && !$verify_existing_user_request_result ) {
         
         if ($new_username == null) {
             $new_username = $account_informations_request_result['username'];
