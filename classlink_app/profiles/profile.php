@@ -26,13 +26,45 @@ if(isset($_SESSION['id'])) {
     ]);
     $result = $requete->fetch(PDO::FETCH_ASSOC);
     if($result){
-    $last_name = $result['last_name'];
-    $first_name = $result['first_name'];
-    $birth_date = $result['birth_date'];
-    $gender = $result['gender'];
-    $mail = $result['mail'];
-    $pp_image = $result['pp_image'];
-    $banner_image = $result['banner_image'];
+        $last_name = $result['last_name'];
+        if ($last_name == null) {
+            $last_name = 'Non renseigné';
+        }
+        $first_name = $result['first_name'];
+        if ($first_name == null) {
+            $first_name = 'Non renseigné';
+        }
+        $username = $result['username'];
+        $birth_date = $result['birth_date'];
+    
+        if ($birth_date == null) {
+            $age = 'Non renseignée';
+        } else {
+            $current_date = new DateTime();
+            $birth_date = new DateTime($birth_date);
+            $diff = $current_date->diff($birth_date);
+            $age = $diff->y;
+        }
+        $gender = $result['gender'];
+        switch ($gender) {
+            case 'male':
+                $gender = 'Homme';
+                break;
+            case 'female':
+                $gender = 'Femme';
+                break;
+            case 'other':
+                $gender =  'Autre';
+                break;
+            default:
+                $gender = 'Non renseigné';
+                break;
+        }
+    
+        $mail = $result['mail'];
+        if ($mail == null) {
+            $mail = 'Non renseigné';
+        }
     } else {
         echo'erreur';
     }
@@ -91,7 +123,7 @@ if(isset($_SESSION['id'])) {
         <div class="personnal">
             <div class="title"><h4>Informations personelles</h4></div>
             <div class="separator"></div>
-            <div><p>Age <span>: <?php echo $birth_date ?></span></p></div>
+            <div><p>Age <span>: <?php echo $age ?></span></p></div>
             <div><p>Genre <span>: <?php echo $gender ?></span></p></div>
             <div><p>E-mail<span>: <?php echo $mail ?></span></p></div>
         </div>

@@ -38,8 +38,14 @@
     }
     $username = $result['username'];
     $birth_date = $result['birth_date'];
+
     if ($birth_date == null) {
-        $birth_date = 'Non renseignée';
+        $age = 'Non renseignée';
+    } else {
+        $current_date = new DateTime();
+        $birth_date = new DateTime($birth_date);
+        $diff = $current_date->diff($birth_date);
+        $age = $diff->y;
     }
     $gender = $result['gender'];
     switch ($gender) {
@@ -80,6 +86,8 @@
     $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
     $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
 
+
+
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +117,7 @@
                 <div class='user-response'>
                     <div><p><?= $lastname ?></p></div>
                     <div><p><?= $firstname ?></p></div>
-                    <div><p><?= $birth_date ?></p></div>
+                    <div><p><?= $age ?> ans</p></div>
                     <div><p><?= $gender ?></p></div>
                     <div><p><?= $mail ?></p></div>
                     <div><p><?= $username ?></p></div>

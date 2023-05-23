@@ -18,13 +18,8 @@
             ];
 
             $json = json_encode($data);
-<<<<<<< Updated upstream
-            //$response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [
-            $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [ 
-=======
             // $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [
             $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [
->>>>>>> Stashed changes
                 'body' => $json
             ]);
             $data = json_decode($response->getBody(), true);
