@@ -127,7 +127,7 @@ require './inc/pdo.php';
         </div>
         </div>
     </main>
-    <!-- <div class="link">
+ <div class="link">
     <h1>Test</h1>
     <a href="./connections/logout.php">Déconnexion</a>
     <a href="./pages/create_page.php">Créer une page</a>
