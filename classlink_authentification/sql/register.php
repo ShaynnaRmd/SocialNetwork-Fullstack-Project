@@ -81,9 +81,3 @@
         }
         
         
-        $json = json_encode($data);
-        echo $json;
-        exit();
-    
-
-    // print_r($data);
