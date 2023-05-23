@@ -101,12 +101,6 @@ if($method == 'POST'){
         <input type="file" name = "banner_image" value = "Changer un fichier">
         <input type="submit" value = "Créer la page">
     </form>
-    <img src="<?php echo $pp_image ?>" alt="">
-    <p><?php echo  $first_name." ".$last_name ?></p>
-    <p><?php echo $birth_date ?></p>
-    <p><?php echo $gender ?></p>
-    <p><?php echo $mail ?></p>
-    <a href="">Modifier</a>
-    <a href="../connections/logout.php">Se déconnecter</a>
+    <a href="../connections/logout.php"><button>Déconnexion</button></a>
 </body>
 </html>
