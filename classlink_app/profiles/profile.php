@@ -1,12 +1,12 @@
 <?php
 session_start();
 require '../inc/pdo.php';
+require '../inc/functions/token_functions.php';
 require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
-$method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
-
+// $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 $path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
 // $_SESSION['id'] = 78;
@@ -15,7 +15,6 @@ if(isset($_SESSION['id'])) {
     
   $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
 
-//   $data = json_decode($response->getBody(), true);
 
     $requete = $app_pdo->prepare("
     SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image FROM profiles WHERE id = :id;
@@ -66,11 +65,11 @@ if(isset($_SESSION['id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../assets/css/profile.css" rel="stylesheet"></link>
+    <link href="../../assets/css/header.css" rel="stylesheet"></link>
     <title>Document</title>
 </head>
 <body>
-    <header>
-    </header>
+    <?php include '../inc/tpl/header.php'; ?>
     <div class='header-profile'>
         <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">>
             <!-- <img src="" alt="banner"> -->
@@ -153,6 +152,7 @@ if(isset($_SESSION['id'])) {
         </div>
     </div> -->
     <script src="../../assets/js/profile.js"></script>
+    <script src="../../assets/js/notifications.js"></script>
 </body>
 </html>
 

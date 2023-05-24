@@ -1,5 +1,7 @@
 <?php
 require '../inc/pdo.php';
+require '../inc/functions/token_functions.php';
+
 session_start();
 
 $title = "Créer une groupe";
@@ -67,17 +69,17 @@ if($method == 'POST'){
         VALUES (:name_group, :description, :status, :banner_image,:creator_profile_id);
         ');
         $create_group_request->execute([
-            ':creator_profile_id' => $creator_profile_id,
             ':name_group' => $name_group,
             ':description' => $description,
             ':status' => $status,
-            ':banner_image' => $banner_image
+            ':banner_image' => $banner_image,
+            ':creator_profile_id' => $creator_profile_id
         ]);
         echo 'Bien créer';
         }
-        else{
-            echo 'Ce nom de page existe déjà';
-        }
+    else{
+        echo 'Ce nom de groupe existe déjà';
+    }
 }
 ?>
 
@@ -87,29 +89,69 @@ if($method == 'POST'){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <link rel="stylesheet" href="../../assets/css/create_group.css">
+    <link rel="stylesheet" href="../../assets/css/header.css">
+    <title>Groupes</title>
 </head>
 <body>
-    <h1><?= $title ?></h1>
-    <form method = "POST">
-        <label for="name">Nom du groupe</label>
-        <input type="text" name = "name" placeholder = "Nom du groupe">
-        <label for="description">Sujet du groupe</label>
-        <textarea name="description" id="description" cols="30" rows="10" placeholder = "Sujet du groupe ..."></textarea>
-        <label for="status">Statut du groupe</label>
-        <select name="status" id="status">
-            <option value="public" name = "public">Public</option>
-            <option value="prive" name = "prive">Privé</option>
-        </select>
-        <label for="banner_image">Image de groupe</label>
-        <input type="file" value = "Choisissez un fichier" name = "banner_image">
-        <input type="submit" value = "Créer un groupe" >
-    </form>
-    <img src="<?php echo $pp_image ?>" alt="">
-    <p><?php echo  $first_name." ".$last_name ?></p>
-    <p><?php echo $birth_date ?></p>
-    <p><?php echo $gender ?></p>
-    <p><?php echo $mail ?></p>
-    <a href="../connections/logout.php"><button>Déconnexion</button></a>
+    <?php include '../inc/tpl/header.php'; ?>
+    <main>
+        <div class="left-side">
+            <div class="informations">
+                <div class="top">
+                    <div class="img"><img src="../../assets/img/default_pp.jpg" alt=""></div>
+                    <div class="name">
+                        <p><?php echo  $first_name." ".$last_name ?></p>
+                    </div>
+                    <div class="separator"></div>
+                </div>
+                <div class="mid">
+                    <div class="personnal-info">
+                        <div><p>Anniversaire <span>: <?php echo $birth_date ?></span></p></div>
+                        <div><p>Genre <span>: <?php echo $gender ?></span></p></div>
+                        <div><p>E-mail <span>: <?php echo $mail ?></span></p></div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="btn2"><a href=""><button>Modifier</button></a></div> <!-- Rajouter le lien vers modifier profil--> 
+                </div>
+            </div>
+            <div class="btn">
+                <a href="../connections/logout.php"><button>Déconnexion</button></a>
+            </div>
+        </div>
+        <div class="create">
+            <div class="header">
+                <div><h2>Créer un groupe</h2></div>
+            </div>
+            <div class="main">
+                <form method="POST">
+                    <div>
+                        <label for="name">Nom du groupe</label>
+                        <input id="name" type="text" name="name">
+                    </div>
+                    <div>
+                        <label for="subject">Sujet du groupe</label>
+                        <input id="subject" type="text" name = "description">
+                    </div>
+                    <div>
+                        <label for="statut">Statut du groupe</label>
+                        <select name="status" id="status">
+                            <option value="Public">Publique</option>
+                            <option value="private">Privé</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="image">Image du groupe</label>
+                        <input type="file" id="fileInput" name = "banner_image" class="custom-file-input">
+                        <label for="fileInput" class="custom-file-label">Choisir un fichier</label>
+                    <div class="submit"><input class="input" type="submit" value = "Créer un groupe"></div>
+                    </div>
+                </form>
+                <div class="planet"><img src="../../assets/img/create_groups_planet.svg" alt=""></div>
+            </div>
+        </div>
+    </main>
+    <script src="../../assets/js/notifications.js"></script>
 </body>
 </html>
