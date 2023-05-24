@@ -13,7 +13,8 @@ $path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app
 $client = new \GuzzleHttp\Client();
 if(isset($_SESSION['id'])) {
     
-  $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+//   $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+  $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
 
 
     $requete = $app_pdo->prepare("
@@ -24,13 +25,45 @@ if(isset($_SESSION['id'])) {
     ]);
     $result = $requete->fetch(PDO::FETCH_ASSOC);
     if($result){
-    $last_name = $result['last_name'];
-    $first_name = $result['first_name'];
-    $birth_date = $result['birth_date'];
-    $gender = $result['gender'];
-    $mail = $result['mail'];
-    $pp_image = $result['pp_image'];
-    $banner_image = $result['banner_image'];
+        $last_name = $result['last_name'];
+        if ($last_name == null) {
+            $last_name = 'Non renseigné';
+        }
+        $first_name = $result['first_name'];
+        if ($first_name == null) {
+            $first_name = 'Non renseigné';
+        }
+        $username = $result['username'];
+        $birth_date = $result['birth_date'];
+    
+        if ($birth_date == null) {
+            $age = 'Non renseignée';
+        } else {
+            $current_date = new DateTime();
+            $birth_date = new DateTime($birth_date);
+            $diff = $current_date->diff($birth_date);
+            $age = $diff->y;
+        }
+        $gender = $result['gender'];
+        switch ($gender) {
+            case 'male':
+                $gender = 'Homme';
+                break;
+            case 'female':
+                $gender = 'Femme';
+                break;
+            case 'other':
+                $gender =  'Autre';
+                break;
+            default:
+                $gender = 'Non renseigné';
+                break;
+        }
+    
+        $mail = $result['mail'];
+        if ($mail == null) {
+            $mail = 'Non renseigné';
+        }
     } else {
         echo'erreur';
     }
@@ -73,7 +106,7 @@ if(isset($_SESSION['id'])) {
     <div class='header-profile'>
         <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">>
             <!-- <img src="" alt="banner"> -->
-            <div class="btn"><button>Modifier le profil</button></div>
+            <div id="modify-btn" class="btn"><button>Modifier le profil</button></div>
             <div class="name"><p><?php echo $first_name.' '.$last_name?></p></div>
         </div>
         <div class="pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
@@ -82,14 +115,14 @@ if(isset($_SESSION['id'])) {
             <div><a href=""><p>Relations</p></a></div>
             <div><a href=""><p>Groupes</p></a></div>
             <div><a href=""><p>Pages</p></a></div>
-            <div><a href=""><p>Paramètres</p></a></div>
+            <div><a href="./settings.php"><p>Paramètres</p></a></div>
         </div>
     </div>
     <div class="options-left">
         <div class="personnal">
             <div class="title"><h4>Informations personelles</h4></div>
             <div class="separator"></div>
-            <div><p>Age <span>: <?php echo $birth_date ?></span></p></div>
+            <div><p>Age <span>: <?php echo $age ?></span></p></div>
             <div><p>Genre <span>: <?php echo $gender ?></span></p></div>
             <div><p>E-mail<span>: <?php echo $mail ?></span></p></div>
         </div>
@@ -102,7 +135,7 @@ if(isset($_SESSION['id'])) {
     <div class="post">
         <div class="top-post">
             <div class="post-pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
-            <div class="post-name"><p>Djedje Gboble</p></div>
+            <div class="post-name"><p><?= "$first_name $last_name" ?></p></div>
             <div class="post-text"><p><?php echo $text?></p></div>
             <div class="post-date"><p>Le 27/06/2023, à 22:47</p></div>
             <div class="plus"><p>Afficher plus...</p></div>
@@ -153,6 +186,17 @@ if(isset($_SESSION['id'])) {
     </div> -->
     <script src="../../assets/js/profile.js"></script>
     <script src="../../assets/js/notifications.js"></script>
+    <script>
+        const modifyInfoBtn = document.getElementById('modify-btn');
+        modifyInfoBtn.addEventListener('click', () => {
+            window.location.href = './change_settings.php';
+        })
+
+        const logoutbtn = document.getElementById('logout-btn');
+        logoutbtn.addEventListener('click', () => {
+            window.location.href = '../logout.php'
+        })
+    </script>
 </body>
 </html>
 

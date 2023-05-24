@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+-- Active: 1684333270027@@containers-us-west-61.railway.app@7074@railway
+>>>>>>> Stashed changes
 CREATE TABLE `profiles` (
     `id` INT(11) PRIMARY KEY NOT NULL,
     `last_name` VARCHAR(64), 
@@ -120,4 +124,8 @@ CREATE TABLE `reactions` (
     FOREIGN KEY (`comment_id`) REFERENCES `comments`(id)
 ) ENGINE=InnoDB;
 
+ALTER TABLE `profiles` ADD COLUMN `username` VARCHAR(32);
 
+ALTER TABLE `groups` MODIFY `status` VARCHAR(10);
+
+RENAME TABLE `groups` TO `groups_table`;
