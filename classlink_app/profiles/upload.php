@@ -19,7 +19,7 @@ require '../inc/pdo.php';
         // echo $new_img_name;
 
         $add_image = $app_pdo->prepare("
-                    UPDATE profiles SET pp_image = :img WHERE id = :id;
+                    UPDATE test_publications SET image = :img WHERE id = :id;
                     ");
                     $add_image->execute([
                         ":id" => $id,

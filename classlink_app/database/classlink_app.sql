@@ -12,7 +12,7 @@ CREATE TABLE `profiles` (
     `pp_image` VARCHAR(255),
     `banner_image` VARCHAR(255)
 ) ENGINE=InnoDB;
-
+ 
 CREATE TABLE `pages` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name` VARCHAR(64) NOT NULL,
@@ -23,21 +23,22 @@ CREATE TABLE `pages` (
     FOREIGN KEY (creator_profile_id) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `relations` (
+CREATE TABLE `relation` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `user_profile_id` INT(11) NOT NULL,
-    `friend_profile_id` INT(11) NOT NULL,
-    FOREIGN KEY (`user_profile_id`) REFERENCES `profiles`(id),
-    FOREIGN KEY (`friend_profile_id`) REFERENCES `profiles`(id)
+    `id_demandeur` INT(11) NOT NULL,
+    `id_receveur` INT(11) NOT NULL,
+    `statut` INT(11) NOT NULL,
+    `id_bloqueur` int(255) DEFAULT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `awaiting_relations` (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `seeker_profile_id` INT(11) NOT NULL,
-    `receiver_profile_id` INT(11) NOT NULL,
-    FOREIGN KEY (`seeker_profile_id`) REFERENCES `profiles`(id),
-    FOREIGN KEY (`receiver_profile_id`) REFERENCES `profiles`(id)
-) ENGINE=InnoDB;
+-- CREATE TABLE `awaiting_relations` (
+--     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+--     `seeker_profile_id` INT(11) NOT NULL,
+--     `receiver_profile_id` INT(11) NOT NULL,
+--     FOREIGN KEY (`seeker_profile_id`) REFERENCES `profiles`(id),
+--     FOREIGN KEY (`receiver_profile_id`) REFERENCES `profiles`(id)
+-- ) ENGINE=InnoDB;
 
 CREATE TABLE `subscribers_page` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -67,22 +68,28 @@ CREATE TABLE `group_members` (
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `publications_profile` (
+CREATE TABLE `test_publications` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `profile_id` INT(11) NOT NULL,
-    `image` VARCHAR(255),
+    `titre` VARCHAR(255),
     `text` TEXT,
+    `image` VARCHAR(255),
+    `date_time_publication` DATETIME,
+    `profile_id` INT(11) NOT NULL,
     FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
-) ENGINE=InnoDB;  
+) ENGINE=InnoDB;
 
-CREATE TABLE `publications_page` (
+CREATE TABLE `likes` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `test_publications_id` INT(11),
     `profile_id` INT(11) NOT NULL,
-    `page_id` INT(11) NOT NULL,
-    `image` VARCHAR(255),
-    `text` TEXT,
-    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id),
-    FOREIGN KEY (`page_id`) REFERENCES `pages`(id)
+    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE `dislikes` (
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `test_publications_id` INT(11),
+    `profile_id` INT(11) NOT NULL,
+    FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `publications_group` (
@@ -105,14 +112,11 @@ CREATE TABLE `publications_page` (
     FOREIGN KEY (`page_id`) REFERENCES `pages`(id),
 ) ENGINE=InnoDB;
 
-CREATE TABLE `comments` (
+CREATE TABLE `comments_publications` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `publication_profile_id` INT(11) NOT NULL,
-    `text` TEXT,
-    `response` TEXT,
-    `creator_id` INT(11) NOT NULL,
-    FOREIGN KEY (`publication_profile_id`) REFERENCES `publications_profile`(id),
-    FOREIGN KEY (`creator_id`) REFERENCES `profiles`(id)
+    `pseudo` VARCHAR(64),
+    `commentaire` TEXT,
+    `id_publication` INT(11)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `reactions` (
