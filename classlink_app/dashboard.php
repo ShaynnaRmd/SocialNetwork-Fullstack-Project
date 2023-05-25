@@ -90,6 +90,21 @@ require './inc/pdo.php';
     $numbers_of_pages = $profile_activity_result["numbers_of_pages"];
     $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
     $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
+
+    $group_count_request = $app_pdo->prepare("
+        SELECT COUNT(group_id) AS 'number_of_groups' FROM profiles
+        LEFT JOIN group_members ON profile_id = profiles.id
+        WHERE profile_id = :id
+    ");
+
+    $group_count_request->execute([
+        ':id' => $_SESSION['id']
+    ]);
+
+    $group_count_result = $group_count_request->fetch(PDO::FETCH_ASSOC);
+
+    $numbers_of_groups = $group_count_result['number_of_groups'];
+    
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,7 +149,7 @@ require './inc/pdo.php';
                 <div>
                     <div class='text-number'>
                         <div class='txt'><p>Groups</p></div>
-                        <div><p>4</p></div>
+                        <div><p><?= $numbers_of_groups ?></p></div>
                     </div>
                     <div class='separator2'></div>
                 </div>

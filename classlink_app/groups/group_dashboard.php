@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require '../inc/pdo.php';
+require '../inc/functions/token_functions.php';
 
 if(isset($_SESSION['token'])){
     $check = token_check($_SESSION["token"], $auth_pdo);
@@ -40,6 +41,7 @@ $title = "Groupes rejoints";
         WHERE gm.profile_id = :profile_id;
 
     ');
+    
     $requete2->execute([
         ':profile_id' => $_SESSION['id']
     ]);

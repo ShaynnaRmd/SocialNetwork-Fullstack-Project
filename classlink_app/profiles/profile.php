@@ -32,11 +32,12 @@
 
 
         $requete = $app_pdo->prepare("
-        SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image FROM profiles WHERE id = :id;
+            SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image, username FROM profiles WHERE id = :id;
         ");
         $requete->execute([
             ":id" => $_SESSION['id']
         ]);
+
         $result = $requete->fetch(PDO::FETCH_ASSOC);
         if($result){
             $last_name = $result['last_name'];
@@ -58,6 +59,7 @@
                 $diff = $current_date->diff($birth_date);
                 $age = $diff->y;
             }
+
             $gender = $result['gender'];
             switch ($gender) {
                 case 'male':
@@ -82,6 +84,7 @@
             echo'erreur';
         }
     }
+
     if(isset($_SESSION['id'])) {
         $requete = $app_pdo->prepare(
         // SELECT image FROM profiles LEFT JOIN publications_profile ON profiles.id = profile_id WHERE id = :id;
@@ -107,6 +110,8 @@
         header('Location: ./profiles/settings.php');
         exit();        
     }
+
+    
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,7 +125,7 @@
 <body>
     <?php include '../inc/tpl/header.php'; ?>
     <div class='header-profile'>
-        <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">>
+        <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">
             <!-- <img src="" alt="banner"> -->
             <div id="modify-btn" class="btn"><button>Modifier le profil</button></div>
             <div class="name"><p><?php echo $first_name.' '.$last_name?></p></div>
