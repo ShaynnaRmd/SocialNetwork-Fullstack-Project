@@ -9,7 +9,7 @@ CREATE TABLE `profiles` (
     `pp_image` VARCHAR(255),
     `banner_image` VARCHAR(255)
 ) ENGINE=InnoDB;
-
+ 
 CREATE TABLE `pages` (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name` VARCHAR(64) NOT NULL,
