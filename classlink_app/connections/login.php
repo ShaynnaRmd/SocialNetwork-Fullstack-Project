@@ -20,6 +20,7 @@
             $json = json_encode($data);
             //$response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [
             $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/login.php', [ 
+            
                 'body' => $json
             ]);
             $data = json_decode($response->getBody(), true);
@@ -67,7 +68,7 @@
         </form>
         <div class="redirect">
             <p>Pas encore inscrit ? <a class="redirect-link" href="./register.php">Cliquez ici</a></p>
-            <a class="forgot-password" href="">Mot de passe oublié ?</a>
+            <a class="forgot-password" href="./forgot_password.php">Mot de passe oublié ?</a>
         </div>
     </div>
     </main>

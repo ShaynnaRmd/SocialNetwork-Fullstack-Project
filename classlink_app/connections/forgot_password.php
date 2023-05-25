@@ -37,14 +37,12 @@
             
             if(isset($data)){
                 if($data['statut'] == 'Succès'){
-                    // echo ("succes");
                     $_SESSION['id'] = $data['id'];
                     $_SESSION['existing_user'] = true;
                     $_SESSION['security_question'] = $data['question'];
                     $_SESSION['security_response'] = $data['response'];
 
                 }elseif($data['statut'] == 'Erreur'){
-                    // echo ("erreur");
                     $error = "Utilisateur inexistant.";
                 }
             }
@@ -66,6 +64,7 @@
                 $data = array(
                     "id" => $_SESSION['id'],
                     "new_password" => $_SESSION['new_password']
+                    // "new_password" => $new_password
                 );
 
                 $json = json_encode($data);
@@ -78,11 +77,10 @@
 
                 if(isset($result)){
                     if($result['statut'] == 'Succès'){
-                        echo ("succes");
+                        session_destroy();
                         header('Location: ./login.php');
     
                     }elseif($result['statut'] == 'Erreur'){
-                        echo ("erreur");
                         $error = $result['message'];
                     }
                 }
@@ -94,7 +92,8 @@
     }
 
 
-    // Première partie du formulaire
+    // ----- PREMIERE PARTIE DU FORMULAIRE -----
+
     if ($method == 'GET'|| $error == "Utilisateur inexistant."): ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -135,7 +134,8 @@
     </html>
 
 
-    <!-- Deuxième partie du formulaire -->
+    <!-- DEUXIEME PARTIE DU FORMULAIRE -->
+
     <?php elseif ($method == "POST" && $submit == 'Suivant' && isset($_SESSION['existing_user']) || $error == "Réponse incorrecte") :
 
         if ($_SESSION['security_question']) {
@@ -210,7 +210,8 @@
         </html>
 
 
-    <!-- Troisième partie du formulaire -->
+    <!-- TROISIEME PARTIE DU FORMULAIRE -->
+
     <?php elseif ($method == "POST" && $submit == 'Confirmer' && $_SESSION['security_response'] == $security_response_input || $error == "Les mots de passe ne correspondent pas. Veuillez réessayer.") : 
 
         ?>
@@ -259,7 +260,3 @@
         </html>
 
     <?php endif; ?>
-
-<?php
-    // session_destroy();
-?>

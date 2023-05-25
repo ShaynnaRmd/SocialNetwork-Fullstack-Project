@@ -14,7 +14,6 @@
     ]);
 
     $existing_user_result = $existing_user_request->fetch(PDO::FETCH_ASSOC);
-    //var_dump($existing_user_result);
 
     if ($existing_user_result){
         $id = $existing_user_result['id'];

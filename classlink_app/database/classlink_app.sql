@@ -120,4 +120,4 @@ CREATE TABLE `reactions` (
     FOREIGN KEY (`comment_id`) REFERENCES `comments`(id)
 ) ENGINE=InnoDB;
 
-
+ALTER TABLE `subscribers_page` MODIFY COLUMN `admin` ENUM('0', '1') NOT NULL;
