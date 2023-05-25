@@ -5,14 +5,20 @@
     require '../../vendor/autoload.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
-    // if(isset($_SESSION['token'])){
-    //     $check = token_check($_SESSION["token"], $auth_pdo);
-    //     if($check == 'false'){
-    //         header('Location: ../connections/login.php');
-    //     }
-    // }elseif(!isset($_SESSION['token'])){
-    //     header('Location: ../connections/login.php');
-    // }
+
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
+            header('Location: ./connections/login.php');
+            exit();
+        } elseif($_SESSION['profile_status'] == 'Inactif') {
+            header('Location: ./settings.php');
+            exit();        
+        }
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ./connections/login.php');
+        exit();
+    }
     
     $method = filter_input(INPUT_SERVER, 'METHOD');
     $firstname = trim(filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -40,22 +46,22 @@
             'password' => password_hash($password, PASSWORD_DEFAULT)
         );
         print_r($data);
-        // $client = new \GuzzleHttp\Client();
-        // $json = json_encode($data);
-        // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/change_settings_controller.php', [
-        //     'body' => $json
-        // ]);
-        // $result = json_decode($response->getBody(), true);
-        // if (isset($result['Statut']) == 'Succès') {
-        //     header('Location: ./settings.php');
-        //     exit();
-        // } elseif (isset($result['Statut']) == 'Erreur' && $result['Message'] == "Ce nom d'utilisateur est déja utilisé.") {
-        //     http_response_code(406);
-        //     $error = $result['Message'];
-        // } else {
-        //     http_response_code(404);
-        //     $error = $result['Message']; 
-        // }
+        $client = new \GuzzleHttp\Client();
+        $json = json_encode($data);
+        $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/scriptphp/change_settings_controller.php', [
+            'body' => $json
+        ]);
+        $result = json_decode($response->getBody(), true);
+        if (isset($result['Statut']) == 'Succès') {
+            header('Location: ./settings.php');
+            exit();
+        } elseif (isset($result['Statut']) == 'Erreur' && $result['Message'] == "Ce nom d'utilisateur est déja utilisé.") {
+            http_response_code(406);
+            $error = $result['Message'];
+        } else {
+            http_response_code(404);
+            $error = $result['Message']; 
+        }
     }
 ?><!DOCTYPE html>
 <html lang="fr">

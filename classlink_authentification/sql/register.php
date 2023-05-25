@@ -53,30 +53,28 @@ if(!$result){
         INSERT INTO token (user_id, token) VALUES (:user_id, :token)
         ");
 
-        $request_register->execute([
-            ':user_id' => $last_insert_id,
-            ':token' => 'null'
-        ]);
-        
-        $data = [
-            'statut' => "Succès",
-            'message' => 'Inscription réussite',
-            'id' => $last_insert_id
-        ];
-
-        $json = json_encode($data);
-        echo $json;
-        exit();
-    }
-    else{
-        $data = array(
-            'statut' => "Erreur",
-            'message' => 'utilisateur déjà existant'
+            $request_register->execute([
+                ':user_id' => $last_insert_id,
+                ':token' => 'null'
+            ]);
             
-        );
-        $json = json_encode($data);
-        echo $json;
-        exit();
-    }
-        
-        
+            $data = [
+                'statut' => "Succès",
+                'message' => 'Inscription réussite',
+                'id' => $last_insert_id
+            ];
+
+            $json = json_encode($data);
+            echo $json;
+            exit();
+        }
+        else{
+            $data = array(
+                'statut' => "Erreur",
+                'message' => 'utilisateur déjà existant'
+                
+            );
+            $json = json_encode($data);
+            echo $json;
+            exit();
+        }

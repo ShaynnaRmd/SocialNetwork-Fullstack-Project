@@ -1,3 +1,4 @@
+
 <?php
     session_start();
     require '../inc/pdo.php';
@@ -86,8 +87,15 @@
     $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
     $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
 
+    $activate_reactivate_button = "";
 
-
+    if ($_SESSION['profile_status'] == 'Actif') {
+        $activate_reactivate_button = "Désactiver le compte";
+    } elseif ($_SESSION['profile_status'] == 'Inactif') {
+        $activate_reactivate_button = "Réactiver le compte";
+        $deactivate = true;
+    }
+    var_dump($_SESSION['profile_status'])
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,6 +103,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/settings.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Profile - Paramètres</title>
 </head>
 <body>
@@ -103,7 +112,11 @@
         <div class="settings-infos">
             <div class="header">
                 <div><p>Informations du profil</p></div>
+                <?php if(isset($deactivate)): ?>
+                    <div><h3 class="error">Votre compte est inactif veuillez le réactiver.</h3></div>
+                <?php endif; ?>
             </div>
+            
             <div class="main">
                 <div class="user-infos">
                     <div><p>Nom : </p></div>
@@ -153,8 +166,8 @@
                 </div>
                 <div class="bottom">
                     <div class="button-list">
-                        <div class="btn1"><button>Désactiver le compte</button></div>
-                        <div class="btn2"><button>Supprimer le compte</button></div>
+                        <div id="account-deactivation-btn" class="btn1"><button><?= $activate_reactivate_button ?></button></div>
+                        <div id="account-delete-btn" class="btn2"><button>Supprimer le compte</button></div>
                     </div>
                 <div class="btn3"><button id="logout">Se déconnecter</button></div>
                 </div>
@@ -171,6 +184,27 @@
         logoutBtn.addEventListener('click', () => {
             window.location.href = '../connections/logout.php';
         })
+
+        $(document).ready( () => {
+            $('#account-deactivation-btn').click(function() {
+                $.ajax({
+                    url: './scriptphp/deactivate_account.php',
+                    type: 'POST',
+                    success: function(response) {
+                        response = JSON.parse(response);
+                        if (response.status == 'success' && response.response == 'Inactif') {
+                            window.location.href =  '../connections/logout.php';
+                        } else if (response.status == 'success' && response.response == 'Actif') {
+                            window.location.href = '../dashboard.php';
+                        }
+                    },
+                    error: function() {
+                        console.log("Une erreur s'est produite lors de la requete");
+                    }
+                })
+            })
+        })
+
     </script>
 </body>
 </html>

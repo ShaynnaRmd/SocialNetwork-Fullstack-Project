@@ -6,9 +6,14 @@ require './inc/pdo.php';
         $check = token_check($_SESSION["token"], $auth_pdo);
         if($check == 'false'){
             header('Location: ./connections/login.php');
+            exit();
+        } elseif($_SESSION['profile_status'] == 'Inactif') {
+            header('Location: ./profiles/settings.php');
+            exit();        
         }
     }elseif(!isset($_SESSION['token'])){
         header('Location: ./connections/login.php');
+        exit();
     }
 
     $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
@@ -38,8 +43,14 @@ require './inc/pdo.php';
     }
     $username = $result['username'];
     $birth_date = $result['birth_date'];
+
     if ($birth_date == null) {
-        $birth_date = 'Non renseignée';
+        $age = 'Non renseignée';
+    } else {
+        $current_date = new DateTime();
+        $birth_date = new DateTime($birth_date);
+        $diff = $current_date->diff($birth_date);
+        $age = $diff->y;
     }
     $gender = $result['gender'];
     switch ($gender) {
@@ -56,7 +67,7 @@ require './inc/pdo.php';
             $gender = 'Non renseigné';
             break;
     }
-    
+
     $mail = $result['mail'];
     if ($mail == null) {
         $mail = 'Non renseigné';
@@ -79,7 +90,6 @@ require './inc/pdo.php';
     $numbers_of_pages = $profile_activity_result["numbers_of_pages"];
     $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
     $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
-
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,7 +114,7 @@ require './inc/pdo.php';
                 </div>
                 <div class="mid">
                     <div class="personnal-info">
-                            <div><p>Anniversaire <span>: <?= $birth_date ?></span></p></div>
+                            <div><p>Age <span>: <?= $age ?></span></p></div>
                             <div><p>Genre <span>: <?= $gender ?></span></p></div>
                             <div><p>E-mail <span>: <?= $mail ?></span></p></div>
                     </div>

@@ -129,3 +129,5 @@ ALTER TABLE `profiles` ADD COLUMN `username` VARCHAR(32);
 ALTER TABLE `groups` MODIFY `status` VARCHAR(10);
 
 RENAME TABLE `groups` TO `groups_table`;
+
+ALTER TABLE `profiles` ADD COLUMN `status` VARCHAR(7);

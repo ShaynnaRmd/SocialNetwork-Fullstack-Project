@@ -1,97 +1,113 @@
 <?php
-session_start();
-require '../inc/pdo.php';
-require '../inc/functions/token_functions.php';
-require '../../vendor/autoload.php';
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
-
-// $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
-$path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
-
-// $_SESSION['id'] = 78;
-$client = new \GuzzleHttp\Client();
-if(isset($_SESSION['id'])) {
-    
-//   $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
-  $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
-
-
-    $requete = $app_pdo->prepare("
-    SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image FROM profiles WHERE id = :id;
-    ");
-    $requete->execute([
-        ":id" => $_SESSION['id']
-    ]);
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-    if($result){
-        $last_name = $result['last_name'];
-        if ($last_name == null) {
-            $last_name = 'Non renseigné';
+    session_start();
+    require '../inc/pdo.php';
+    require '../inc/functions/token_functions.php';
+    require '../../vendor/autoload.php';
+    use GuzzleHttp\Client;
+    use GuzzleHttp\RequestOptions;
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
+            header('Location: ./connections/login.php');
+            exit();
+        } elseif($_SESSION['profile_status'] == 'Inactif') {
+            header('Location: ./settings.php');
+            exit();        
         }
-        $first_name = $result['first_name'];
-        if ($first_name == null) {
-            $first_name = 'Non renseigné';
-        }
-        $username = $result['username'];
-        $birth_date = $result['birth_date'];
-    
-        if ($birth_date == null) {
-            $age = 'Non renseignée';
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ./connections/login.php');
+        exit();
+    }
+
+    $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
+
+    // $path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+    $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+    // $_SESSION['id'] = 78;
+    $client = new \GuzzleHttp\Client();
+    if(isset($_SESSION['id'])) {
+        
+    //   $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+
+
+        $requete = $app_pdo->prepare("
+        SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image FROM profiles WHERE id = :id;
+        ");
+        $requete->execute([
+            ":id" => $_SESSION['id']
+        ]);
+        $result = $requete->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            $last_name = $result['last_name'];
+            if ($last_name == null) {
+                $last_name = 'Non renseigné';
+            }
+            $first_name = $result['first_name'];
+            if ($first_name == null) {
+                $first_name = 'Non renseigné';
+            }
+            $username = $result['username'];
+            $birth_date = $result['birth_date'];
+        
+            if ($birth_date == null) {
+                $age = 'Non renseignée';
+            } else {
+                $current_date = new DateTime();
+                $birth_date = new DateTime($birth_date);
+                $diff = $current_date->diff($birth_date);
+                $age = $diff->y;
+            }
+            $gender = $result['gender'];
+            switch ($gender) {
+                case 'male':
+                    $gender = 'Homme';
+                    break;
+                case 'female':
+                    $gender = 'Femme';
+                    break;
+                case 'other':
+                    $gender =  'Autre';
+                    break;
+                default:
+                    $gender = 'Non renseigné';
+                    break;
+            }
+        
+            $mail = $result['mail'];
+            if ($mail == null) {
+                $mail = 'Non renseigné';
+            }
         } else {
-            $current_date = new DateTime();
-            $birth_date = new DateTime($birth_date);
-            $diff = $current_date->diff($birth_date);
-            $age = $diff->y;
+            echo'erreur';
         }
-        $gender = $result['gender'];
-        switch ($gender) {
-            case 'male':
-                $gender = 'Homme';
-                break;
-            case 'female':
-                $gender = 'Femme';
-                break;
-            case 'other':
-                $gender =  'Autre';
-                break;
-            default:
-                $gender = 'Non renseigné';
-                break;
-        }
-    
-        $mail = $result['mail'];
-        if ($mail == null) {
-            $mail = 'Non renseigné';
-        }
-    } else {
-        echo'erreur';
     }
-}
-if(isset($_SESSION['id'])) {
-    $requete = $app_pdo->prepare(
-    // SELECT image FROM profiles LEFT JOIN publications_profile ON profiles.id = profile_id WHERE id = :id;
-    "SELECT profile_id, image, text FROM profiles LEFT JOIN publications_profile ON profiles.id = publications_profile.profile_id WHERE profiles.id = :id;
-    ");
-    $requete->execute([
-        ":id" => $_SESSION['id']
-    ]);
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-    if($result){
-    $profile_id = $result['profile_id'];
-    $text = $result['text'];
-    $image = $result['image'];
-    $text =  $result['text'];
+    if(isset($_SESSION['id'])) {
+        $requete = $app_pdo->prepare(
+        // SELECT image FROM profiles LEFT JOIN publications_profile ON profiles.id = profile_id WHERE id = :id;
+        "SELECT profile_id, image, text FROM profiles LEFT JOIN publications_profile ON profiles.id = publications_profile.profile_id WHERE profiles.id = :id;
+        ");
+        $requete->execute([
+            ":id" => $_SESSION['id']
+        ]);
+        $result = $requete->fetch(PDO::FETCH_ASSOC);
+        if($result){
+        $profile_id = $result['profile_id'];
+        $text = $result['text'];
+        $image = $result['image'];
+        $text =  $result['text'];
 
-    } else {
-        echo'erreur publications';
+        } else {
+            echo'erreur publications';
+        }
     }
-}
 
 
-?>
-
-<!DOCTYPE html>
+    if($_SESSION['profile_status'] == 'Inactif') {
+        header('Location: ./profiles/settings.php');
+        exit();        
+    }
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
