@@ -1,124 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./index.css">
-    <title>Document</title>
-</head>
-<body>
-    <header>
+<div class='header-profile'>
+    <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">
+        <!-- <img src="" alt="banner"> -->
+        <div id="modify-btn" class="btn"><button>Modifier le profil</button></div>
+        <div class="name"><p><?php echo $first_name.' '.$last_name?></p></div>
+    </div>
+    <div class="pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
+    <div class="link-list">
+        <div class="empty"></div>
+        <div><a href="./membre.php"><p>Membres</p></a></div>
+        <div><a href=""><p>Groupes</p></a></div>
+        <div><a href=""><p>Pages</p></a></div>
+        <div><a href="./settings.php"><p>Paramètres</p></a></div>
+    </div>
+</div>
+<div class="options-left">
+    <div class="personnal">
+        <div class="title"><h4>Informations personelles</h4></div>
+        <div class="separator"></div>
+        <div><p>Age <span>: <?php echo $age ?></span></p></div>
+        <div><p>Genre <span>: <?php echo $gender ?></span></p></div>
+        <div><p>E-mail<span>: <?php echo $mail ?></span></p></div>
+    </div>
+</div>
+<!-- <div class="btn2"><a href=""><button>Se déconnecter</button></a></div> -->
+<div class="create-post" id='create-post'>
+    <div class="pp-post"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
+    <!-- <div class="fake-input"><p>Exprimez-vous...</p></div> -->
+</div>
 
-    </header>
-    <main>
-        <div class="container">
-            <div class="top-container">
-                <div class="banner_button">
-                    <div class="button">
-                        <div class="name"><p>Nom du Groupe</p></div>
-                        <div class="list-button">
-                            <div class="duo-btn"><button>Inviter</button><button>Dejas rejoins</button></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="info">
-                    <ul>
-                        <li>Membre</li>
-                        <li>Evenements</li>
-                        <li>Actualite</li>
-                        <li>Media</li>
-                    </ul> </div>
+<div>
+   
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="text" name="publication_titre" placeholder="Titre" />
+
+        <textarea name="publication_contenu" placeholder="Exprimez-vous..."></textarea>
+
+        <input type="file" name="file">
+
+        <input type="submit" value="Publier" name="submit">
+
+    </form>
+    <?php if(isset($message)) { echo $message; } ?>
+</div>
+<div class="actualite">
+<?php
+            foreach($afficher_publications as $afp) 
+        ?>
+        <div class="post">
+            <div class="top-post">
+                <div class="post-pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
+                <!-- <div class="post-name"><p>Djedje Gboble</p></div> -->
+                <div class="post-text"><p><?= $afp['text']?></p></div>
+                <div class="post-date"><p>Le <?= $afp['date_time_publication']?></p></div>
+            
             </div>
-            <div class="mid-container">
-                <div class="apropos">
-                    <h1>A propos</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque risus ex, mattis et erat nec, eleifend eleifend lacus. Vestibulum var</p>
-                    <div class="detail">
-                        <p><span style="font-weight: 500;">Statut: </span>Public</p>
-                        <p><span style="font-weight: 500;">Statut: </span>Public</p>
-                        <p><span style="font-weight: 500;">Statut: </span>Public</p>
-                        <p><span style="font-weight: 500;">Statut: </span>Public</p>
+            <div class="img-post" id="picspost" style="background-image: url('<?= $path_img.$afp['image'] ?>')"></div>
+        
+            <div class="bottom-post">
+                <div class="up">
+                    <div class="nb-like">
+
                     </div>
-                    
+
                 </div>
-                <div class="fil" >
-                    <div class="exprimez-vous">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <input type="text" name="" id="" placeholder="Exprimez-vous">
-                    </div>
-                    <div class="filpost" id="fil">
-                       
-                        <div class='post'>
-                            <div class='people'>
-                                <div class='profile' >
-                                    <img src='https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif' alt=''>
-                                </div>
-                                <p>Lucas</p>
-                            </div>
-                            <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque risus ex, mattis et erat nec, eleifend eleifend lacus</p>
-                            <img src='https://www.slate.fr/sites/default/files/photos/gif11_0.gif' alt=''>
-                            <div class='reaction'><p>like</p><p>commentaire</p></div>
-                        </div>
-                   
-                      
-                    </div>
-                </div>
-                <div class="suggestion">
-                    <h1>Membre</h1>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                    <div class="people">
-                        <div class="profile" >
-                            <img src="https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif" alt="">
-                        </div>
-                        <p>Lucas</p>
-                    </div>
-                </div>
-                
             </div>
         </div>
-    </main>
-    <script>
-        for(var i=0;i<100;i++){
-            document.getElementById("fil").innerHTML+="    <div class='post'><div class='people'><div class='profile' >    <img src='https://i.pinimg.com/originals/0b/8c/08/0b8c081b7b05dcc0aad6238856ea87d2.gif' alt=''> </div>    <p>Lucas</p>  </div>  <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque risus ex, mattis et erat nec, eleifend eleifend lacus</p>   <img src='https://www.slate.fr/sites/default/files/photos/gif11_0.gif' alt=''>    <div class='reaction'><p>like</p><p>commentaire</p></div> </div>"
-        }
-    </script>
+    <?php
+                
+        ?>
+</div>
+
+ <div class='overlay'>
+    <div class="photo_text">
+        <div class="overlay_pp"><img src="../../assets/img/default_pp.jpg" alt="Profile Picture"></div>
+        <textarea name="message" id="" placeholder="Exprimez vous...">
+        </textarea>
+    </div>
+    
+    
+</div> 
+
+<div>
+    <a href="./action.php?t=1&id=<?= $_SESSION['id'] ?>">J'aime </a> (<?= $likes ?>)
+    <br>    
+    <a href="./action.php?t=2&id=<?= $_SESSION['id'] ?>">Je n'aime pas</a>  (<?= $dislikes?>)
+</div>
+</div>
+
+
+
+
+
+<h2>Commentaires</h2>
+<form method="POST">
+    <input type="text" name="pseudo" placeholder="Votre pseudo"/><br>
+    <textarea name="commentaire" placeholder="Votre commentaire..."></textarea><br>
+    <input type="submit" value="Commenter" name="submit_commentaire"/>
+</form>
+
+<?php if(isset($c_msg)) { echo $c_msg;} ?>
+<?php foreach ($comment as $af_c) {?>
+    <b><?= $af_c['pseudo']?></b> <?= $af_c['commentaire'] ?><br />
+<?php }?>    
+
+<script src="../../assets/js/profile.js"></script>
+<script src="../../assets/js/notifications.js"></script>
+<script>
+    const modifyInfoBtn = document.getElementById('modify-btn');
+    modifyInfoBtn.addEventListener('click', () => {
+        window.location.href = './change_settings.php';
+    })
+
+    const logoutbtn = document.getElementById('logout-btn');
+    logoutbtn.addEventListener('click', () => {
+        window.location.href = '../logout.php'
+    })
+</script>
 </body>
 </html>

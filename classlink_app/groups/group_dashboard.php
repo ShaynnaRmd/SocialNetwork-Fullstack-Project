@@ -1,183 +1,109 @@
+<?php 
+session_start();
+require '../inc/pdo.php';
+require '../inc/functions/token_functions.php';
 
+if(isset($_SESSION['token'])){
+    $check = token_check($_SESSION["token"], $auth_pdo);
+    if($check == 'false'){
+        header('Location: ../connections/login.php');
+        exit();
+    } elseif($_SESSION['profile_status'] == 'Inactif') {
+        header('Location: ../profiles/settings.php');
+        exit();        
+    }
+}elseif(!isset($_SESSION['token'])){
+    header('Location: ../connections/login.php');
+    exit();
+}
+
+$title = "Groupes rejoints";
+    $requete = $app_pdo->prepare('
+        SELECT group_id 
+        FROM group_members
+        WHERE profile_id = :profile_id;
+    ');
+    $requete -> execute([
+        ':profile_id'=> $_SESSION['id']
+    ]);
+    $result = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+    $group_id = array();
+
+    for($i = 0; $i < count($result);$i++){
+        array_push($group_id, $result[$i]['group_id']);
+    }
+
+    $requete2 = $app_pdo->prepare('
+        SELECT DISTINCT gm.group_id, g.name, g.description, g.status,g.id
+        FROM group_members gm
+        JOIN groups_table g ON gm.group_id = g.id
+        WHERE gm.profile_id = :profile_id;
+
+    ');
+    
+    $requete2->execute([
+        ':profile_id' => $_SESSION['id']
+    ]);
+
+    $result2 = $requete2->fetchAll(PDO::FETCH_ASSOC);
+
+    $requete3 = $app_pdo->prepare('
+    SELECT DISTINCT gm.group_id, g.name, g.description, g.status,g.id
+    FROM group_members gm
+    JOIN groups_table g ON gm.group_id = g.id
+    WHERE gm.profile_id != :profile_id;
+    ');
+
+    $requete3->execute([
+        ':profile_id' => $_SESSION['id']
+    ]);
+
+    $result3 = $requete3->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/css/page_dashboard.css">
-    <title>Document</title>
+    <title><?php echo $title?></title>
 </head>
 <body>
-    <header>
-
-    </header>
-    <main>
-    <div class='dashboard-leftside'>
-        <div class="informations">
-            <div class="top">
-                    <div class="img"><img src="../../assets/img/default_pp.jpg" alt=""></div>
-                    <div class="name">
-                        <p>Prénom Nom</p>
-                    </div>
-                <div class="separator"></div>
-            </div>
-            <div class="mid">
-                <div class="personnal-info">
-                        <div><p>Anniversaire <span>: 2003-10-08</span></p></div>
-                        <div><p>Genre <span>: Homme</span></p></div>
-                        <div><p>E-mail <span>: test@gmail.com</span></p></div>
-                </div>
-            </div>
-            <div class="bottom">
-                <div class="btn2"><a href=""><button>Modifier</button></a></div> <!-- Rajouter le lien vers modifier profil--> 
-            </div>
-        </div>
-        <div class='relations-groups-pages'>
-            <div>
-                <div class='text-number'>
-                    <div class='txt'><p>Relations</p></div>
-                    <div><p>57</p></div>
-                </div>
-                <div class='separator2'></div>
-            </div>
-            <div>
-                <div class='text-number'>
-                    <div class='txt'><p>Groups</p></div>
-                    <div><p>4</p></div>
-                </div>
-                <div class='separator2'></div>
-            </div>
-            <div>
-                <div class='text-number'>
-                    <div class='txt'><p>Pages</p></div>
-                    <div><p>7</p></div>
-                </div>
-            </div>
-            <div class="btn">
-                <a href=""><button>Se déconnecter</button></a> <!-- Rajouter le lien vers logout--> 
-            </div>
-        </div>
-    </div>
-    <div class="container-right">
-    <div class="suggest-groups">
-        <div class="header">
-            <div class="header-content">
-                <div class="title"><p>Groupes rejoints</p></div>
-                <div><p>4</p></div>
-            </div>
-        </div>
-        <div class="main">
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="create"><a href=""><button>Créer un groupe</button></a></div>
-    </div>
-        <div class="suggest-groups">
-        <div class="header">
-            <div class="header-content">
-                <div class="title"><p>Suggestion de groupes</p></div>
-                <div><p>4</p></div>
-            </div>
-        </div>
-        <div class="main">
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-            <div class="card-banner">
-                <div class="banner"><img src="./assets/img/default_banner.jpg" alt=""></div>
-                <div class="title"><p>Titre</p></div>
-                <div class="info">
-                    <div class="info-grp"><p>0 membre - 0 publication</p></div>
-                    <div class="link"><a href="">Voir le groupe</a></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id = "g">
+   <h1><?php echo $title?></h1>
+   <?php  if ($result2) {
+                foreach($result2 as $row){ ?>
+    <ul>
+        <li>Nom : <?php echo $row['name'] ?></li>
+        <li>Description : <?php echo $row['description'] ?></li>
+        <li>Statut : <?php echo $row['status'] ?></li>
+        <li>Nombre de membre :</li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>">Entrer dans le groupe</a></li>
+    </ul>
+    <?php } }
+    else {
+        echo 'Pas de groupe';
+    } ?>
+    <a href="../groups/create_group.php"><button>Créer un groupe</button></a>
 </div>
-</main>
+<div>
+    <h1>Suggestions de groupes</h1>
+    <?php  if ($result3 ) {
+                foreach($result3 as $row){ 
+                    if (!in_array($row, $result2)){?>
+    <ul>
+        <li>Nom : <?php echo $row['name'] ?></li>
+        <li>Description : <?php echo $row['description'] ?></li>
+        <li>Statut : <?php echo $row['status'] ?></li>
+        <li>Nombre de membre :</li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>">Rejoindre dans le groupe</a></li>
+        <a href=""></a>
+    </ul>
+    <?php } }}
+    else {
+        echo 'Pas de groupe';
+    } ?>
+</div>
 </body>
 </html>
