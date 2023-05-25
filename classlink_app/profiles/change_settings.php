@@ -131,6 +131,7 @@
     </div>
 
     <script>
+        /* Dans ce script on crée un variable qui stockera l'element bouton avec l'id 'back-button', on ajoute ensuite*/
         const backButton = document.getElementById('back-button');
         backButton.addEventListener('click', () => {
             window.history.back();

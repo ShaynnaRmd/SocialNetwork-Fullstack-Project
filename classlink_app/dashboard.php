@@ -106,14 +106,14 @@ require './inc/pdo.php';
     $numbers_of_groups = $group_count_result['number_of_groups'];
     
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/header.css">
     <link rel="stylesheet" href="../assets/css/dashboard.css">
-    <title>Document</title>
+    <title>ClassLink - Accueil</title>
 </head>
 <body>
     <?php include './inc/tpl/header.php' ?>
