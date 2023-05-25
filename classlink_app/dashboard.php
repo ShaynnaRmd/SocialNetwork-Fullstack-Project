@@ -10,6 +10,7 @@ require './inc/functions/token_functions.php';
     }elseif(!isset($_SESSION['token'])){
         header('Location: ./connections/login.php');
     }
+echo $_SESSION['id'];
 
 
 ?>
@@ -28,5 +29,6 @@ require './inc/functions/token_functions.php';
     <h1>Test</h1>
     <a href="./connections/logout.php">Déconnexion</a>
     <a href="./pages/create_page.php">Créer une page</a>
+    <a href="./profiles/profile.php">Voir profil</a>
 </body>
 </html>

@@ -58,7 +58,7 @@
             $json = json_encode($data);
             echo $json ;
             exit();
-        }
+        } 
         else{
             $data = array(
                 'statut' => "Erreur",
