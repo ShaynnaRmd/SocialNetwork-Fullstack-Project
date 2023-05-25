@@ -1,16 +1,45 @@
 <?php
 require '../inc/pdo.php';
+require '../inc/functions/token_functions.php';
+
 session_start();
 
 $title = "Créer une page";
 
-
-
-if(!isset($_SESSION["token"]) &&  !isset($_SESSION['id'])){
+if(isset($_SESSION['token'])){
+    $check = token_check($_SESSION["token"], $auth_pdo);
+    if($check == 'false'){
+        header('Location: ../connections/login.php');
+        exit();
+    } elseif($_SESSION['profile_status'] == 'Inactif') {
+        header('Location: ../profiles/settings.php');
+        exit();        
+    }
+}elseif(!isset($_SESSION['token'])){
     header('Location: ../connections/login.php');
     exit();
 }
-echo $_SESSION['id'];
+
+$recuperation_data_profiles = $app_pdo -> prepare('
+    SELECT last_name, first_name, birth_date, gender, mail, pp_image FROM profiles
+    WHERE id = :id;
+');
+$recuperation_data_profiles->execute([
+    ":id" => $_SESSION['id']
+]);
+
+$profile_data = $recuperation_data_profiles ->fetch(PDO::FETCH_ASSOC);
+
+if($profile_data){
+    $last_name = $profile_data['last_name'];
+    $first_name = $profile_data['first_name'];
+    $birth_date = $profile_data['birth_date'];
+    $gender = $profile_data['gender'];
+    $mail = $profile_data['mail'];
+    $pp_image = $profile_data['pp_image'];
+    } else {
+        echo'erreur';
+    }
 
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 
@@ -66,20 +95,62 @@ if($method == 'POST'){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <link rel="stylesheet" href="../../assets/css/create_group.css">
+    <link rel="stylesheet" href="../../assets/css/header.css">
+    <title>Pages</title>
 </head>
 <body>
-    <h1><?= $title ?></h1>
-    <form method = "POST">
-        <label for = "name_page"></label>
-        <input type="text" name = "name_page" placeholder = "Nom de la page">
-        <label for = "description"></label>
-        <textarea name="description" id="description" placeholder="Description brève de la page..." cols="30" rows="5" required></textarea>
-        <label for="pp_image"></label>
-        <input type="file" name = "pp_image" placeholder = "Image de profil">
-        <label for="banner_image"></label>
-        <input type="file" name = "banner_image" value = "Changer un fichier">
-        <input type="submit" value = "Créer la page">
-    </form>
+    <?php include '../inc/tpl/header.php'; ?>
+    <main>
+        <div class="left-side">
+            <div class="informations">
+                <div class="top">
+                    <div class="img"><img src="../../assets/img/default_pp.jpg" alt=""></div>
+                    <div class="name">
+                        <p><?php echo $profile_data['last_name']." ". $profile_data['first_name'] ?></p>
+                    </div>
+                    <div class="separator"></div>
+                </div>
+                <div class="mid">
+                    <div class="personnal-info">
+                        <div><p>Anniversaire <span>: <?php echo $profile_data['birth_date'] ?></span></p></div>
+                        <div><p>Genre <span>: <?php echo $profile_data['gender'] ?> </span></p></div>
+                        <div><p>E-mail <span>: <?php echo $profile_data['mail'] ?></span></p></div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="btn2"><a href=""><button>Modifier</button></a></div> <!-- Rajouter le lien vers modifier profil--> 
+                </div>
+            </div>
+            <div class="btn">
+                <a href="../connections/logout.php"><button>Déconnexion</button></a> <!-- Rajouter le lien vers logout--> 
+            </div>
+        </div>
+        <div class="create">
+            <div class="header">
+                <div><h2>Créer une page</h2></div>
+            </div>
+            <div class="main">
+                <form method="POST">
+                    <div>
+                        <label for="name_page">Nom de la page</label>
+                        <input id="name" type="text">
+                    </div>
+                    <div>
+                        <label for="description">Sujet de la page</label>
+                        <input id="description" type="text">
+                    </div>
+                    <div>
+                        <label for="image">Image de la page</label>
+                        <input type="file" id="fileInput" name = "pp_image" class="custom-file-input">
+                        <label for="fileInput" class="custom-file-label">Choisir un fichier</label>
+                        <div class="submit"><input class="input" type="submit" value = "Créer une page"></div>
+                    </div>
+                </form>
+                <div class="planet"><img src="../../assets/img/create_groups_planet.svg" alt=""></div>
+            </div>
+        </div>
+    </main>
+    <script src="../../assets/js/notifications.js"></script>
 </body>
 </html>

@@ -1,56 +1,104 @@
 <?php
-session_start();
-require '../inc/pdo.php';
-require '../../vendor/autoload.php';
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
-
-
-$method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
-
-$path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
-
-
-$client = new \GuzzleHttp\Client();
-if(isset($_SESSION['id'])) {
-    
-//   $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
-
-//   $data = json_decode($response->getBody(), true);
-
-    $requete = $app_pdo->prepare("
-    SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image FROM profiles WHERE id = :id;
-    ");
-    $requete->execute([
-        ":id" => $_SESSION['id']
-    ]);
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-    if($result){
-    $last_name = $result['last_name'];
-    $first_name = $result['first_name'];
-    $birth_date = $result['birth_date'];
-    $gender = $result['gender'];
-    $mail = $result['mail'];
-    $pp_image = $result['pp_image'];
-    $banner_image = $result['banner_image'];
-    } else {
-        echo'erreur';
+    session_start();
+    require '../inc/pdo.php';
+    require '../inc/functions/token_functions.php';
+    require '../../vendor/autoload.php';
+    use GuzzleHttp\Client;
+    use GuzzleHttp\RequestOptions;
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
+            header('Location: ./connections/login.php');
+            exit();
+        } elseif($_SESSION['profile_status'] == 'Inactif') {
+            header('Location: ./settings.php');
+            exit();        
+        }
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ./connections/login.php');
+        exit();
     }
-}
-if(isset($_SESSION['id'])) {
-    $requete = $app_pdo->prepare(
-    // SELECT image FROM profiles LEFT JOIN publications_profile ON profiles.id = profile_id WHERE id = :id;
-    "SELECT profile_id, image, text FROM profiles LEFT JOIN publications_profile ON profiles.id = publications_profile.profile_id WHERE profiles.id = :id;
-    ");
-    $requete->execute([
-        ":id" => $_SESSION['id']
-    ]);
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-    if($result){
-    $profile_id = $result['profile_id'];
-    $text = $result['text'];
-    $image = $result['image'];
-    $text =  $result['text'];
+
+    $method = filter_input(INPUT_SERVER, "REQUEST_METHOD");
+
+    // $path_img = 'http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+    $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
+    // $_SESSION['id'] = 78;
+    $client = new \GuzzleHttp\Client();
+    if(isset($_SESSION['id'])) {
+        
+    //   $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/upload.php');
+
+
+        $requete = $app_pdo->prepare("
+            SELECT last_name, first_name, birth_date, gender, mail, pp_image,banner_image, username FROM profiles WHERE id = :id;
+        ");
+        $requete->execute([
+            ":id" => $_SESSION['id']
+        ]);
+
+        $result = $requete->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            $last_name = $result['last_name'];
+            if ($last_name == null) {
+                $last_name = 'Non renseigné';
+            }
+            $first_name = $result['first_name'];
+            if ($first_name == null) {
+                $first_name = 'Non renseigné';
+            }
+            $username = $result['username'];
+            $birth_date = $result['birth_date'];
+        
+            if ($birth_date == null) {
+                $age = 'Non renseignée';
+            } else {
+                $current_date = new DateTime();
+                $birth_date = new DateTime($birth_date);
+                $diff = $current_date->diff($birth_date);
+                $age = $diff->y;
+            }
+
+            $gender = $result['gender'];
+            switch ($gender) {
+                case 'male':
+                    $gender = 'Homme';
+                    break;
+                case 'female':
+                    $gender = 'Femme';
+                    break;
+                case 'other':
+                    $gender =  'Autre';
+                    break;
+                default:
+                    $gender = 'Non renseigné';
+                    break;
+            }
+        
+            $mail = $result['mail'];
+            if ($mail == null) {
+                $mail = 'Non renseigné';
+            }
+        } else {
+            echo'erreur';
+        }
+    }
+
+    if(isset($_SESSION['id'])) {
+        $requete = $app_pdo->prepare(
+        // SELECT image FROM profiles LEFT JOIN publications_profile ON profiles.id = profile_id WHERE id = :id;
+        "SELECT profile_id, image, text FROM profiles LEFT JOIN publications_profile ON profiles.id = publications_profile.profile_id WHERE profiles.id = :id;
+        ");
+        $requete->execute([
+            ":id" => $_SESSION['id']
+        ]);
+        $result = $requete->fetch(PDO::FETCH_ASSOC);
+        if($result){
+        $profile_id = $result['profile_id'];
+        $text = $result['text'];
+        $image = $result['image'];
+        $text =  $result['text'];
 
     } else {
         echo'erreur publications';
@@ -158,9 +206,13 @@ if(isset($_SESSION['id'])) {
 
 
 
-?>
+    if($_SESSION['profile_status'] == 'Inactif') {
+        header('Location: ./profiles/settings.php');
+        exit();        
+    }
 
-<!DOCTYPE html>
+    
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -168,35 +220,15 @@ if(isset($_SESSION['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../assets/css/profile.css" rel="stylesheet"></link>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link href="../../assets/css/header.css" rel="stylesheet"></link>
     <title>Document</title>
 </head>
 <body>
-    <!-- <header>
-        <li>
-            <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Menu</a>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">MENU</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <a href="./profile.php">Mon profil</a>
-                    <a href="./demandes.php">Mes demandes</a>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-                </div>
-            </div>
-            </div>
-        </li>
-    </header> -->
-    <!-- <div class='header-profile'>
-        <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">>
-            <div class="btn"><button>Modifier le profil</button></div>
+    <?php include '../inc/tpl/header.php'; ?>
+    <div class='header-profile'>
+        <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">
+            <!-- <img src="" alt="banner"> -->
+            <div id="modify-btn" class="btn"><button>Modifier le profil</button></div>
             <div class="name"><p><?php echo $first_name.' '.$last_name?></p></div>
         </div>
         <div class="pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
@@ -205,14 +237,14 @@ if(isset($_SESSION['id'])) {
             <div><a href="./membre.php"><p>Membres</p></a></div>
             <div><a href=""><p>Groupes</p></a></div>
             <div><a href=""><p>Pages</p></a></div>
-            <div><a href=""><p>Paramètres</p></a></div>
+            <div><a href="./settings.php"><p>Paramètres</p></a></div>
         </div>
     </div> -->
     <div class="options-left">
         <div class="personnal">
             <div class="title"><h4>Informations personelles</h4></div>
             <div class="separator"></div>
-            <div><p>Age <span>: <?php echo $birth_date ?></span></p></div>
+            <div><p>Age <span>: <?php echo $age ?></span></p></div>
             <div><p>Genre <span>: <?php echo $gender ?></span></p></div>
             <div><p>E-mail<span>: <?php echo $mail ?></span></p></div>
         </div>
@@ -325,7 +357,18 @@ if(isset($_SESSION['id'])) {
     <?php }?>    
 
     <script src="../../assets/js/profile.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/notifications.js"></script>
+    <script>
+        const modifyInfoBtn = document.getElementById('modify-btn');
+        modifyInfoBtn.addEventListener('click', () => {
+            window.location.href = './change_settings.php';
+        })
+
+        const logoutbtn = document.getElementById('logout-btn');
+        logoutbtn.addEventListener('click', () => {
+            window.location.href = '../logout.php'
+        })
+    </script>
 </body>
 </html>
 
