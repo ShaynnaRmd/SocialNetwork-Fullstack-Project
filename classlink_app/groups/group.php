@@ -18,7 +18,7 @@ if($method == 'POST'){
     ]);
     $verify = $verify_member->fetch(PDO::FETCH_ASSOC);
     if(!$verify){
-            
+        
         $add_member_query = $app_pdo->prepare('
         INSERT INTO group_members (group_id, profile_id)
         VALUES (:group_id, :profile_id);');

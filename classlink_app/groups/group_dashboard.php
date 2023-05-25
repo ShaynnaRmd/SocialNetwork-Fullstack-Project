@@ -90,7 +90,7 @@ $title = "Groupes rejoints";
         <li>Description : <?php echo $row['description'] ?></li>
         <li>Statut : <?php echo $row['status'] ?></li>
         <li>Nombre de membre :</li>
-        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>"><button>Demande pour rejoindre le groupe</button></a></li>
+        <li><a href="../groups/asked_group.php?id=<?php echo $row['id'] ?>"><button>Demande pour rejoindre le groupe</button></a></li>
         <a href=""></a>
     </ul>
     <?php

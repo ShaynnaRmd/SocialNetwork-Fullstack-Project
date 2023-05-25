@@ -124,6 +124,14 @@ CREATE TABLE `reactions` (
     FOREIGN KEY (`comment_id`) REFERENCES `comments`(id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE `asked_groups`(
+     `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+      `group_id` INT(11) NOT NULL,
+      `profile_id` INT(11) NOT NULL,
+       FOREIGN KEY (`group_id`) REFERENCES `groups_table`(id),
+       FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
+)ENGINE=InnoDB;
+
 ALTER TABLE `profiles` ADD COLUMN `username` VARCHAR(32);
 
 ALTER TABLE `groups` MODIFY `status` VARCHAR(10);
