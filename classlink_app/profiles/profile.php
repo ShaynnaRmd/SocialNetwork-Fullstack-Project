@@ -148,62 +148,57 @@ if(isset($_POST['publication_titre'], $_POST['publication_contenu']))
         $message = 'Veuillez remplir tout les champs';
     }
 
-// afficher chaque publications
-if(isset($_SESSION['id'])) {
-    $afficher_publications = $app_pdo->prepare("SELECT * FROM test_publications WHERE id <> ?;");
-    $afficher_publications->execute(array($_SESSION['id']));
+    // afficher chaque publications
+    if(isset($_SESSION['id'])) {
+        $afficher_publications = $app_pdo->prepare("SELECT * FROM test_publications WHERE id <> ?;");
+        $afficher_publications->execute(array($_SESSION['id']));
 
-    $result_pub = $afficher_publications->fetch(PDO::FETCH_ASSOC);
-    if($result_pub){
-        $id_pub = $result_pub['id'];
-        var_dump($result);
-    }
-    
-    $likes = $app_pdo->prepare("SELECT id FROM likes WHERE test_publications_id = ?");
-    $likes->execute(array($id_pub));
-    $likes = $likes->rowCount();
-    var_dump($likes);
-
-
-    $dislikes = $app_pdo->prepare("SELECT id FROM dislikes WHERE test_publications_id = ?");
-    $dislikes->execute(array($id_pub));
-    $dislikes = $dislikes->rowCount();
-
-    $comment = $app_pdo->prepare('SELECT * FROM comments_publications WHERE id_publication = ?');
-    $comment->execute(array($id_pub));
-
-    if(isset($_POST['submit_commentaire'])){
-        if(isset($_POST['pseudo'],$_POST['commentaire']) AND !empty($_POST['pseudo']) AND !empty($_POST['commentaire'])){
-            $pseudo = $_POST['pseudo'];
-            $commentaire = $_POST['commentaire'];
-
-            if(strlen($pseudo) < 25 ) {
-
-                $ins = $app_pdo->prepare('INSERT INTO comments_publications(pseudo, commentaire, id_publication) VALUES (?,?,?)');
-                $ins->execute(array($pseudo, $commentaire,$id_pub));
-                
-                $c_msg = 'Votre commentaire a était poster';
-
-                
-            }else {
-            $c_msg = "Erreur : Le pseudo doit faire moins de 25 caractères";
-            }
-
-
-        }else{
-            $c_msg = "Erreur : Tous les champs doivent être complétés";
+        $result_pub = $afficher_publications->fetch(PDO::FETCH_ASSOC);
+        if($result_pub){
+            $id_pub = $result_pub['id'];
+            var_dump($result);
         }
+        
+        $likes = $app_pdo->prepare("SELECT id FROM likes WHERE test_publications_id = ?");
+        $likes->execute(array($id_pub));
+        $likes = $likes->rowCount();
+        var_dump($likes);
+
+
+        $dislikes = $app_pdo->prepare("SELECT id FROM dislikes WHERE test_publications_id = ?");
+        $dislikes->execute(array($id_pub));
+        $dislikes = $dislikes->rowCount();
+
+        $comment = $app_pdo->prepare('SELECT * FROM comments_publications WHERE id_publication = ?');
+        $comment->execute(array($id_pub));
+
+        if(isset($_POST['submit_commentaire'])){
+            if(isset($_POST['pseudo'],$_POST['commentaire']) AND !empty($_POST['pseudo']) AND !empty($_POST['commentaire'])){
+                $pseudo = $_POST['pseudo'];
+                $commentaire = $_POST['commentaire'];
+
+                if(strlen($pseudo) < 25 ) {
+
+                    $ins = $app_pdo->prepare('INSERT INTO comments_publications(pseudo, commentaire, id_publication) VALUES (?,?,?)');
+                    $ins->execute(array($pseudo, $commentaire,$id_pub));
+                    
+                    $c_msg = 'Votre commentaire a était poster';
+
+                    
+                }else {
+                $c_msg = "Erreur : Le pseudo doit faire moins de 25 caractères";
+                }
+
+
+            }else{
+                $c_msg = "Erreur : Tous les champs doivent être complétés";
+            }
+        }
+        
+    } else {
+        $afficher_publications = $app_pdo->prepare("SELECT * FROM test_publications;");
+        $afficher_publications->execute();
     }
-    
-} else {
-    $afficher_publications = $app_pdo->prepare("SELECT * FROM test_publications;");
-    $afficher_publications->execute();
-}
-
-
-
-
-
 
 
     if($_SESSION['profile_status'] == 'Inactif') {
@@ -211,7 +206,6 @@ if(isset($_SESSION['id'])) {
         exit();        
     }
 
-    
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -239,7 +233,7 @@ if(isset($_SESSION['id'])) {
             <div><a href=""><p>Pages</p></a></div>
             <div><a href="./settings.php"><p>Paramètres</p></a></div>
         </div>
-    </div> -->
+    </div>
     <div class="options-left">
         <div class="personnal">
             <div class="title"><h4>Informations personelles</h4></div>
@@ -290,22 +284,6 @@ if(isset($_SESSION['id'])) {
 
                         </div>
 
-                        
-
-
-
-<!-- 
-                        <div class="nb-comments"><p>134 Commentaires</p></div>
-                    </div>
-                    <div class="down">
-                        <div class='left'>
-                            <div><img src="../../assets/img/thumbs-up.svg" alt=""></div>
-                            <div class="text"><p>J'aime</p></div>
-                        </div>
-                        <div class="right">
-                            <div><img src="../../assets/img/comment.svg" alt=""></div>
-                            <div class="text"><p>Commenter</p></div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -314,15 +292,6 @@ if(isset($_SESSION['id'])) {
             ?>
     </div>
     
-    <!-- <div class="footer">
-        <p>Infos    Assistance   Accessibilité  
-            Conditions générales 
-            Confidentalité
-            Contacter l’équipe
-            Solutions professionelles  
-            
-            ClassLink Corporation © 2023</p>
-    </div> -->
      <div class='overlay'>
         <div class="photo_text">
             <div class="overlay_pp"><img src="../../assets/img/default_pp.jpg" alt="Profile Picture"></div>
