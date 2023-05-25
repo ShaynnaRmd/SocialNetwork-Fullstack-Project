@@ -63,7 +63,7 @@ $title = "Groupes rejoints";
         <li>Description : <?php echo $row['description'] ?></li>
         <li>Statut : <?php echo $row['status'] ?></li>
         <li>Nombre de membre :</li>
-        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>">Entrer dans le groupe</a></li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>"><button>Entrer dans le groupe</button></a></li>
     </ul>
     <?php } }
     else {
@@ -73,18 +73,29 @@ $title = "Groupes rejoints";
 </div>
 <div>
     <h1>Suggestions de groupes</h1>
-    <?php  if ($result3 ) {
+    <?php  if ($result3) {
                 foreach($result3 as $row){ 
-                    if (!in_array($row, $result2)){?>
+                    if (!in_array($row, $result2) && $row['status']== 'public'){?>
     <ul>
         <li>Nom : <?php echo $row['name'] ?></li>
         <li>Description : <?php echo $row['description'] ?></li>
         <li>Statut : <?php echo $row['status'] ?></li>
         <li>Nombre de membre :</li>
-        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>">Rejoindre dans le groupe</a></li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>"><button>Rejoindre le groupe</button></a></li>
         <a href=""></a>
     </ul>
-    <?php } }}
+    <?php }elseif(!in_array($row , $result2) && ($row['status'] == 'private'||$row['status'] == 'prive')){?>
+    <ul>
+        <li>Nom : <?php echo $row['name'] ?></li>
+        <li>Description : <?php echo $row['description'] ?></li>
+        <li>Statut : <?php echo $row['status'] ?></li>
+        <li>Nombre de membre :</li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>"><button>Demande pour rejoindre le groupe</button></a></li>
+        <a href=""></a>
+    </ul>
+    <?php
+    }
+    }}
     else {
         echo 'Pas de groupe';
     } ?>
