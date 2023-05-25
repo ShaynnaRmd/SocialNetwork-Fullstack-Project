@@ -1,7 +1,7 @@
 <?php
 session_start();
-require './inc/functions/token_functions.php';
 require './inc/pdo.php';
+require './inc/functions/token_functions.php';
     if(isset($_SESSION['token'])){
         $check = token_check($_SESSION["token"], $auth_pdo);
         if($check == 'false'){
@@ -10,128 +10,163 @@ require './inc/pdo.php';
     }elseif(!isset($_SESSION['token'])){
         header('Location: ./connections/login.php');
     }
+echo $_SESSION['id'];
+
+
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="../assets/js/script.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/header.css">
     <link rel="stylesheet" href="../assets/css/dashboard.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <title>Classlink-Dashboard</title>
 </head>
 <body>
-    <?php include './inc/tpl/header.php' ?>
-    <main>
-        <div class='dashboard-leftside'>
-            <div class="informations">
-                <div class="top">
-                        <div class="img"><img src="../../assets/img/default_pp.jpg" alt=""></div>
-                        <div class="name">
-                            <p>Prénom Nom</p>
-                        </div>
-                    <div class="separator"></div>
-                </div>
-                <div class="mid">
-                    <div class="personnal-info">
-                            <div><p>Anniversaire <span>: 2003-10-08</span></p></div>
-                            <div><p>Genre <span>: Homme</span></p></div>
-                            <div><p>E-mail <span>: test@gmail.com</span></p></div>
-                    </div>
-                </div>
-                <div class="bottom">
-                    <div class="btn2"><a href=""><button>Modifier</button></a></div> <!-- Rajouter le lien vers modifier profil--> 
-                </div>
-            </div>
-            <div class='relations-groups-pages'>
-                <div>
-                    <div class='text-number'>
-                        <div class='txt'><p>Relations</p></div>
-                        <div><p>57</p></div>
-                    </div>
-                    <div class='separator2'></div>
-                </div>
-                <div>
-                    <div class='text-number'>
-                        <div class='txt'><p>Groups</p></div>
-                        <div><p>4</p></div>
-                    </div>
-                    <div class='separator2'></div>
-                </div>
-                <div>
-                    <div class='text-number'>
-                        <div class='txt'><p>Pages</p></div>
-                        <div><p>7</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="btn">
-                <a href=""><button>Se déconnecter</button></a> <!-- Rajouter le lien vers logout--> 
-            </div>
+    <section class="header">
+        <a class="logo" href="">
+            <img src="../assets/img/white_logo.svg" alt="logo">
+        </a>
+        <div class="input-box">
+            <input id="input" type="text" placeholder="Recherche...">
+            <span class="search">
+                <i class="uil uil-search search-icon"></i>
+                <ul class="dropdown" id="dropdown"></ul>
+            </span>
+            <i class="uil uil-times close-icon"></i>
         </div>
-        <div class='dashboard-mid'>
-            <div class="create-post" id='create-post'>
-                <div class="pp-post"><img src="" alt=""></div>
-                <div class="fake-input"><p>Exprimez-vous...</p></div>
-            </div>
-            <!-- <div class="post">
-        <div class="top-post">
-            <div class="post-pp"><img src="" alt=""></div>
-            <div class="post-name"><p>Djedje Gboble</p></div>
-            <div class="post-text"><p>lorem ipsum</p></div>
-            <div class="post-date"><p>Le 27/06/2023, à 22:47</p></div>
-            <div class="plus"><p>Afficher plus...</p></div>
+        <a class="profile-icon-header" href="">
+            <img src="../assets/img/ellipse.svg" alt="profile-icon">
+        </a>
+        <a class="tv-icon" href="">
+            <img src="../assets/img/tv-header.svg" alt="tv-icon">
+        </a>
+        <a class="notifications" href="">
+            <img src="../assets/img/header-bell.svg" alt="bell-icon">
+        </a>
+        <a class="messages-icon" href="">
+            <img src="../assets/img/messages-icon.svg" alt="messages-icon">
+        </a>
+    </section>
+    <section class="profil">
+        <div class="profile-head">
+            <img class="profile-pic" src="../assets/img/ellipse.svg" alt="profile-pic">
+            <h3>Nom Prénom</h3>
+        </div><hr>
+        <div class="profile-infos">
+            <p>Age: <span>21</span></p>
+            <p>Genre: <span>Homme</span></p>
+            <p>Email: <span>email_test@gmail.com</span></p>
         </div>
-        <div class="img-post" id="picspost" style="background-image: url('<?= $path_img.$image ?>')"></div>
-        <div class="bottom-post">
-            <div class="up">
-                <div class="nb-like">
-                    <div><img src="../assets/img/thumbs-up.svg" alt=""></div>
-                    <div><img src="../assets/img/heart.svg" alt=""></div>
-                    <div><img src="../assets/img/smile.svg" alt=""></div>
-                    <div class="nb"><p>3125</p></div>
-                </div>
-                <div class="nb-comments"><p>134 Commentaires</p></div>
-            </div>
-            <div class="down">
-                <div class='left'>
-                    <div><img src="../assets/img/thumbs-up.svg" alt=""></div>
-                    <div class="text"><p>J'aime</p></div>
-                </div>
-                <div class="right">
-                    <div><img src="../assets/img/comment.svg" alt=""></div>
-                    <div class="text"><p>Commenter</p></div>
-                </div>
-            </div> -->
-            </div>
-        <div class='dashboard-right'>
-            <div class='suggestions'>
-                <div class='suggestions-personnes'>
-                    <div><h3>Suggestions</h3></div>
-                    <div class='personnes'>
-                        <div><h5>Personnes :</h5></div>
-                        <div class='list'>
-                            <div>
-                                <div class='list-img'><img src="../assets/img/default_pp.jpg" alt=""></div>
-                                <div class='list-p'><p>Nom Prénom</p></div>
-                                <div><button></button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div>
+            <button class="profile-button">Modifier</button>
         </div>
+    </section>
+    <section class="create-post">
+        <img class="post-profile-pic" src="../assets/img/ellipse.svg" alt="profile-icon">
+        <button class="post-button">Exprimez-vous...</button>
+    </section>
+    <section class="informations">
+        <p>Relations<span>57</span></p><hr>
+        <p>Groupes<span>4</span></p><hr>
+        <p>Pages<span>7</span></p>
+    </section>
+    <section class="suggestions">
+        <h3 class="suggestions-title">Suggestions</h3>
+        <h4>Personnes:</h4>
+        <div class="suggestion-line">
+            <img src="../assets/img/empty-pp.svg" alt="profile-icon">
+            <p>Prénom Nom</p>
+            <button class="quick-add">+</button>
         </div>
-    </main>
-    <!-- <div class="link">
-    <h1>Test</h1>
-    <a href="./connections/logout.php">Déconnexion</a>
-    <a href="./pages/create_page.php">Créer une page</a>
-    <a href="./profiles/profile.php">PROFIL</a>
+        <div class="suggestion-line">
+            <img src="../assets/img/empty-pp.svg" alt="profile-icon">
+            <p>Prénom Nom</p>
+            <button class="quick-add">+</button>
+        </div>
+        <div class="suggestion-line">
+            <img src="../assets/img/empty-pp.svg" alt="profile-icon">
+            <p>Prénom Nom</p>
+            <button class="quick-add">+</button>
+        </div>
+        <div class="suggestion-line">
+            <img src="../assets/img/empty-pp.svg" alt="profile-icon">
+            <p>Prénom Nom</p>
+            <button class="quick-add">+</button>
+        </div>
+        <h3 class="pages-title">Pages</h3>
+        <div class="pages-container">
+            <div class="item1"></div>
+            <div class="item2"></div>
+            <div class="item3"></div>
+            <div class="item4"></div>
+        </div>
+
+    </section>
+    <section class="timeline">
+        <div class="post-information">
+            <img class="post-profile-pic" src="../assets/img/ellipse.svg" alt="profile-icon">
+            <h3 class="post-name">Prénom Nom</h3>
+        </div>
+        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit
+            <span id="dots">...</span>
+            <span id="more">Iure consequatur dolore quasi impedit at, quas quibusdam libero itaque, nisi, consectetur accusamus dolores quisquam vel doloremque id delectus a ipsum aperiam?</span>
+        </p>
+        <a class="read-more" onclick="readMore()" id="myBtn">Voir plus</a>
+        <div>
+            <img class="post-image" src="../assets/img/rectangle.png" alt="post">
+        </div>
+        <div>
+            <p class="nb-likes">3157</p>
+            <p class="nb-comments">348 Commentaires</p>
+        </div><br><br>
+        <div class="interactions">
+            <button class="like"><img src="../assets/img/Thumbs-up.svg" class="like-icon" alt="like">J'aime</button>
+            <button class="comment"><img src="../assets/img/Messenger.svg" class="comment-icon" alt="like">Commenter</button>
+        </div>
+    </section>
+    <button class="disconnect">Se déconnecter</button> 
+
+    <script>
+        let inputBox = document.querySelector(".input-box"),
+            search = document.querySelector(".search"),
+            closeIcon = document.querySelector(".close-icon")
+
+        search.addEventListener("click", () => inputBox.classList.add("open"))
+        closeIcon.addEventListener("click", () => inputBox.classList.remove("open"))
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          
+          function fetchData(){
+            let value = $("#input").val(); // Permet de récupérer la valeur de l'input
+            console.log(value)
+            if (value == '') { // if la valeur de value est null
+               $('#dropdown').css('display', 'none');
+            }
+            $.post("index.php", 
+                  {
+                    'value' : value
+                  },
+                  function(data, status){
+                      if (data != "not found") {
+                        $('#dropdown').css('display', 'block');
+                        $('#dropdown').html(data);
+                      }
+                  });
+          }
+          $('#input').on('input', fetchData);
+          $("body").on('click', () => {
+            $('#dropdown').css('display', 'none');
+          });
+          $('#input').on('click', fetchData);
+      });
+    </script>
+
+
 </body>
-<script src="../assets/js/notifications.js"></script>
 </html>

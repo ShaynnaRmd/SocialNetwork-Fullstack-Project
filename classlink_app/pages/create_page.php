@@ -9,10 +9,15 @@ $title = "Créer une page";
 if(isset($_SESSION['token'])){
     $check = token_check($_SESSION["token"], $auth_pdo);
     if($check == 'false'){
-        header('Location: ./connections/login.php');
+        header('Location: ../connections/login.php');
+        exit();
+    } elseif($_SESSION['profile_status'] == 'Inactif') {
+        header('Location: ../profiles/settings.php');
+        exit();        
     }
 }elseif(!isset($_SESSION['token'])){
-    header('Location: ./connections/login.php');
+    header('Location: ../connections/login.php');
+    exit();
 }
 
 
@@ -37,7 +42,6 @@ if($profile_data){
 } else {
     echo'erreur';
 }
-
 
 }
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
@@ -131,6 +135,9 @@ if($method == 'POST'){
                         <div><p>Anniversaire <span>: <?php echo $profile_data['birth_date'] ?></span></p></div>
                         <div><p>Genre <span>: <?php echo $profile_data['gender'] ?> </span></p></div>
                         <div><p>E-mail <span>: <?php echo $profile_data['mail'] ?></span></p></div>
+                        <div><p>Anniversaire <span>: <?php echo $profile_data['birth_date'] ?></span></p></div>
+                        <div><p>Genre <span>: <?php echo $profile_data['gender'] ?> </span></p></div>
+                        <div><p>E-mail <span>: <?php echo $profile_data['mail'] ?></span></p></div>
                     </div>
                 </div>
                 <div class="bottom">
@@ -138,6 +145,7 @@ if($method == 'POST'){
                 </div>
             </div>
             <div class="btn">
+                <a href="../connections/logout.php"><button>Déconnexion</button></a> <!-- Rajouter le lien vers logout--> 
                 <a href="../connections/logout.php"><button>Déconnexion</button></a> <!-- Rajouter le lien vers logout--> 
             </div>
         </div>
