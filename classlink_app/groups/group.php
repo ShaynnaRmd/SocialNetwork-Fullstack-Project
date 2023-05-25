@@ -2,10 +2,12 @@
 session_start();
 require '../inc/pdo.php';
 
+$group_ID = $_GET['id'];
+$id = $_SESSION['id'];
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 if($method == 'POST'){
     $add = filter_input(INPUT_POST,"add");
-    $id = 5 ;
+    $group_ID = $_GET['id'];
     $verify_member = $app_pdo -> prepare('
         SELECT * FROM group_members WHERE group_id = :group_id 
         AND profile_id = :profile_id;
@@ -21,7 +23,7 @@ if($method == 'POST'){
         INSERT INTO group_members (group_id, profile_id)
         VALUES (:group_id, :profile_id);');
         $add_member_query->execute([
-            ':group_id' => $id,
+            ':group_id' => $group_ID,
             ':profile_id' => $_SESSION['id']
         ]);
         echo 'Vous avez rejoint le groupe.';
@@ -32,7 +34,6 @@ if($method == 'POST'){
 }
 
 if(isset($_SESSION['id'])){    
-    $id = 5;
     
     $request_page_data = $app_pdo->prepare("
     SELECT name, banner_image, description,creator_profile_id,status
@@ -40,7 +41,7 @@ if(isset($_SESSION['id'])){
     WHERE id = :id ;
     ");
     $request_page_data->execute ([
-        ":id" => $id
+        ":id" => $group_ID
     ]);
 
     $result = $request_page_data->fetch(PDO::FETCH_ASSOC);

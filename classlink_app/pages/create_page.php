@@ -11,14 +11,12 @@ if(!isset($_SESSION["token"]) &&  !isset($_SESSION['id'])){
     exit();
 }
 
-$id = $_SESSION['id'];
-
 $recuperation_data_profiles = $app_pdo -> prepare('
     SELECT last_name, first_name, birth_date, gender, mail, pp_image FROM profiles
     WHERE id = :id;
 ');
 $recuperation_data_profiles->execute([
-    ":id" => $id
+    ":id" => $_SESSION['id']
 ]);
 
 $profile_data = $recuperation_data_profiles ->fetch(PDO::FETCH_ASSOC);

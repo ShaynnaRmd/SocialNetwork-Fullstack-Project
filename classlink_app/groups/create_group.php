@@ -75,6 +75,23 @@ if($method == 'POST'){
             ':banner_image' => $banner_image,
             ':creator_profile_id' => $creator_profile_id
         ]);
+        
+        $select_name_create_group = $app_pdo->prepare('
+        SELECT id FROM groups_table
+        WHERE name = :name_group
+        ');
+        $select_name_create_group->execute([
+            ':name_group'=>$name_group
+        ]);
+        $ID_group = $select_name_create_group ->fetch(PDO::FETCH_ASSOC);
+        $adding_member = $app_pdo->prepare('
+        INSERT INTO group_members (profile_id,group_id)
+        VALUES (:profile_id,:group_id);
+        ');
+        $adding_member->execute([
+            ':profile_id' => $_SESSION['id'],
+            ':group_id'=>$ID_group['id']
+        ]);
         echo 'Bien créer';
         }
     else{

@@ -9,21 +9,22 @@ $title = "Groupes rejoints";
         WHERE profile_id = :profile_id;
     ');
     $requete -> execute([
-        ':profile_id'=>$_SESSION['id']
+        ':profile_id'=> $_SESSION['id']
     ]);
     $result = $requete->fetchAll(PDO::FETCH_ASSOC);
-    // echo $result[0]['group_id'];
+
     $group_id = array();
+
     for($i = 0; $i < count($result);$i++){
         array_push($group_id, $result[$i]['group_id']);
     }
 
     $requete2 = $app_pdo->prepare('
-        SELECT DISTINCT gm.group_id, g.name, g.description, g.status
+        SELECT DISTINCT gm.group_id, g.name, g.description, g.status,g.id
         FROM group_members gm
         JOIN groups_table g ON gm.group_id = g.id
         WHERE gm.profile_id = :profile_id;
-    
+
     ');
     $requete2->execute([
         ':profile_id' => $_SESSION['id']
@@ -32,7 +33,7 @@ $title = "Groupes rejoints";
     $result2 = $requete2->fetchAll(PDO::FETCH_ASSOC);
 
     $requete3 = $app_pdo->prepare('
-    SELECT DISTINCT gm.group_id, g.name, g.description, g.status
+    SELECT DISTINCT gm.group_id, g.name, g.description, g.status,g.id
     FROM group_members gm
     JOIN groups_table g ON gm.group_id = g.id
     WHERE gm.profile_id != :profile_id;
@@ -53,7 +54,7 @@ $title = "Groupes rejoints";
     <title><?php echo $title?></title>
 </head>
 <body>
-    <div>
+    <div id = "g">
    <h1><?php echo $title?></h1>
    <?php  if ($result2) {
                 foreach($result2 as $row){ ?>
@@ -62,6 +63,7 @@ $title = "Groupes rejoints";
         <li>Description : <?php echo $row['description'] ?></li>
         <li>Statut : <?php echo $row['status'] ?></li>
         <li>Nombre de membre :</li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>">Entrer dans le groupe</a></li>
     </ul>
     <?php } }
     else {
@@ -79,6 +81,8 @@ $title = "Groupes rejoints";
         <li>Description : <?php echo $row['description'] ?></li>
         <li>Statut : <?php echo $row['status'] ?></li>
         <li>Nombre de membre :</li>
+        <li><a href="../groups/group.php?id=<?php echo $row['id'] ?>">Rejoindre dans le groupe</a></li>
+        <a href=""></a>
     </ul>
     <?php } }}
     else {
