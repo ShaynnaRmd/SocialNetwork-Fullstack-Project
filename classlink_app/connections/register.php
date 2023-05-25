@@ -205,8 +205,8 @@
                         'answer' => $security_answer,
                     );
                     $json = json_encode($data);
-                    // $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
-                    $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
+                    // $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_authentification/sql/register.php', [
                         'body' => $json
                     ]);
                     $data = json_decode($response->getBody(), true);

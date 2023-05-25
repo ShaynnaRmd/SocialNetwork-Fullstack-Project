@@ -100,15 +100,15 @@ if($method == 'POST'){
                 <div class="top">
                     <div class="img"><img src="../../assets/img/default_pp.jpg" alt=""></div>
                     <div class="name">
-                        <p>Prénom Nom</p>
+                        <p><?php echo $profile_data['last_name']." ". $profile_data['first_name'] ?></p>
                     </div>
                     <div class="separator"></div>
                 </div>
                 <div class="mid">
                     <div class="personnal-info">
-                        <div><p>Anniversaire <span>: 2003-10-08</span></p></div>
-                        <div><p>Genre <span>: Homme</span></p></div>
-                        <div><p>E-mail <span>: test@gmail.com</span></p></div>
+                        <div><p>Anniversaire <span>: <?php echo $profile_data['birth_date'] ?></span></p></div>
+                        <div><p>Genre <span>: <?php echo $profile_data['gender'] ?> </span></p></div>
+                        <div><p>E-mail <span>: <?php echo $profile_data['mail'] ?></span></p></div>
                     </div>
                 </div>
                 <div class="bottom">
@@ -116,7 +116,7 @@ if($method == 'POST'){
                 </div>
             </div>
             <div class="btn">
-                <a href=""><button>Se déconnecter</button></a> <!-- Rajouter le lien vers logout--> 
+                <a href="../connections/logout.php"><button>Déconnexion</button></a> <!-- Rajouter le lien vers logout--> 
             </div>
         </div>
         <div class="create">
@@ -126,32 +126,21 @@ if($method == 'POST'){
             <div class="main">
                 <form method="POST">
                     <div>
-                        <label for="name">Nom de la page</label>
+                        <label for="name_page">Nom de la page</label>
                         <input id="name" type="text">
                     </div>
                     <div>
-                        <label for="subject">Sujet de la page</label>
-                        <input id="subject" type="text">
-                    </div>
-                    <div>
-                        <label for="statut">Statut de la page</label>
-                        <select name="statut" id="statut">
-                            <option value="" selected disabled hidden>Choisir une option</option>
-                            <option value="Public">Publique</option>
-                            <option value="private">Privé</option>
-                        </select>
+                        <label for="description">Sujet de la page</label>
+                        <input id="description" type="text">
                     </div>
                     <div>
                         <label for="image">Image de la page</label>
-                        <input type="file" id="fileInput" class="custom-file-input">
+                        <input type="file" id="fileInput" name = "pp_image" class="custom-file-input">
                         <label for="fileInput" class="custom-file-label">Choisir un fichier</label>
-
+                        <div class="submit"><input class="input" type="submit" value = "Créer une page"></div>
                     </div>
                 </form>
                 <div class="planet"><img src="../../assets/img/create_groups_planet.svg" alt=""></div>
-            </div>
-            <div class="bottom-main">
-                <div><button>Créer une page</button></div>
             </div>
         </div>
     </main>
