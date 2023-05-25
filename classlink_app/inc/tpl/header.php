@@ -28,6 +28,10 @@ if($result){
     
     <header>
         <div class='header-logo'><img src= "<?= $dirimg . 'white_logo.svg' ?>"alt=""></div>
+        <div class="search-box">
+            <input type="text" placeholder="Type to search...">
+            <div></div>
+        </div>
         <div class='header-nav'>
             <div><img src="<?= $dirimg . 'search.svg' ?>" alt=""></div>
             <div><img src="<?= $path_img . $pp_image ?>" class='header-pp' alt=""></div>
