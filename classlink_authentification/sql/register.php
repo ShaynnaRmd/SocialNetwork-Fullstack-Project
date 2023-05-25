@@ -62,7 +62,7 @@
             $data = [
                 'statut' => "Succès",
                 'message' => 'Inscription réussite',
-                'id' => $auth_pdo -> lastInsertId()
+                'id' => $last_insert_id
             ];
 
             $json = json_encode($data);
@@ -79,5 +79,3 @@
             echo $json;
             exit();
         }
-        
-        

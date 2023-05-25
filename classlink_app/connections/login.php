@@ -24,10 +24,17 @@
             ]);
             $data = json_decode($response->getBody(), true);
             if(isset($data)){
-                if($data['statut'] == 'Succès'){
+                if($data['statut'] == 'Succès' && $data['profile_status'] != "Inactif"){
                     $_SESSION['token'] = $data['message'];
                     $_SESSION['id'] = $data['id'];
+                    $_SESSION['profile_status'] = $data['profile_status'];
                     header("Location: ../dashboard.php");
+                    exit();
+                }elseif($data['statut'] == 'Succès' && $data['profile_status'] == "Inactif") {
+                    $_SESSION['token'] = $data['message'];
+                    $_SESSION['id'] = $data['id'];
+                    $_SESSION['profile_status'] = $data['profile_status'];
+                    header('Location: ../profiles/settings.php');
                     exit();
                 }elseif($data['message'] == 'Identifiants incorrects'){
                     $erreur = true;
