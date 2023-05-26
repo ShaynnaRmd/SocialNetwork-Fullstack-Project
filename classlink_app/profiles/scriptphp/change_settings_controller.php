@@ -1,5 +1,5 @@
 <?php
-    require '../inc/pdo.php';
+    require '../../inc/pdo.php';
 
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
@@ -22,7 +22,7 @@
 
     $account_informations_request_result = $account_informations_request->fetch(PDO::FETCH_ASSOC);
 
-    $username = $account_informations_request_result['username'];
+
 
     $verify_existing_user_request = $auth_pdo->prepare('
         SELECT * FROM users
@@ -30,7 +30,7 @@
     ');
 
     $verify_existing_user_request->execute([
-        ':username' => $username
+        ':username' => $new_username
     ]);
 
     $verify_existing_user_request_result = $verify_existing_user_request->fetch(PDO::FETCH_ASSOC);

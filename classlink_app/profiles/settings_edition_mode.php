@@ -47,7 +47,7 @@
         );
         $client = new \GuzzleHttp\Client();
         $json = json_encode($data);
-        $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/change_settings_controller.php', [
+        $response = $client->post('http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/scriptphp/change_settings_controller.php', [
             'body' => $json
         ]);
         $result = json_decode($response->getBody(), true);

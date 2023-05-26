@@ -181,8 +181,8 @@
                 </div>
                 <div class="bottom">
                     <div class="button-list">
-                        <div id="account-deactivation-btn" class="btn1"><button><?= $activate_reactivate_button ?></button></div>
-                        <div id="account-delete-btn" class="btn2"><button>Supprimer le compte</button></div>
+                        <div  class="btn1"><button id="account-deactivation-btn"><?= $activate_reactivate_button ?></button></div>
+                        <div  class="btn2"><button id="account-delete-btn">Supprimer le compte</button></div>
                     </div>
                 <div class="btn3"><button id="logout">Se déconnecter</button></div>
                 </div>
@@ -218,8 +218,25 @@
                     }
                 })
             })
+            
+            $('#account-delete-btn').click(function() {
+                $.ajax({
+                    url: './scriptphp/delete_account.php',
+                    type: 'POST',
+                    success: function(response) {
+                        response = JSON.parse(response);
+                        if (response.status == 'success') {
+                            window.location.href = "../connections/logout.php";
+                        } else if (response.status == 'error') {
+                            console.log(response.message)
+                        }
+                    },
+                    error: function() {
+                        console.log("Une erreur s'est produite lors de la requete");
+                    }
+                })
+            })
         })
-
     </script>
 </body>
 </html>
