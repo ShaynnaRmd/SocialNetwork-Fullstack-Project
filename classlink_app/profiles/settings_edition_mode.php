@@ -5,14 +5,20 @@
     require '../../vendor/autoload.php';
     use GuzzleHttp\Client;
     use GuzzleHttp\RequestOptions;
-    // if(isset($_SESSION['token'])){
-    //     $check = token_check($_SESSION["token"], $auth_pdo);
-    //     if($check == 'false'){
-    //         header('Location: ../connections/login.php');
-    //     }
-    // }elseif(!isset($_SESSION['token'])){
-    //     header('Location: ../connections/login.php');
-    // }
+    
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
+            header('Location: ../connections/login.php');
+            exit();
+        } elseif($_SESSION['profile_status'] == 'Inactif') {
+            header('Location: ./settings.php');
+            exit();        
+        }
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ../connections/login.php');
+        exit();
+    }
     
     $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
     $firstname = trim(filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_FULL_SPECIAL_CHARS));

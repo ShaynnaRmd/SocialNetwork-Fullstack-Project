@@ -8,14 +8,14 @@
     if(isset($_SESSION['token'])){
         $check = token_check($_SESSION["token"], $auth_pdo);
         if($check == 'false'){
-            header('Location: ./connections/login.php');
+            header('Location: ../connections/login.php');
             exit();
         } elseif($_SESSION['profile_status'] == 'Inactif') {
             header('Location: ./settings.php');
             exit();        
         }
     }elseif(!isset($_SESSION['token'])){
-        header('Location: ./connections/login.php');
+        header('Location: ../connections/login.php');
         exit();
     }
 

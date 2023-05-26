@@ -3,14 +3,16 @@
     session_start();
     require '../inc/pdo.php';
     require '../inc/functions/token_functions.php';
-    if(!isset($_SESSION['id'])){
-        // $check = token_check($_SESSION["token"], $auth_pdo);
-        // if($check == 'false'){
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
             header('Location: ../connections/login.php');
+            exit();
         }
-    // }elseif(!isset($_SESSION['token'])){
-    //     header('Location: ../connections/login.php');
-    // }
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ../connections/login.php');
+        exit();
+    }
 
     $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
