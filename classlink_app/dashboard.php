@@ -129,7 +129,7 @@ require './inc/pdo.php';
             </span>
             <i class="uil uil-times close-icon"></i>
         </div>
-        <a class="profile-icon-header" href="">
+        <a class="profile-icon-header" href="../profile2.php">
             <img src="../assets/img/ellipse.svg" alt="profile-icon">
         </a>
         <a class="tv-icon" href="">
@@ -142,8 +142,10 @@ require './inc/pdo.php';
             <img src="../assets/img/messages-icon.svg" alt="messages-icon">
         </a>
     </section>
+
+
     <section class="profil">
-        <div class="profile-head">
+        <div id="profile-head" class="profile-head profile-link">
             <img class="profile-pic" src="../assets/img/ellipse.svg" alt="profile-pic">
             <h3><?= "$firstname $lastname" ?></h3>
         </div><hr>
@@ -157,7 +159,7 @@ require './inc/pdo.php';
         </div>
     </section>
     <section class="create-post">
-        <img class="post-profile-pic" src="../assets/img/ellipse.svg" alt="profile-icon">
+        <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
         <button class="post-button">Exprimez-vous...</button>
     </section>
     <section class="informations">
@@ -188,7 +190,7 @@ require './inc/pdo.php';
             <p>Prénom Nom</p>
             <button class="quick-add">+</button>
         </div>
-        <h3 class="pages-title">Pages</h3>
+        <a href="./pages/create_page.php"><h3 class="pages-title">Pages</h3></a>
         <div class="pages-container">
             <div class="item1"></div>
             <div class="item2"></div>
@@ -196,10 +198,38 @@ require './inc/pdo.php';
             <div class="item4"></div>
         </div>
 
+        <a href="./groups/create_group2.php"><h3 class="pages-title">Groupes</h3></a>
+        <div class="pages-container">
+            <div class="item1"></div>
+            <div class="item2"></div>
+        </div>
+
     </section>
     <section class="timeline">
         <div class="post-information">
-            <img class="post-profile-pic" src="../assets/img/ellipse.svg" alt="profile-icon">
+            <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
+            <h3 class="post-name"><?= "$firstname $lastname" ?></h3>
+        </div>
+        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit
+            <span id="dots">...</span>
+            <span id="more">Iure consequatur dolore quasi impedit at, quas quibusdam libero itaque, nisi, consectetur accusamus dolores quisquam vel doloremque id delectus a ipsum aperiam?</span>
+        </p>
+        <a class="read-more" onclick="readMore()" id="myBtn">Voir plus</a>
+        <div>
+            <img class="post-image" src="../assets/img/rectangle.png" alt="post">
+        </div>
+        <div>
+            <p class="nb-likes">3157</p>
+            <p class="nb-comments">348 Commentaires</p>
+        </div><br><br>
+        <div class="interactions">
+            <button class="like"><img src="../assets/img/Thumbs-up.svg" class="like-icon" alt="like">J'aime</button>
+            <button class="comment"><img src="../assets/img/Messenger.svg" class="comment-icon" alt="like">Commenter</button>
+        </div>
+
+
+        <div class="post-information">
+            <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
             <h3 class="post-name"><?= "$firstname $lastname" ?></h3>
         </div>
         <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit
@@ -264,8 +294,16 @@ require './inc/pdo.php';
 
         const modifyProfileBtn = document.getElementById('modify-profile-btn');
         modifyProfileBtn.addEventListener('click', () => {
-            window.location.href = './profiles/settings_edition_mode.php';
+            window.location.href = './profiles/settings.php';
         })
+
+        const profilePictures = document.querySelectorAll('.profile-link');
+        for (let i = 0; i < profilePictures.length; i++) {
+            profilePictures[i].addEventListener('click', () => {
+                window.location.href = '../profile2.php';
+            });
+        }
+        
     </script>
 </body>
 </html>
