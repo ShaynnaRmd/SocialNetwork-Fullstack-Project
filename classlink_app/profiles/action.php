@@ -82,6 +82,8 @@ use GuzzleHttp\RequestOptions;
             }
         }
         header('Location: ./profile.php?id='. $_SESSION['id']);
+        header('Location: ../dashboard.php?id='. $_SESSION['id']);
+
         exit;
     }
 }

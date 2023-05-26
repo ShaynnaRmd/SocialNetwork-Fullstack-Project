@@ -117,33 +117,7 @@ require './inc/pdo.php';
     <title>Classlink-Dashboard</title>
 </head>
 <body>
-    <section class="header">
-        <a class="logo" href="">
-            <img src="../assets/img/white_logo.svg" alt="logo">
-        </a>
-        <div class="input-box">
-            <input id="input" type="text" placeholder="Recherche...">
-            <span class="search">
-                <i class="uil uil-search search-icon"></i>
-                <ul class="dropdown" id="dropdown"></ul>
-            </span>
-            <i class="uil uil-times close-icon"></i>
-        </div>
-        <a class="profile-icon-header" href="../profile2.php">
-            <img src="../assets/img/ellipse.svg" alt="profile-icon">
-        </a>
-        <a class="tv-icon" href="">
-            <img src="../assets/img/tv-header.svg" alt="tv-icon">
-        </a>
-        <a class="notifications" href="">
-            <img src="../assets/img/header-bell.svg" alt="bell-icon">
-        </a>
-        <a class="messages-icon" href="">
-            <img src="../assets/img/messages-icon.svg" alt="messages-icon">
-        </a>
-    </section>
-
-
+    <?php require "inc/tpl/header.php"?>
     <section class="profil">
         <div id="profile-head" class="profile-head profile-link">
             <img class="profile-pic" src="../assets/img/ellipse.svg" alt="profile-pic">
@@ -219,14 +193,21 @@ require './inc/pdo.php';
             <img class="post-image" src="../assets/img/rectangle.png" alt="post">
         </div>
         <div>
-            <p class="nb-likes">3157</p>
-            <p class="nb-comments">348 Commentaires</p>
-        </div><br><br>
-        <div class="interactions">
-            <button class="like"><img src="../assets/img/Thumbs-up.svg" class="like-icon" alt="like">J'aime</button>
-            <button class="comment"><img src="../assets/img/Messenger.svg" class="comment-icon" alt="like">Commenter</button>
+        <a href="profiles/action.php?t=1&id=<?= $_SESSION['id'] ?>">J'aime </a> (<?= $likes ?>)
+        <br>    
+        <a href="action.php?t=2&id=<?= $_SESSION['id'] ?>">Je n'aime pas</a>  (<?= $dislikes?>)
         </div>
-
+        </div>
+        <h2>Commentaires</h2>
+        <form method="POST">
+            <input type="text" name="pseudo" placeholder="Votre pseudo"/><br>
+            <textarea name="commentaire" placeholder="Votre commentaire..."></textarea><br>
+            <input type="submit" value="Commenter" name="submit_commentaire"/>
+        </form>
+        <?php if(isset($c_msg)) { echo $c_msg;} ?>
+        <?php foreach ($comment as $af_c) {?>
+            <b><?= $af_c['pseudo']?></b> <?= $af_c['commentaire'] ?><br />
+        <?php }?>
 
         <div class="post-information">
             <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
