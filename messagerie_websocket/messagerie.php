@@ -9,7 +9,7 @@ if (isset($_POST['submit'])) {
 	
 }
 
-
+$_SESSION['id'] = 110;
 
 if(!isset($_SESSION['name'])){
     header("Location: index.php");
@@ -68,7 +68,7 @@ if(!isset($_SESSION['room'])){
             </div>
           
             <div class="liste_bouton"> 
-            <div class="boutton white orange" onclick="active(this)">
+            <div class="boutton white orange" id="privés" onclick="active(this)">
                 <p>Messages Privés</p>
             </div>
             <div id="groupmessage" class="boutton white" onclick="active(this)">
@@ -754,7 +754,103 @@ jQuery("#submit").click(function() {
 //function pour afficher le message des groups
 
 
-    
+document.getElementById('privés').addEventListener("click",()=>{
+    $.ajax({
+                 type: "GET",
+                 url: "getfriend.php",
+                 success: function(data) {
+                    var getData = JSON.parse(data);
+                    let ul = document.querySelector(".liste");
+                    ul.innerHTML="";
+                   
+                     var html = "";
+                    
+                     for (var i = 0; i < getData.length; i++) {
+                      
+                        ul.innerHTML += "<li class='privatechat' data-id="+ getData[i][0].id +" ><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='name_message ' ><p>"+getData[i][0].username+"</p><p></p></div></li>";
+
+                            } 
+    $(".privatechat").on("click", function() {
+       
+                                var id = $(this).data("id");
+                                var conn = new WebSocket('ws://localhost:8080?room='+$(this).data("id"));
+                                
+            var friendid = $(this).data("id");
+            sessionStorage.setItem("room", friendid);
+    $.ajax({
+                 type: "POST",
+                 url: "getprivatemessage.php",
+                 data: {friend: friendid},
+                 beforeSend: function() {
+                    console.log(friendid)
+                  
+                    $('#loading').show(); // Afficher l'élément de chargement
+                    //cacher le input et le boutton envoyer
+                    $("#input").removeClass("show");
+                    $('#write').find(".messagecontentant").remove();
+
+
+                },
+                complete: function() {
+                   
+                    $('#loading').hide(); // Masquer l'élément de chargement
+                    //afficher le boutton envoyer
+                    $("#input").addClass("show");
+                },
+                 success: function(data) {
+                     var html = "";
+                     var getData = JSON.parse(data);
+                     for (var i = 0; i < getData.length; i++) {
+                         //verifier si le message est de l'utilisateur ou de l'autre
+                            if (getData[i].sender_id == "<?php echo $_SESSION['id']; ?>") {
+                                //ecrire lheure sans les secondes dans la variable time
+                               
+                                //laisser que les minutes et les heures
+                                
+                               
+                                html += "<div  class=' recever_box messagecontentant'><div class='row'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='receiver bullemessage draggableElement' id="+getData[i].id+" data-id="+getData[i].id+"  ><p> " + getData[i].message + "</p></div></div><div class='time'>"+getData[i].created_at+"</div></div>";
+                               drag();
+                               option();
+
+                            } else{
+                                
+                                //laisser que les minutes et les heures
+                                
+                                html += "<div  class='sender_box messagecontentant'><div class='row_not_reverse'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='sender bullemessage draggableElementleft' id="+getData[i].id+" data-id="+getData[i].id+" ><p>" + getData[i].message + "</p></div></div><div class='time'>"+getData[i].created_at+"</div></div>";
+                                dragleft();
+                                option();
+                                
+                            }
+                            
+
+                     }
+                    
+                     jQuery("#write").append(html);
+                     write();
+                     scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                 }
+
+    })
+         conn.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            var id = data.id;
+            var html = "<div id="+id+" data-id="+id+" class='sender_box messagecontentant' ><div class='row_not_reverse'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='sender bullemessage draggableElementleft'><p>" + data.msg + "</p></div></div><div class='time'>"+data.time+"</div></div>";
+            dragleft();
+            write();
+            jQuery("#write").append(html);
+          
+        };
+  
+});}
+                    
+                    
+                    
+                    
+                 }
+             );
+             
+        
+});
 
          
 
