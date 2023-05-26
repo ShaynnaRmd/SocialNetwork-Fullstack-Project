@@ -1,21 +1,112 @@
 <?php
 session_start();
-require './inc/pdo.php';
 require './inc/functions/token_functions.php';
+require './inc/pdo.php';
     if(isset($_SESSION['token'])){
         $check = token_check($_SESSION["token"], $auth_pdo);
         if($check == 'false'){
             header('Location: ./connections/login.php');
+            exit();
+        } elseif($_SESSION['profile_status'] == 'Inactif') {
+            header('Location: ./profiles/settings.php');
+            exit();        
         }
     }elseif(!isset($_SESSION['token'])){
         header('Location: ./connections/login.php');
+        exit();
     }
-echo $_SESSION['id'];
 
+    $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
-?>
-<!DOCTYPE html>
-<html lang="en">
+    // Préparation de la requète permettant de récupérer toute les infos lié à ce profile via l'id
+    $account_info_request =  $app_pdo->prepare("
+        SELECT * FROM profiles
+        WHERE id = :id;
+    ");
+
+    // Execution de la requète avec l'id passez en session
+    $account_info_request->execute([
+        ":id" => $_SESSION['id']
+    ]);
+
+    // Récupération du résultat de la requète
+    $result = $account_info_request->fetch(PDO::FETCH_ASSOC);
+
+    // Variables contenant les informations du compte, suivi d'une condition qui permettra d'afficher non renseigné si la variable contient null
+    $lastname = $result['last_name'];
+    if ($lastname == null) {
+        $lastname = 'Non renseigné';
+    }
+    $firstname = $result['first_name'];
+    if ($firstname == null) {
+        $firstname = 'Non renseigné';
+    }
+    $username = $result['username'];
+    $birth_date = $result['birth_date'];
+
+    if ($birth_date == null) {
+        $age = 'Non renseignée';
+    } else {
+        $current_date = new DateTime();
+        $birth_date = new DateTime($birth_date);
+        $diff = $current_date->diff($birth_date);
+        $age = $diff->y;
+    }
+    $gender = $result['gender'];
+    switch ($gender) {
+        case 'male':
+            $gender = 'Homme';
+            break;
+        case 'female':
+            $gender = 'Femme';
+            break;
+        case 'other':
+            $gender =  'Autre';
+            break;
+        default:
+            $gender = 'Non renseigné';
+            break;
+    }
+
+    $mail = $result['mail'];
+    if ($mail == null) {
+        $mail = 'Non renseigné';
+    }
+
+    $banner_image = $result['banner_image'];
+
+    $profile_activity_request = $app_pdo->prepare("
+        SELECT 
+        (SELECT COUNT(creator_profile_id) FROM pages WHERE creator_profile_id = :id) AS `numbers_of_pages`,
+        (SELECT COUNT(profile_id) FROM publications_profile WHERE profile_id = :id) AS `numbers_of_publications`,
+        (SELECT COUNT(id) FROM relations WHERE user_profile_id = :id) AS `numbers_of_relations` 
+    ");
+
+    $profile_activity_request->execute([
+        ":id" => $_SESSION['id']
+    ]);
+
+    $profile_activity_result = $profile_activity_request->fetch(PDO::FETCH_ASSOC);
+    $numbers_of_pages = $profile_activity_result["numbers_of_pages"];
+    $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
+    $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
+
+    $group_count_request = $app_pdo->prepare("
+        SELECT COUNT(group_id) AS 'number_of_groups' FROM profiles
+        LEFT JOIN group_members ON profile_id = profiles.id
+        WHERE profile_id = :id
+    ");
+
+    $group_count_request->execute([
+        ':id' => $_SESSION['id']
+    ]);
+
+    $group_count_result = $group_count_request->fetch(PDO::FETCH_ASSOC);
+
+    $numbers_of_groups = $group_count_result['number_of_groups'];
+    
+?><!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +129,7 @@ echo $_SESSION['id'];
             </span>
             <i class="uil uil-times close-icon"></i>
         </div>
-        <a class="profile-icon-header" href="">
+        <a class="profile-icon-header" href="../profile2.php">
             <img src="../assets/img/ellipse.svg" alt="profile-icon">
         </a>
         <a class="tv-icon" href="">
@@ -51,28 +142,30 @@ echo $_SESSION['id'];
             <img src="../assets/img/messages-icon.svg" alt="messages-icon">
         </a>
     </section>
+
+
     <section class="profil">
-        <div class="profile-head">
+        <div id="profile-head" class="profile-head profile-link">
             <img class="profile-pic" src="../assets/img/ellipse.svg" alt="profile-pic">
-            <h3>Nom Prénom</h3>
+            <h3><?= "$firstname $lastname" ?></h3>
         </div><hr>
         <div class="profile-infos">
-            <p>Age: <span>21</span></p>
-            <p>Genre: <span>Homme</span></p>
-            <p>Email: <span>email_test@gmail.com</span></p>
+            <p>Age: <span><?= $age ?></span></p>
+            <p>Genre: <span><?= $gender ?></span></p>
+            <p>Email: <span> <?= $mail ?></span></p>
         </div>
         <div>
-            <button class="profile-button">Modifier</button>
+            <button id="modify-profile-btn" class="profile-button">Modifier</button>
         </div>
     </section>
     <section class="create-post">
-        <img class="post-profile-pic" src="../assets/img/ellipse.svg" alt="profile-icon">
+        <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
         <button class="post-button">Exprimez-vous...</button>
     </section>
     <section class="informations">
-        <p>Relations<span>57</span></p><hr>
-        <p>Groupes<span>4</span></p><hr>
-        <p>Pages<span>7</span></p>
+        <p>Relations<span><?= $numbers_of_relations ?></span></p><hr>
+        <p>Groupes<span><?= $numbers_of_groups ?></span></p><hr>
+        <p>Pages<span><?= $numbers_of_pages ?></span></p>
     </section>
     <section class="suggestions">
         <h3 class="suggestions-title">Suggestions</h3>
@@ -97,7 +190,7 @@ echo $_SESSION['id'];
             <p>Prénom Nom</p>
             <button class="quick-add">+</button>
         </div>
-        <h3 class="pages-title">Pages</h3>
+        <a href="./pages/create_page.php"><h3 class="pages-title">Pages</h3></a>
         <div class="pages-container">
             <div class="item1"></div>
             <div class="item2"></div>
@@ -105,11 +198,39 @@ echo $_SESSION['id'];
             <div class="item4"></div>
         </div>
 
+        <a href="./groups/create_group2.php"><h3 class="pages-title">Groupes</h3></a>
+        <div class="pages-container">
+            <div class="item1"></div>
+            <div class="item2"></div>
+        </div>
+
     </section>
     <section class="timeline">
         <div class="post-information">
-            <img class="post-profile-pic" src="../assets/img/ellipse.svg" alt="profile-icon">
-            <h3 class="post-name">Prénom Nom</h3>
+            <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
+            <h3 class="post-name"><?= "$firstname $lastname" ?></h3>
+        </div>
+        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit
+            <span id="dots">...</span>
+            <span id="more">Iure consequatur dolore quasi impedit at, quas quibusdam libero itaque, nisi, consectetur accusamus dolores quisquam vel doloremque id delectus a ipsum aperiam?</span>
+        </p>
+        <a class="read-more" onclick="readMore()" id="myBtn">Voir plus</a>
+        <div>
+            <img class="post-image" src="../assets/img/rectangle.png" alt="post">
+        </div>
+        <div>
+            <p class="nb-likes">3157</p>
+            <p class="nb-comments">348 Commentaires</p>
+        </div><br><br>
+        <div class="interactions">
+            <button class="like"><img src="../assets/img/Thumbs-up.svg" class="like-icon" alt="like">J'aime</button>
+            <button class="comment"><img src="../assets/img/Messenger.svg" class="comment-icon" alt="like">Commenter</button>
+        </div>
+
+
+        <div class="post-information">
+            <img class="post-profile-pic profile-link" src="../assets/img/ellipse.svg" alt="profile-icon">
+            <h3 class="post-name"><?= "$firstname $lastname" ?></h3>
         </div>
         <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit
             <span id="dots">...</span>
@@ -128,7 +249,7 @@ echo $_SESSION['id'];
             <button class="comment"><img src="../assets/img/Messenger.svg" class="comment-icon" alt="like">Commenter</button>
         </div>
     </section>
-    <button class="disconnect">Se déconnecter</button> 
+    <button id="logout" class="disconnect">Se déconnecter</button> 
 
     <script>
         let inputBox = document.querySelector(".input-box"),
@@ -165,8 +286,24 @@ echo $_SESSION['id'];
           });
           $('#input').on('click', fetchData);
       });
+
+      const logoutButton = document.getElementById('logout');
+        logoutButton.addEventListener('click', () => {
+            window.location.href = './connections/logout.php';
+        })
+
+        const modifyProfileBtn = document.getElementById('modify-profile-btn');
+        modifyProfileBtn.addEventListener('click', () => {
+            window.location.href = './profiles/settings.php';
+        })
+
+        const profilePictures = document.querySelectorAll('.profile-link');
+        for (let i = 0; i < profilePictures.length; i++) {
+            profilePictures[i].addEventListener('click', () => {
+                window.location.href = '../profile2.php';
+            });
+        }
+        
     </script>
-
-
 </body>
 </html>
