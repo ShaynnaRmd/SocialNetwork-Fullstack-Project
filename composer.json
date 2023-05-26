@@ -1,4 +1,10 @@
 {
+
+    "autoload": {
+        "psr-4": {
+            "MyApp\\": "PHPWebSocketsChatRoom/src"
+        }
+    },
     "require": {
         "guzzlehttp/guzzle": "^7.6",
         "cboden/ratchet": "^0.4"

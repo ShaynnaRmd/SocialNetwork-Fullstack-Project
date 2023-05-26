@@ -19,6 +19,10 @@ class ComposerStaticInit8fc90998d2ef515db7ec744329d5845f
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
         ),
+        'M' => 
+        array (
+            'MyApp\\' => 6,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -36,6 +40,10 @@ class ComposerStaticInit8fc90998d2ef515db7ec744329d5845f
         'Psr\\Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
+        'MyApp\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/PHPWebSocketsChatRoom/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
