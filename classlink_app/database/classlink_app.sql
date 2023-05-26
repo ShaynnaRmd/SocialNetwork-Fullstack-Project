@@ -128,6 +128,7 @@ CREATE TABLE `asked_groups`(
      `id` INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
       `group_id` INT(11) NOT NULL,
       `profile_id` INT(11) NOT NULL,
+      `statut` INT(11) NOT NULL,
        FOREIGN KEY (`group_id`) REFERENCES `groups_table`(id),
        FOREIGN KEY (`profile_id`) REFERENCES `profiles`(id)
 )ENGINE=InnoDB;

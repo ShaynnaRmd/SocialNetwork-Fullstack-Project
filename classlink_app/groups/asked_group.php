@@ -3,6 +3,7 @@ session_start();
 require '../../classlink_app/inc/pdo.php'; //Besoin du pdo pour se connecter à la bdd
 
 $group_ID = $_GET['id'];
+
 $verify = $app_pdo -> prepare('
 SELECT * FROM asked_groups 
 WHERE group_id = :group_id
@@ -13,15 +14,16 @@ $verify->execute([
     ':profile_id'=>$group_ID
 ]);
 $result = $verify->fetch(PDO::FETCH_ASSOC);
-if($result){
+if(!isset($result)){
     $request_add_member = $app_pdo -> prepare('
-    INSERT INTO asked_groups (group_id,profile_id)
-    VALUES (:group_id, :profile_id);
+    INSERT INTO asked_groups (group_id,profile_id,statut)
+    VALUES (:group_id, :profile_id,:statut);
     ');
 
     $request_add_member -> execute([
         ':profile_id'=> $_SESSION['id'],
-        ':group_id'=> $group_ID
+        ':group_id'=> $group_ID,
+        'statut'=> 1
     ]);
     echo 'La demande a bien était envoyé';
 }
