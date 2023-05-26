@@ -1,7 +1,7 @@
 <?php
 require_once 'pdo.php';
 //delete message in the database
-$sql = "DELETE FROM private_chats WHERE id = :id";
+$sql = "DELETE FROM private_chat_messages WHERE id = :id";
 $stmt = $messaging_pdo->prepare($sql);
 $stmt->execute(
     array(

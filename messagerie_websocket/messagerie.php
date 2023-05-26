@@ -647,21 +647,22 @@ jQuery("#submit").click(function() {
            console.log(sessionStorage.getItem("room"));
            var msg = $("#message").val();
            var room = sessionStorage.getItem("room");
-           var name = 3;
+           var id = <?php echo $_SESSION['id']; ?>;
+           console.log(id);
            var hour = new Date().getHours();
            var minute = new Date().getMinutes();
            var time = hour + ":" + minute;
            var content = {
                msg: msg,
                room: room,
-               name: name,
+               name: id,
                time: time
            };
            
            $.ajax({
                type: "POST",
                url: "saveMessage.php",
-               data: {msg: msg, name: name, room: room, time: time },
+               data: {msg: msg, id: id, room: room, time: time },
                success: function(data) {
                    var data = JSON.parse(data);
                    console.log(data);
@@ -703,12 +704,13 @@ jQuery("#submit").click(function() {
                     
                      for (var i = 0; i < getData.length; i++) {
                       
-                        ul.innerHTML += "<li class='privatechat' data-id="+ getData[i][0].id +" ><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='name_message ' ><p>"+getData[i][0].username+"</p><p></p></div></li>";
+                        ul.innerHTML += "<li class='privatechat'  data-id="+ getData[i][0].id +" ><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='name_message ' ><p>"+getData[i][0].username+"</p><p></p></div></li>";
 
                             } 
 
     $(".privatechat").on("click", function() {      
         let friendid = $(this).data("id");
+       sessionStorage.setItem("room", friendid);
         var conn = new WebSocket('ws://localhost:8080?room='+friendid);        
     $.ajax({
                  type: "POST",
@@ -800,7 +802,7 @@ document.getElementById('privés').addEventListener("click",()=>{
             var conn = new WebSocket('ws://localhost:8080?room='+$(this).data("id"));
                                 
             var friendid = $(this).data("id");
-            sessionStorage.setItem("room", friendid);
+            sessionStorage.setItem("friendid", friendid);
             //recuperer les messages de friend
             $.ajax({
                  type: "POST",

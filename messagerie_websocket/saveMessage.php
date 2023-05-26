@@ -3,23 +3,23 @@ require_once 'pdo.php';
     session_start();
     //recuperer les donnees de la requete ajax
     
-    $room = $_POST['room'] ;
-    $messages = $_POST['msg'] ;
-    $sender = $_POST['name'];
+    $room = $_POST['room'];
+    $messages = $_POST['msg'];
+  
     $date = date('Y-m-d H:i:s');
     
     
-    $sql = "INSERT INTO group_chat_messages(group_id, member_id, message,created_at) VALUES (:room, :sender, :messages, :date)";
+    $sql = "INSERT INTO private_chat_messages ( message, sender_id,recever_id, created_at) VALUES (:messages,  :sender, :room,:date)";
     $stmt = $messaging_pdo->prepare($sql);
     $stmt->execute(
         array(
             ':room' => $room,
             ':messages' => $messages,
-            ':sender' => $sender,
+            ':sender' => $_SESSION['id'],
             ':date' => $date
         )
     );
-    $sql = "select * from group_chat_messages where group_id = :room ";
+    $sql = "select * from private_chat_messages where recever_id = :room ";
     $stmt = $messaging_pdo->prepare($sql);
    $stmt->execute(
 
