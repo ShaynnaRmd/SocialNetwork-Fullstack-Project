@@ -64,7 +64,7 @@ $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/prof
         WHERE id = :id;
     ");
 
-    // Execution de la requète avec l'id passez en session
+    // Execution de la requète
     $account_info_request->execute([
         ":id" => $_SESSION['id']
     ]);
@@ -72,7 +72,7 @@ $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/prof
     // Récupération du résultat de la requète
     $result = $account_info_request->fetch(PDO::FETCH_ASSOC);
 
-    // Variables contenant les informations du compte, suivi d'une condition qui permettra d'afficher non renseigné si la variable contient null
+    // Variables contenant les informations du compte, suivi d'une condition qui permettra d'afficher "non renseigné" si la variable contient "null"
     $lastname = $result['last_name'];
     if ($lastname == null) {
         $lastname = 'Non renseigné';
