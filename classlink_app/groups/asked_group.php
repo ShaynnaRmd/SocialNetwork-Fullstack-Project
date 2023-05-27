@@ -14,7 +14,7 @@ $verify->execute([
     ':profile_id'=>$group_ID
 ]);
 $result = $verify->fetch(PDO::FETCH_ASSOC);
-if(!isset($result)){
+if(!$result){
     $request_add_member = $app_pdo -> prepare('
     INSERT INTO asked_groups (group_id,profile_id,statut)
     VALUES (:group_id, :profile_id,:statut);

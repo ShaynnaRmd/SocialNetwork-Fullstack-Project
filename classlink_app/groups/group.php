@@ -5,6 +5,17 @@ require '../inc/pdo.php';
 $group_ID = $_GET['id'];
 $id = $_SESSION['id'];
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
+$verify_creator = $app_pdo->prepare('
+SELECT * FROM groups_table 
+WHERE id = :id AND creator_profile_id = :creator_profile_id
+');
+$verify_creator->execute([
+    ':id'=>$_GET['id'],
+    ':creator_profile_id'=>$_SESSION['id']
+]);
+$verify_creator_result = $verify_creator->fetch(PDO::FETCH_ASSOC);
+
+
 if($method == 'POST'){
     $add = filter_input(INPUT_POST,"add");
     $group_ID = $_GET['id'];
@@ -33,7 +44,8 @@ if($method == 'POST'){
         }
 }
 
-if(isset($_SESSION['id'])){    
+if(isset($_SESSION['id'])){   
+    
     
     $request_page_data = $app_pdo->prepare("
     SELECT name, banner_image, description,creator_profile_id,status
@@ -78,6 +90,9 @@ if(isset($_SESSION['id'])){
     <title>Document</title>
 </head>
 <body>
+    <?php if($verify_creator_result){ ?>
+        <a href="./asked_member.php?group_id=<?php echo $group_ID?> ">Demande en attente</a>
+        <?php } ?>
     <h2><?php echo $name ?></h2>
     <h3>A propos</h3>
     <p><?php echo $description ?></p>
