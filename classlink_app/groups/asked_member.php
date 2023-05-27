@@ -104,6 +104,7 @@ if($method == 'POST'){
             <p><?php echo $erreur ?></p>
             <?php } ?>
     </div>
+    <a href="./group.php?id=<?php echo $group_ID ?>"><button>Retour</button></a>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         const divButtonsAccept = document.getElementsByClassName("div-button-accept");
