@@ -39,6 +39,7 @@ echo json_encode($listefriends);
 
 
 
+
 //recupere le nom de l'amie
 
 
