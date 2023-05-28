@@ -48,7 +48,7 @@ if( !isset($_SESSION['id'])){
     <button  id="creategroup">creer</button>
 </div>
  
-    <button class="changer" onclick="change()">Changer de theme</button>
+    
     <section class="messagerie">
         <div class="dashboard">
             <div class="header">
