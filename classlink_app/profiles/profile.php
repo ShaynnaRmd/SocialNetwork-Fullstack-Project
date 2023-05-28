@@ -217,8 +217,10 @@ if(isset($_POST['publication_titre'], $_POST['publication_contenu']))
     <link href="../../assets/css/header.css" rel="stylesheet"></link>
     <title>Document</title>
 </head>
-<body>
+<body> 
     <?php include '../inc/tpl/header.php'; ?>
+    <a href="./profile.php">Mon profil</a><br>
+    <a href="./demandes.php">Mes demandes</a>
     <div class='header-profile'>
         <div class='banner'  id="mabanner" style="background: url('<?= $path_img.$banner_image ?>')">
             <!-- <img src="" alt="banner"> -->
@@ -271,7 +273,6 @@ if(isset($_POST['publication_titre'], $_POST['publication_contenu']))
             <div class="post">
                 <div class="top-post">
                     <div class="post-pp"><img src="<?php echo $path_img . $pp_image ?>" alt=""></div>
-                    <!-- <div class="post-name"><p>Djedje Gboble</p></div> -->
                     <div class="post-text"><p><?= $afp['text']?></p></div>
                     <div class="post-date"><p>Le <?= $afp['date_time_publication']?></p></div>
                 
@@ -303,12 +304,11 @@ if(isset($_POST['publication_titre'], $_POST['publication_contenu']))
     </div> 
 
     <div>
-        <a href="./action.php?t=1&id=<?= $_SESSION['id'] ?>">J'aime </a> (<?= $likes ?>)
+        <a href="./action.php?t=1&id=<?= $_SESSION['id'] ?>"> </a> (<?= $likes ?>)
         <br>    
         <a href="./action.php?t=2&id=<?= $_SESSION['id'] ?>">Je n'aime pas</a>  (<?= $dislikes?>)
     </div>
     </div>
-
 
 
 

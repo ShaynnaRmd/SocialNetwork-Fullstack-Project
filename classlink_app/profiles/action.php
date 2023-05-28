@@ -5,13 +5,6 @@ require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
-
-
-
-
-    
-
-    
     // $check = $app_pdo->prepare('SELECT id FROM likes WHERE test_publications_id = ? ');
     // $check->execute(array($pub_id));
 

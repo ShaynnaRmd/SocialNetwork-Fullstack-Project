@@ -41,7 +41,6 @@ if(!empty($_POST)) {
             if($valid){
                 $requete = $app_pdo->prepare("UPDATE relation SET statut = 2 WHERE id = ? AND id_receveur = ?");
                 $requete->execute(array($id_relation, $_SESSION['id']));
-               
             }
         }
         header('Location: ./demandes.php');
