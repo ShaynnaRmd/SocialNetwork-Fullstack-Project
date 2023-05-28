@@ -27,10 +27,10 @@ if($result){
 ?>
     
     <header>
-        <div class='header-logo'><img src= "<?= $dirimg . 'white_logo.svg' ?>"alt=""></div>
+        <div class='header-logo'><a href="http://localhost/SocialNetwork-Fullstack-Project/classlink_app/dashboard.php"><img src= "<?= $dirimg . 'white_logo.svg' ?>"alt=""></a></div>
         <div class='header-nav'>
             <div><img src="<?= $dirimg . 'search.svg' ?>" alt=""></div>
-            <div><img src="<?= $path_img . $pp_image ?>" class='header-pp' alt=""></div>
+            <div><img id="header-pp" src="<?= $path_img . $pp_image ?>" class='header-pp' alt=""></div>
             <div><img src="<?= $dirimg . 'live.svg' ?>" alt=""></div>
         </div>
         <div class='header-left-side'>

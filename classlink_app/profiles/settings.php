@@ -3,14 +3,16 @@
     session_start();
     require '../inc/pdo.php';
     require '../inc/functions/token_functions.php';
-    if(!isset($_SESSION['id'])){
-        // $check = token_check($_SESSION["token"], $auth_pdo);
-        // if($check == 'false'){
+    if(isset($_SESSION['token'])){
+        $check = token_check($_SESSION["token"], $auth_pdo);
+        if($check == 'false'){
             header('Location: ../connections/login.php');
+            exit();
         }
-    // }elseif(!isset($_SESSION['token'])){
-    //     header('Location: ../connections/login.php');
-    // }
+    }elseif(!isset($_SESSION['token'])){
+        header('Location: ../connections/login.php');
+        exit();
+    }
 
     $path_img = 'http://localhost/SocialNetwork-Fullstack-Project/classlink_app/profiles/uploads/';
 
@@ -87,6 +89,20 @@
     $numbers_of_publications = $profile_activity_result["numbers_of_publications"];
     $numbers_of_relations = $profile_activity_result["numbers_of_relations"];
 
+    $group_count_request = $app_pdo->prepare("
+        SELECT COUNT(group_id) AS 'number_of_groups' FROM profiles
+        LEFT JOIN group_members ON profile_id = profiles.id
+        WHERE profile_id = :id
+    ");
+
+    $group_count_request->execute([
+        ':id' => $_SESSION['id']
+    ]);
+
+    $group_count_result = $group_count_request->fetch(PDO::FETCH_ASSOC);
+
+    $numbers_of_groups = $group_count_result['number_of_groups'];
+
     $activate_reactivate_button = "";
 
     if ($_SESSION['profile_status'] == 'Actif') {
@@ -95,7 +111,6 @@
         $activate_reactivate_button = "Réactiver le compte";
         $deactivate = true;
     }
-    var_dump($_SESSION['profile_status'])
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,7 +174,7 @@
                 <div class="main">
                     <div class="list">
                         <div class="element-list"><div class=><p>Relations :</p></div><div><span><?= $numbers_of_relations ?></span></div></div>
-                        <div class="element-list"><div><p>Groupes :</p></div><div><span>57</span></div></div>
+                        <div class="element-list"><div><p>Groupes :</p></div><div><span><?= $numbers_of_groups ?></span></div></div>
                         <div class="element-list"><div><p>Pages :</p></div><div><span><?= $numbers_of_pages ?></span></div></div>
                         <div class="element-list"><div><p>Nombre de posts :</p></div><div><span><?= $numbers_of_publications ?></span></div></div>
                     </div>

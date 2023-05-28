@@ -1,5 +1,19 @@
 <?php
     session_start();
+    require '../../vendor/autoload.php';
+    require '../inc/pdo.php';
+    use GuzzleHttp\Client;
+    use GuzzleHttp\RequestOptions;
+    $client = new \GuzzleHttp\Client();
+    $data = [
+        'id' => $_SESSION['id']
+    ];
+    $json = json_encode($data);
+
+    $response = $client->post('http://localhost:8888/SocialNetwork-Fullstack-Project/classlink_authentification/sql/logout.php', [
+        'body' => $json
+    ]);
+
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,5 +39,4 @@
     <img src="../../assets/img/planet_stars.svg" alt="Image d'une planête entourée d'étoite" class="planet-stars">
 </body>
 <script src="../../assets/js/logout.js"></script>
-</html><?php
-    session_destroy();
+</html>

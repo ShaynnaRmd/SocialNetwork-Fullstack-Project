@@ -1,0 +1,111 @@
+@import url("https://use.typekit.net/zfb0hmm.css");
+
+:root {
+    --purple: #4F4789;
+    --white: #FFFFFF;
+    --background: #F3F3F3;
+    --orange: #FF784F;
+  }
+  
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "new-hero", sans-serif;
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    background: var(--background);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+header {
+    width: 100%;
+    height: 10%;
+    background-color: var(--purple);
+}
+
+main {
+    margin-top: 30px;
+    margin-left: 10%;
+    background-color: var(--white);
+    width: 80%;
+    height: 100%;
+}
+
+.asked {
+    border-radius: 10px;
+    margin-left: 330px;
+    width: 780px;
+    margin-top: 50px;
+    height: 650px;
+    background-color: var(--white);
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.info-member{
+  margin-top: 30px;
+}
+
+.titre{
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--purple);
+}
+
+#member{
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+}
+
+#requete{
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+}
+
+.div-button-accept .input {
+  color: var(--white);
+  background-color: var(--orange);
+  width: 128px;
+  height: 45px;
+}
+
+.div-button-reject .input {
+  color: var(--white);
+  background-color: var(--purple);
+  width: 128px;
+  height: 45px;
+  margin-left: 48px;
+}
+
+.input {
+  margin-top: 10px;
+  width: 100%;
+  height: 100%;
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-family: "new-hero", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 18px;
+}
+
+
+

@@ -5,6 +5,10 @@ require '../../classlink_app/inc/pdo.php'; //Besoin du pdo pour se connecter à 
 $groupid = $_POST['group_id'];
 $userid = $_POST['user_id'];
 $status = $_POST['status'];
+var_dump($groupid);
+var_dump($userid);
+var_dump($status);
+
 
 
 if($status == 'accept'){
@@ -26,7 +30,8 @@ if($status == 'accept'){
         ':group_id' => $groupid,
         ':profile_id' => $userid
     ]);
-    $echo = 'ajouter';
+
+    echo json_encode('je suis la');
 }elseif($status == 'reject'){
     $request_supp_asked_groups2 = $app_pdo->prepare('
         DELETE FROM asked_groups WHERE group_id = :group_id
@@ -37,5 +42,5 @@ if($status == 'accept'){
             ':group_id' => $groupid,
             ':profile_id' => $userid
         ]);
-    $echo = 'supprimé';
+    echo json_encode($groupid);
 }
