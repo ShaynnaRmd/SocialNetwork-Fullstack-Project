@@ -338,6 +338,7 @@ ul{
     font-size: 0.7em;
 }
 
+
 .messagecontentant:hover .time{
     opacity: 1;
     transition: 0.2s;

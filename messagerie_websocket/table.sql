@@ -14,6 +14,14 @@ CREATE TABLE private_chat_messages (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    
 );
+CREATE TABLE private_chat_messages (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    sender_id INT,
+    recever_id INT,
+    message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   
+);
 CREATE TABLE group_chat (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50),
