@@ -9,7 +9,7 @@ require_once 'pdo.php';
     $date = date('Y-m-d H:i:s');
     
     
-    $sql = "INSERT INTO private_chat_messages ( message, sender_id,recever_id, created_at) VALUES (:messages,  :sender, :room,:date)
+    $sql = "INSERT INTO private_chat_messages ( message, sender_id,recever_id, created_at) VALUES (:messages,  :sender, :room,:date); select LAST_INSERT_ID() as id
     ";
     $stmt = $messaging_pdo->prepare($sql);
     $stmt->execute(
@@ -20,12 +20,9 @@ require_once 'pdo.php';
             ':date' => $date
         )
     );
-    $sql = "select last_insert_id() as id from private_chat_messages ";
-    $stmt = $messaging_pdo->prepare($sql);
-    $stmt->execute();
     $id = $stmt->fetch(PDO::FETCH_ASSOC);
     $id = $id['id'];
-    
+    echo $id;
 
     //encoyer une reponse au client
     if($stmt->rowCount() > 0){

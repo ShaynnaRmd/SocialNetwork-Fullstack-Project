@@ -1,5 +1,5 @@
 <?php
-require_once "../classlink_app/inc/pdo.php" ;
+require_once "../../classlink_app/inc/pdo.php" ;
 session_start();
 //get user friend list
 $sql="SELECT * FROM relation WHERE statut = 2 and (id_demandeur = :user or id_receveur = :user)";

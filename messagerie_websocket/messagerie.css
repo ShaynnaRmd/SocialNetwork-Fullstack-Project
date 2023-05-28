@@ -337,6 +337,7 @@ ul{
     transition: 0.1s;
     font-size: 0.7em;
 }
+
 .messagecontentant:hover .time{
     opacity: 1;
     transition: 0.2s;
@@ -639,6 +640,28 @@ dialog #non:hover{
     
     
 }
+#loadingprive{
+    position: relative;
+  
+   
+    transition: 0.1s;
+    top: 0px;
+   
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid var(--orange);
+    color: white;
+    animation: loading 1s infinite linear;
+}
+@keyframes loading{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
 .dark_write{
     background-color: var(--dark_grey2);
     color: white;
@@ -676,4 +699,6 @@ dialog #non:hover{
   .context-menu-option:hover {
     background-color: #ffead7;
   }
-  
+  .active{
+    background: var(--orange);
+}

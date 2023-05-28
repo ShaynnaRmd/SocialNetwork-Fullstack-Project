@@ -10,9 +10,7 @@ if( !isset($_SESSION['id'])){
     // header("Location: index.php");
     header("Location: ../classlink_app/connections/login.php");
 }
-if(!isset($_SESSION['room']) ){
-    $_SESSION['room'] = 1;
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +19,7 @@ if(!isset($_SESSION['room']) ){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="messagerie.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -79,14 +77,9 @@ if(!isset($_SESSION['room']) ){
         </div>
         <div class='zone_de_texte'>
             <div class="top_profile">
-                <div class="name_photo">
-                    <div class="circle_image"><img src="https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg" alt="profile"></div>
-                    <p>Name</p>
-                </div>
+                  <p id="friendid"></p>
                 <div class="option">
-                    <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                </svg></p></div>  
+            </div>  
             </div>
             <div class="write " id="write">
             
@@ -114,7 +107,7 @@ if(!isset($_SESSION['room']) ){
 
 
 
-    var name = "<?php echo $_SESSION['name']; ?>";
+    var name = "jkkj"
 
 
     var scrollContainer = document.getElementById('write');
@@ -151,6 +144,7 @@ if(!isset($_SESSION['room']) ){
 </script>
 
  <script>
+    $("#write").html("<div class='writer'><p>Pour commencer un Chat cliquer sur un profile</p></div>");
     function option(){$(document).ready(function() {
   $(".messagecontentant").on("contextmenu", function(event) {
     event.preventDefault(); // Empêche le menu contextuel par défaut de s'afficher
@@ -212,7 +206,7 @@ if(!isset($_SESSION['room']) ){
   
     }
 
-
+    $('.top_profile').hide();
     $("<div class='context-menu-option'>Supprimer</div>")
       .appendTo(contextMenu)
       .click(function() {
@@ -268,7 +262,7 @@ if(!isset($_SESSION['room']) ){
        
          
       });
-
+  
     $(document).on("click", function() {
       contextMenu.remove();
     });
@@ -304,7 +298,7 @@ if(!isset($_SESSION['room']) ){
                                         var id = $draggable.attr('id');
                                         $.ajax({
                                             type: "POST",
-                                            url: "delMessage.php",
+                                            url: "script/delMessage.php",
                                             data: {id: id },
                                             success: function(data) {
                                                 $draggable.parent().remove();
@@ -351,7 +345,7 @@ if(!isset($_SESSION['room']) ){
                                         var id = $draggable.attr('id');
                                         $.ajax({
                                             type: "POST",
-                                            url: "delMessage.php",
+                                            url: "script/delMessage.php",
                                             data: {id: id },
                                             success: function(data) {
                                                 $draggable.parent().remove();
@@ -370,6 +364,7 @@ if(!isset($_SESSION['room']) ){
     }
 		
         var conn = new WebSocket(`ws://localhost:8080?identifiant=<?php echo $_SESSION['id']; ?>`);
+        $('#loading').hide();
         //function pur  afficher ecrivez un message si write ne contient pas de div avec une class sender ou receiver
         function write(){
             var write = document.getElementById("write");
@@ -385,56 +380,6 @@ if(!isset($_SESSION['room']) ){
       
         
 
-  
-       
-     
-         
-        // jQuery("#submit").click(function() {
-           
-        //     var msg = jQuery("#message").val();
-        //     var room = 
-        //     var name = "<?php echo $_SESSION['name']; ?>"
-        //     var hour = new Date().getHours();
-        //     var minute = new Date().getMinutes();
-        //     var time = hour + ":" + minute;
-        //     var content = {
-        //         msg: msg,
-        //         name: name,
-        //         room: room,
-        //         time: time
-        //     };
-        
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "saveMessage.php",
-        //         data: {msg: msg, name: name, room: room, time: time },
-        //         success: function(data) {
-        //             var data = JSON.parse(data);
-        //             console.log(data);
-        //             //remplacer le id temporaire par le id de la base de donnée
-        //             var id = data.id;
-        //             var temporaire_id = document.getElementById("temporaire_id");
-        //             temporaire_id.id = id;
-        //             temporaire_id.dataset.id = id;
-                
-                    
-        //         }
-               
-          
-        //     });
-        //     conn.send(JSON.stringify(content));
-        //     var html = "<div id='temporaire_id'  class='recever_box messagecontentant'><div class='row'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='draggableElement receiver  bullemessage' data-id='temporaire_id'><p>" + msg + "</p></div></div><div class='time'>"+time+"</div></div>";
-        //     drag();
-        //     option();
-        //     write();
-        //    jQuery("#write").append(html);
-        //    scrollContainer.scrollTop = scrollContainer.scrollHeight;
-        //    jQuery("#message").val("");
-            
-         
-            
-
-        // });
 
         //function pour envoyer le message avec la touche entrer si on est focus sur le input
         $("#message").keypress(function(e) {
@@ -454,7 +399,7 @@ if(!isset($_SESSION['room']) ){
             
             $.ajax({
                 type: "POST",
-                url: "updateMessage.php",
+                url: "script/updateMessage.php",
                 data: {id: id, message: message ,time: time},
                 success: function(data) {
                   
@@ -473,7 +418,7 @@ if(!isset($_SESSION['room']) ){
         function saveMessageToDatabase(messageId, editedContent) {
         $.ajax({
             type: "POST",
-            url: "updatemessage.php",
+            url: "script/updatemessage.php",
             data: { id: messageId, message: editedContent },
             success: function(response) {
             console.log("Message modifié avec succès !");
@@ -486,7 +431,7 @@ if(!isset($_SESSION['room']) ){
         function deleteMessage(messageId) {
         $.ajax({
             type: "POST",
-            url: "delMessage.php",
+            url: "script/delMessage.php",
             data: { id: messageId },
             success: function(response) {
             console.log("Message supprimé avec succès !");
@@ -518,119 +463,34 @@ if(!isset($_SESSION['room']) ){
 
 //create group
 
-function creategroup(){
-var name = document.querySelector('#group_name').value;
-var description = document.querySelector('#descriptions').value;
-$.ajax({
-    type:'POST',
-    url:'createroom.php',
-    data: { room_name: name, description: description },
-    success: function(data, textStatus, xhr) {
-    // La requête a abouti avec succès
-    var status = xhr.status; // Récupérer le statut HTTP de la réponse
-    console.log('Statut de réponse : ' + status);
-  },
-  error: function(xhr, textStatus, errorThrown) {
-    // Une erreur s'est produite lors de la requête
-    var status = xhr.status; // Récupérer le statut HTTP de la réponse
-    console.log('erreur');
-  }
+// function creategroup(){
+// var name = document.querySelector('#group_name').value;
+// var description = document.querySelector('#descriptions').value;
+// $.ajax({
+//     type:'POST',
+//     url:'createroom.php',
+//     data: { room_name: name, description: description },
+//     success: function(data, textStatus, xhr) {
+//     // La requête a abouti avec succès
+//     var status = xhr.status; // Récupérer le statut HTTP de la réponse
+//     console.log('Statut de réponse : ' + status);
+//   },
+//   error: function(xhr, textStatus, errorThrown) {
+//     // Une erreur s'est produite lors de la requête
+//     var status = xhr.status; // Récupérer le statut HTTP de la réponse
+//     console.log('erreur');
+//   }
 
-})};
+// })};
 var button=document.getElementById("creategroup");    
 button.addEventListener("click", function() {
          creategroup();
         });
 
 document.getElementById('groupmessage').addEventListener("click",()=>{
-    $.ajax({
-                 type: "GET",
-                 url: "showgroup.php",
-                 success: function(data) {
-                    var getData = JSON.parse(data);
-                    let ul = document.querySelector(".liste");
-                    ul.innerHTML="";
-                   
-                     var html = "";
-                    
-                     for (var i = 0; i < getData.length; i++) {
-                      
-                        ul.innerHTML += "<li class='group' data-id="+ getData[i].id +" ><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='name_message ' ><p>"+getData[i].name+"</p><p>"+getData[i].description+"</p></div></li>";
-
-                            } 
-    $(".group").on("click", function() {
-       
-                                var id = $(this).data("id");
-                                var conn = new WebSocket('ws://localhost:8080');
-                                
-            var groupid = $(this).data("id");
-            sessionStorage.setItem("room", groupid);
-    $.ajax({
-                 type: "POST",
-                 url: "getgroupmessage.php",
-                 data: {room: groupid},
-                 beforeSend: function() {
-                    console.log(groupid)
-                  
-                    $('#loading').show(); // Afficher l'élément de chargement
-                    //cacher le input et le boutton envoyer
-                    $("#input").removeClass("show");
-                    $('#write').find(".messagecontentant").remove();
-
-
-                },
-                complete: function() {
-                   
-                    $('#loading').hide(); // Masquer l'élément de chargement
-                    //afficher le boutton envoyer
-                    $("#input").addClass("show");
-                },
-                 success: function(data) {
-                     var html = "";
-                     var getData = JSON.parse(data);
-                     for (var i = 0; i < getData.length; i++) {
-                         //verifier si le message est de l'utilisateur ou de l'autre
-                            if (getData[i].sender_name == "<?php echo $_SESSION['name']; ?>") {
-                                //ecrire lheure sans les secondes dans la variable time
-                               
-                                //laisser que les minutes et les heures
-                                
-                               
-                                html += "<div  class=' recever_box messagecontentant'><div class='row'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='receiver bullemessage draggableElement' id="+getData[i].id+" data-id="+getData[i].id+"  ><p> " + getData[i].message + "</p></div></div><div class='time'>"+getData[i].created_at+"</div></div>";
-                               drag();
-                               option();
-
-                            } else{
-                                
-                                //laisser que les minutes et les heures
-                                
-                                html += "<div  class='sender_box messagecontentant'><div class='row_not_reverse'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='sender bullemessage draggableElementleft' id="+getData[i].id+" data-id="+getData[i].id+" ><p>" + getData[i].message + "</p></div></div><div class='time'>"+getData[i].created_at+"</div></div>";
-                                dragleft();
-                                option();
-                                
-                            }
-                            
-
-                     }
-                    
-                     jQuery("#write").append(html);
-                     write();
-                     scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                 }
-
-    })
-
-  
-});}
-                    
-                    
-                    
-                    
-                 }
-             );
-             
-        
-});
+    $("#write").html("<div class='writer'><p>Nous n'avons pas eu le temps de completer la partie groupe</p></div>");
+})
+        //function pour envoyer le message
 
 
 jQuery("#submit").click(function() {
@@ -654,7 +514,7 @@ jQuery("#submit").click(function() {
            
            $.ajax({
                type: "POST",
-               url: "saveMessage.php",
+               url: "script/saveMessage.php",
                data: {msg: msg, id: id, room: room, time: time },
                success: function(data) {
                    var data = JSON.parse(data);
@@ -693,7 +553,7 @@ jQuery("#submit").click(function() {
   conn.send(JSON.stringify(joinMessage));
               $.ajax({
                  type: "GET",
-                 url: "getfriend.php",
+                 url: "script/getfriend.php",
                  success: function(data) {
                     var getData = JSON.parse(data);
                     let ul = document.querySelector(".liste");
@@ -709,10 +569,14 @@ jQuery("#submit").click(function() {
 
     $(".privatechat").on("click", function() {      
         //recuperer la relation_id par une requete ajax
+        $("#write").html(" <i id='loading'></i>");
+        $(".privatechat").removeClass("active");
+       $(this).addClass("active");
+        
         friendid = $(this).data("id");
         $.ajax({
             type: "POST",
-            url: "getrelationId.php",
+            url: "script/getrelationId.php",
             data: {friend: $(this).data("id") },
             success: function(data) {
                 var getData = JSON.parse(data);
@@ -733,7 +597,7 @@ jQuery("#submit").click(function() {
 
     $.ajax({
                  type: "POST",
-                 url: "getprivatemessage.php",
+                 url: "script/getprivatemessage.php",
                  data: {friend: friendid },
                  beforeSend: function() {
                     console.log(friendid)
@@ -750,18 +614,25 @@ jQuery("#submit").click(function() {
                     $('#loading').hide(); // Masquer l'élément de chargement
                     //afficher le boutton envoyer
                     $("#input").addClass("show");
+
+                   
                 },
                  success: function(data) {
                      var html = "";
                      var getData = JSON.parse(data);
+                    
                      for (var i = 0; i < getData.length; i++) {
-                         //verifier si le message est de l'utilisateur ou de l'autre
+                         //verifier si le message est de l'utilisateur ou de l'autre*
+                         let friend = getData[i].id;
+                         console.log(friend);
+                     document.getElementById("friendid").innerHTML = friend;
+                   
                             if (getData[i].sender_id == "<?php echo $_SESSION['id']; ?>") {
                                 //ecrire lheure sans les secondes dans la variable time
                                
                                 //laisser que les minutes et les heures
                                 
-                               
+                                
                                 html += "<div  class=' recever_box messagecontentant'><div class='row'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='receiver bullemessage draggableElement' id="+getData[i].id+" data-id="+getData[i].id+"  ><p> " + getData[i].message + "</p></div></div><div class='time'>"+getData[i].created_at+"</div></div>";
                                drag();
                                option();
@@ -800,9 +671,11 @@ jQuery("#submit").click(function() {
 
 
 document.getElementById('privés').addEventListener("click",()=>{
+    $("#write").html("<div class='writer'><p>Pour commencer un Chat cliquer sur un profile</p></div>");
     $.ajax({
                  type: "GET",
-                 url: "getfriend.php",
+                 url: "script/getfriend.php",
+                 
                  success: function(data) {
                     var getData = JSON.parse(data);
                     let ul = document.querySelector(".liste");
@@ -825,7 +698,7 @@ document.getElementById('privés').addEventListener("click",()=>{
             //recuperer les messages de friend
             $.ajax({
                  type: "POST",
-                 url: "getprivatemessage.php",
+                 url: "script/getprivatemessage.php",
                  data: {friend: friendid },
                  beforeSend: function() {
                     console.log(friendid)
@@ -844,6 +717,8 @@ document.getElementById('privés').addEventListener("click",()=>{
                     $("#input").addClass("show");
                 },
                  success: function(data) {
+                 
+                 
                      var html = "";
                      var getData = JSON.parse(data);
                      for (var i = 0; i < getData.length; i++) {
@@ -853,6 +728,9 @@ document.getElementById('privés').addEventListener("click",()=>{
                                
                                 //laisser que les minutes et les heures
                                 
+                                var friend= getData[i].username;
+                                document.getElementById("friendid").innerText = friend;
+                                console.log(friend);
                                
                                 html += "<div  class=' recever_box messagecontentant'><div class='row'><div class='circle_image'><img src='https://img.nrj.fr/EIZG0nl4nXzmTzHGUU7xvpfEq90=/800x450/smart/medias%2F2022%2F10%2F63401522e919e_6340152ebd63f.jpg' alt='profile'></div><div class='receiver bullemessage draggableElement' id="+getData[i].id+" data-id="+getData[i].id+"  ><p> " + getData[i].message + "</p></div></div><div class='time'>"+getData[i].created_at+"</div></div>";
                                drag();
