@@ -289,7 +289,7 @@ $numbers_of_groups = $group_count_result['number_of_groups'];
                         <div class="title"><p><?php echo $group['name']; ?></p></div>
                         <div class="info">
                             <div class="info-grp"><p><?php echo $memberCount; ?> membre<?php echo ($memberCount > 1) ? 's' : ''; ?> - <?php echo $numbers_of_publications; ?> publication<?php echo ($numbers_of_publications > 1) ? 's' : ''; ?></p></div>
-                            <div class="link"><a href="../groups/group.php?id=">Voir le groupe</a></div>
+                            <div class="link"><a href="../groups/group.php?id=<?php echo $row2['id'] ?>">Voir le groupe</a></div>
                         </div>
                     </div>
                 <?php } ?>
